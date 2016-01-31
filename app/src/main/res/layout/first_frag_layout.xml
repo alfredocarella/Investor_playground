@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:id="@+id/the_1st_frag">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="This is fragment 1"
+        android:textSize="@dimen/text_size"
+        android:textColor="@android:color/white"
+        android:textIsSelectable="false"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:padding="10dp"
+        android:hint="Enter text"
+        android:textColorHint="@android:color/white"
+        android:id="@+id/first_frag_edit_text"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/save_and_continue_button_text"
+        android:textSize="@dimen/text_size"
+        android:id="@+id/first_frag_button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="on1stButtonClicked"
+        />
+
+</LinearLayout>
