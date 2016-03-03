@@ -2,6 +2,19 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="text_size">25sp</dimen>
+    <dimen name="text_size">20sp</dimen>
+    <dimen name="small_text_size">15sp</dimen>
+    <dimen name="small_padding">5dp</dimen>
+    <dimen name="standard_padding">10dp</dimen>
+    <dimen name="large_padding">20dp</dimen>
+    <dimen name="standard_margin">10dp</dimen>
+    <dimen name="large_margin">20dp</dimen>
 
+    <dimen name="rrdt_TextViews_lwidth">0dp</dimen>
+    <dimen name="rrdt_EditTexts_lwidth">0dp</dimen>
+    <dimen name="rrdt_CheckBoxes_lwidth">0dp</dimen>
+
+    <item name="rrdt_check_box_weight" format="float" type="dimen" >1.5</item>
+    <item name="rrdt_edit_text_weight" format="integer" type="dimen">10</item>
+    <item name="rrdt_text_view_weight" format="integer" type="dimen">15</item>
 </resources>

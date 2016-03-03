@@ -1,51 +1,40 @@
 package rafaelasanchez.mynewfragapp;
 
+public class UserData{
 
-import android.app.Fragment;
-import android.os.Bundle;
+    private  String theString;
+    private  int theCurrentFragment;
+    private  String theCurrentCompany;
 
-public class UserData extends Fragment{
-
-    public static String theString;
-    public static int theCurrentFragment;
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            UserData.theString =String.valueOf(savedInstanceState.getCharSequence("CURRENT_STRING"));
-            UserData.theCurrentFragment =savedInstanceState.getInt("CURRENT_FRAGMENT");
-        } else {
-            UserData.theString = "";
-            UserData.theCurrentFragment = 1;
-        }
-
+    public UserData() {
+        theString = "Text";
+        theCurrentFragment = 1;
+        theCurrentCompany = "REC";
     }
 
-    public static String getTheString() {
+
+
+    public String getTheString() {
         return theString;
     }
 
-    public static void setTheString(String theString) {
-        UserData.theString = theString;
+    public void setTheString(String string) {
+        theString = string;
     }
 
-    public static int getTheCurrentFragment() {
+    public int getTheCurrentFragment() {
         return theCurrentFragment;
     }
 
-    public static void setTheCurrentFragment(int theCurrentFragment) {
-        UserData.theCurrentFragment = theCurrentFragment;
+    public void setTheCurrentFragment(int fragment) {
+        theCurrentFragment = fragment;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putCharSequence("CURRENT_STRING", UserData.theString);
-        outState.putInt("CURRENT_FRAGMENT", UserData.theCurrentFragment);
-
+    public String getTheCurrentCompany() {
+        return theCurrentCompany;
     }
 
-
+    public void setTheCurrentCompany(String company) {
+        theCurrentCompany = company;
+    }
 }

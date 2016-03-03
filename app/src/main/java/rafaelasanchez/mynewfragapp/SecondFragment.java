@@ -6,9 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 
 public class SecondFragment extends Fragment {
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("SF.onCreate", "Run");
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -16,29 +24,14 @@ public class SecondFragment extends Fragment {
         return inflater.inflate(R.layout.second_frag_layout, container, false);
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
-
-        TextView theTextView = (TextView) getActivity().findViewById(R.id.the_text_view_2nd_frag);
-        String string = UserData.getTheString();
         Log.e("SF.onStart", "Run");
-        theTextView.setText(string);
 
+        ((MainActivity) getActivity()).startFileService();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("SF.onDestroy", "Run");
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("SF.onDestroyView", "Run");
-    }
 
 }

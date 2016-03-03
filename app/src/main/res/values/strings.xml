@@ -1,8 +1,24 @@
 <resources>
-    <string name="app_name">My new fragapp</string>
+    <string name="app_name">Investor playground</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="save_and_continue_button_text">Save and continue</string>
-    <string name="go_back_button">Go back</string>
+    <string name="save_and_continue_button_text">Go</string>
+    <string name="go_back_button">Back</string>
+    <string name="hint_set_company_EditText_1st_frag">Company ticker</string>
+    <string name="hint_set_start_date_EditText_1st_frag">Start date</string>
+    <string name="hint_set_end_date_EditText_1st_frag">End date</string>
+    <string name="title_2nd_frag_TextView">Results</string>
+    <string name="hint_enter_c0">Enter $0</string>
+    <string name="hint_enter_cf">Enter $f</string>
+    <string name="hint_enter_t">Enter t</string>
+    <string name="hint_enter_r">Enter r</string>
+    <string name="return_rate_formula_text_view">Compound interest \n $f/$0 = (1+r)^t</string>
+    <string name="return_rate_dialog_present_value_text_view">Present value $0 (@ t=t0)</string>
+    <string name="return_rate_dialog_future_value_text_view">Future value $f (@ t=tf)</string>
+    <string name="return_rate_dialog_t_span_text_view">Time span t=tf-t0 (years)</string>
+    <string name="return_rate_dialog_r_text_view">Annualized return rate r (%)</string>
+    <string name="return_rate_dialog_description_text_view">Check the desired variable and fill out the others</string>
+    <string name="return_rate_dialog_question_mark_text_view">" \? "</string>
+
+
 </resources>

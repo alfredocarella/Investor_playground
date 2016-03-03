@@ -1,38 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/black"
+    android:padding="@dimen/standard_padding"
+    android:orientation="horizontal"
     android:id="@+id/the_2nd_frag">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="This is fragment 2"
-        android:textSize="@dimen/text_size"
-        android:textColor="@android:color/white"
-        android:textIsSelectable="false"
-        />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"
+            >
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/axis_max"
+                android:textColor="@android:color/white"
+                android:layout_alignParentTop="true"
+                />
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/axis_min"
+                android:textColor="@android:color/white"
+                android:layout_alignParentBottom="true"
+                />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="@dimen/text_size"
-        android:textColor="@android:color/white"
-        android:textIsSelectable="false"
-        android:id="@+id/the_text_view_2nd_frag"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/second_frag_button"
-        android:padding="10dp"
-        android:textSize="@dimen/text_size"
-        android:text="@string/go_back_button"
-        android:layout_gravity="center_horizontal"
-        android:onClick="on2ndButtonClicked"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/standard_margin"
+                android:layout_gravity="center"
+                android:id="@+id/graficaContainer"
+                android:background="@drawable/back">
+            </FrameLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/axis_start_date"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/axis_end_date"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
 
 </LinearLayout>

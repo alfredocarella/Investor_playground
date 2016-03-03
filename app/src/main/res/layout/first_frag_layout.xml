@@ -7,35 +7,176 @@
     android:background="@android:color/black"
     android:id="@+id/the_1st_frag">
 
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="This is fragment 1"
-        android:textSize="@dimen/text_size"
-        android:textColor="@android:color/white"
-        android:textIsSelectable="false"
-        />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@android:color/black">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size"
-        android:padding="10dp"
-        android:hint="Enter text"
-        android:textColorHint="@android:color/white"
-        android:id="@+id/first_frag_edit_text"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.75"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/standard_padding"
+            android:text="$%?"
+            android:textSize="@dimen/text_size"
+            android:id="@+id/return_rate_1st_frag_button"
+            android:layout_marginLeft="@dimen/standard_margin"
+            android:layout_marginRight="@dimen/standard_margin"
+            />
 
-    <Button
+    </LinearLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/save_and_continue_button_text"
-        android:textSize="@dimen/text_size"
-        android:id="@+id/first_frag_button"
-        android:layout_gravity="center_horizontal"
-        android:onClick="on1stButtonClicked"
-        />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fillViewport="true"
+        android:padding="@dimen/standard_padding"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/black">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back"
+                android:layout_margin="@dimen/standard_margin"
+                android:padding="@dimen/small_padding">
+
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/small_padding"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_column="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size"
+                        android:hint="@string/hint_set_start_date_EditText_1st_frag"
+                        android:textColorHint="@android:color/white"
+                        android:id="@+id/first_frag_start_date_text_view"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_height="wrap_content"
+                        android:text="to"
+                        android:textSize="@dimen/text_size"
+                        android:textColor="@android:color/white"
+                        android:textIsSelectable="false"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_column="2"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size"
+                        android:hint="@string/hint_set_end_date_EditText_1st_frag"
+                        android:textColorHint="@android:color/white"
+                        android:id="@+id/first_frag_end_date_text_view"/>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/small_padding">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size"
+                        android:hint="@string/hint_set_company_EditText_1st_frag"
+                        android:textColorHint="@android:color/white"
+                        android:id="@+id/first_frag_company_text_view"/>
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    >
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/axis_max_1stFrag"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentTop="true"
+                        />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/axis_min_1stFrag"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentBottom="true"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/standard_margin"
+                    android:layout_gravity="center"
+                    android:id="@+id/graficaContainer_1stFrag">
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/axis_start_date_1stFrag"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/axis_end_date_1stFrag"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

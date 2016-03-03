@@ -5,13 +5,16 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "rafaelasanchez.mynewfragapp"
-        minSdkVersion 17
+        applicationId "rafaantosanchez_at_gmail.com_Investor_playground"
+        minSdkVersion 7
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1"
     }
     buildTypes {
+        debug{
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
