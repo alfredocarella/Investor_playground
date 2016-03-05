@@ -8,7 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.io.BufferedReader;
@@ -61,7 +65,30 @@ public class MainActivity extends AppCompatActivity {
     public static final String ENDINGYEAR = "endingYear";
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.bar_calc:
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
+                returnRateDialogFragment.show(fragmentManager,"");
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_bar,menu);
+        return true;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -398,26 +425,9 @@ public class MainActivity extends AppCompatActivity {
             mmax = dataReducer.getMmax();
 
             Log.e("mmin",mmin.toString());
-            Log.e("mmax",mmax.toString());
+            Log.e("mmax", mmax.toString());
 
-            FrameLayout graphContainer;
-            if(theCurrentFragment==2) {
-                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer);
-            }else{
-                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer_1stFrag);
-            }
-            graphContainer.setBackgroundResource(R.drawable.back);
 
-            graphContainer.removeAllViews();
-
-            int dxplot = graphContainer.getWidth();
-            Log.e("MA.plotStuff.Width()", String.valueOf(dxplot));
-
-            int dyplot = graphContainer.getHeight();
-            Log.e("MA.plotStuff.Height()", String.valueOf(dyplot));
-            LinePlot linePlot = new LinePlot(this, dxplot, dyplot, arrayList);
-
-            graphContainer.addView(linePlot);
 
 
 
@@ -454,6 +464,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            FrameLayout graphContainer;
             if(theCurrentFragment==2) {
                 graphContainer = (FrameLayout) findViewById(R.id.graficaContainer);
             }else{
@@ -463,18 +474,14 @@ public class MainActivity extends AppCompatActivity {
 
             graphContainer.removeAllViews();
 
-            dxplot = graphContainer.getWidth();
+            int dxplot = graphContainer.getWidth();
             Log.e("MA.plotStuff.Width()", String.valueOf(dxplot));
 
-            dyplot = graphContainer.getHeight();
+            int dyplot = graphContainer.getHeight();
             Log.e("MA.plotStuff.Height()", String.valueOf(dyplot));
-            linePlot = new LinePlot(this, dxplot, dyplot, arrayList);
+            LinePlot linePlot = new LinePlot(this, dxplot, dyplot, arrayList);
 
             graphContainer.addView(linePlot);
-
-
-
-
 
             graphContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -482,6 +489,11 @@ public class MainActivity extends AppCompatActivity {
                     onPriceGraphClicked();
                 }
             });
+
+
+            // Add the stats stuff
+
+
 
         }
 

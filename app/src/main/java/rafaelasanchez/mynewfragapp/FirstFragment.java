@@ -41,6 +41,35 @@ public class FirstFragment extends Fragment {
             "STL","STB","SUBC","TEL","TGS",
             "YAR"};
 
+    private String[] theCompanyNamesArray={
+            "Oslo Stock Exchange Benchmark Index",
+            "Avance Gas Holding",
+            "Bakkafrost",
+            "BW LPG",
+            "Det norske oljeselskap",
+            "DNB",
+            "DNO",
+            "Frontline",
+            "Gjensidige Forsikring",
+            "Marine Harvest",
+            "Norwegian Air Shuttle",
+            "Norsk Hydro",
+            "Nordic Semiconductor",
+            "Opera Software",
+            "Orkla",
+            "Petroleum Geo-Services",
+            "REC Silicon",
+            "Royal Caribbean Cruises",
+            "Schibsted ser. A",
+            "Schibsted ser. B",
+            "Seadrill",
+            "Statoil",
+            "Storebrand",
+            "Subsea 7",
+            "Telenor",
+            "TGS-NOPEC Geophysical Company",
+            "Yara International"};
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -97,7 +126,7 @@ public class FirstFragment extends Fragment {
                 Log.e("FF.onStart", "endDateTextView.setOnClickListener.onClick");
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
-                        .newInstance(endingYear,endingMonth,endingDay,"Enter end date");
+                        .newInstance(endingYear, endingMonth, endingDay, "Enter end date");
                 dateDialogFragment.setTargetFragment(FirstFragment.this, REQUEST_END_DATE);
                 dateDialogFragment.show(fragmentManager, SELECT_DATE);
             }
@@ -109,21 +138,10 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
                 ListOfSmthFrag listOfSmthFrag =
-                        ListOfSmthFrag.newInstance(theCompaniesArray);
+                        ListOfSmthFrag.newInstance(theCompaniesArray,theCompanyNamesArray);
                 listOfSmthFrag.setTargetFragment(FirstFragment.this, REQUEST_COMPANY);
                 listOfSmthFrag.show(fragmentManager,SELECT_COMPANY);
 
-            }
-        });
-
-        Button button = (Button) getActivity().findViewById(R.id.return_rate_1st_frag_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
-                returnRateDialogFragment.setTargetFragment(FirstFragment.this,0);
-                returnRateDialogFragment.show(fragmentManager,"");
             }
         });
 

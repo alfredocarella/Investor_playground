@@ -1,143 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:fillViewport="true"
+    android:padding="@dimen/standard_padding"
     android:background="@android:color/black"
-    android:id="@+id/the_1st_frag">
+    android:id="@+id/the_1st_frag"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:orientation="vertical"
         android:background="@android:color/black">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="0.75"
+        <TableLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/standard_padding"
-            android:text="$%?"
-            android:textSize="@dimen/text_size"
-            android:id="@+id/return_rate_1st_frag_button"
-            android:layout_marginLeft="@dimen/standard_margin"
-            android:layout_marginRight="@dimen/standard_margin"
-            />
+            android:background="@drawable/back"
+            android:layout_margin="@dimen/standard_margin"
+            android:padding="@dimen/small_padding">
 
-    </LinearLayout>
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="@dimen/small_padding"
+                >
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:fillViewport="true"
-        android:padding="@dimen/standard_padding"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_column="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size"
+                    android:hint="@string/hint_set_start_date_EditText_1st_frag"
+                    android:textColorHint="@android:color/white"
+                    android:id="@+id/first_frag_start_date_text_view"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="wrap_content"
+                    android:text="to"
+                    android:textSize="@dimen/text_size"
+                    android:textColor="@android:color/white"
+                    android:textIsSelectable="false"
+                    android:layout_column="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_column="2"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size"
+                    android:hint="@string/hint_set_end_date_EditText_1st_frag"
+                    android:textColorHint="@android:color/white"
+                    android:id="@+id/first_frag_end_date_text_view"/>
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="@dimen/small_padding">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size"
+                    android:hint="@string/hint_set_company_EditText_1st_frag"
+                    android:textColorHint="@android:color/white"
+                    android:id="@+id/first_frag_company_text_view"/>
+            </TableRow>
+
+        </TableLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@android:color/black">
+            android:layout_height="200dp"
+            android:orientation="horizontal">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/back"
-                android:layout_margin="@dimen/standard_margin"
-                android:padding="@dimen/small_padding">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                >
 
-                <TableRow
+                <TextView
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:padding="@dimen/small_padding"
-                    >
+                    android:id="@+id/axis_max_1stFrag"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentTop="true"
+                    />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_column="0"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size"
-                        android:hint="@string/hint_set_start_date_EditText_1st_frag"
-                        android:textColorHint="@android:color/white"
-                        android:id="@+id/first_frag_start_date_text_view"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="0.25"
-                        android:layout_height="wrap_content"
-                        android:text="to"
-                        android:textSize="@dimen/text_size"
-                        android:textColor="@android:color/white"
-                        android:textIsSelectable="false"
-                        android:layout_column="1" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_column="2"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size"
-                        android:hint="@string/hint_set_end_date_EditText_1st_frag"
-                        android:textColorHint="@android:color/white"
-                        android:id="@+id/first_frag_end_date_text_view"/>
-
-
-                </TableRow>
-
-                <TableRow
+                <TextView
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:padding="@dimen/small_padding">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size"
-                        android:hint="@string/hint_set_company_EditText_1st_frag"
-                        android:textColorHint="@android:color/white"
-                        android:id="@+id/first_frag_company_text_view"/>
-                </TableRow>
+                    android:id="@+id/axis_min_1stFrag"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentBottom="true"
+                    />
 
-            </TableLayout>
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="30dp"
-                    >
-
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_max_1stFrag"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentTop="true"
-                        />
-
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_min_1stFrag"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentBottom="true"
-                        />
-
-                </RelativeLayout>
-
-                <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -173,10 +147,21 @@
 
             </LinearLayout>
 
-            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/the_return"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
