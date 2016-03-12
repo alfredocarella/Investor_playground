@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,14 +90,12 @@ public class FirstFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.e("FF.onCreateView", "Run");
         return inflater.inflate(R.layout.first_frag_layout, container, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.e("FF.onStart", "Run");
 
         TextView startDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_start_date_text_view);
         TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
@@ -104,13 +103,22 @@ public class FirstFragment extends Fragment {
         startDateTextView.setText(theString);
         endDateTextView.setText(theEndDateString);
         companyTextView.setText(theCurrentCompany);
-        ((MainActivity)getActivity()).onParametersUpdated();
+
+        ViewGroup graphContainer = (ViewGroup) getActivity().findViewById(R.id.graficaContainer_1stFrag);
+        ViewGroup.LayoutParams params = graphContainer.getLayoutParams();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        params.height = Math.round(Math.min((float) 0.35*metrics.heightPixels,(float) 0.5*metrics.widthPixels));
+        graphContainer.setLayoutParams(params);
+//        graphContainer.requestLayout();
+
+
+        ((MainActivity)getActivity()).onNewGraph();
 
         startDateTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.e("FF.onStart", "startDateTextView.setOnClickListener.onClick");
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
@@ -123,7 +131,6 @@ public class FirstFragment extends Fragment {
         endDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("FF.onStart", "endDateTextView.setOnClickListener.onClick");
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
                         .newInstance(endingYear, endingMonth, endingDay, "Enter end date");
@@ -145,7 +152,6 @@ public class FirstFragment extends Fragment {
             }
         });
 
-
     }
 
 
@@ -153,7 +159,6 @@ public class FirstFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode != Activity.RESULT_OK) return;
         if(requestCode==REQUEST_START_DATE){
-            Log.e("FF.onActivityResult", "requestCode==REQUEST_START_DATE");
             startingDay = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_DAY);
             startingMonth = (int)
@@ -174,7 +179,6 @@ public class FirstFragment extends Fragment {
             startDateTextView.setText(dateString);
         }
         if (requestCode==REQUEST_END_DATE){
-            Log.e("FF.onActivityResult", "requestCode==REQUEST_END_DATE");
             endingDay = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_DAY);
             endingMonth = (int)
@@ -196,7 +200,6 @@ public class FirstFragment extends Fragment {
 
         }
         if (requestCode==REQUEST_COMPANY){
-            Log.e("FF.onActivityResult", "requestCode==REQUEST_COMPANY");
             String selectedCompany = (String)
                     data.getSerializableExtra(ListOfSmthFrag.SELECTED_COMPANY);
 

@@ -29,7 +29,7 @@ public class SecondFragment extends Fragment {
         super.onStart();
         Log.e("SF.onStart", "Run");
 
-        ((MainActivity) getActivity()).startFileService();
+        ((MainActivity) getActivity()).onNewGraph();
     }
 
 

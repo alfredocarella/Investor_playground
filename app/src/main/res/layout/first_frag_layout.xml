@@ -81,8 +81,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:id="@+id/the_outer_container"            >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -110,21 +113,22 @@
 
             <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="200dp"
                     android:layout_margin="@dimen/standard_margin"
                     android:layout_gravity="center"
-                    android:id="@+id/graficaContainer_1stFrag">
+                    android:id="@+id/graficaContainer_1stFrag"
+                    >
                 </FrameLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/axis_below_graph"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -152,13 +156,146 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content"
+            android:id="@+id/the_stats"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:padding="@dimen/standard_padding"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="@drawable/back"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/the_return"/>
+                android:layout_height="wrap_content"
+                android:text="Stats"
+                android:textSize="@dimen/text_size"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="@dimen/large_margin"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Buy-and-hold return: (%) "
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_return"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:gravity="end"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Annualized buy-and-hold return: (%) "
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_a_return"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Correlation (against benchmark): "
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_correlation"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Beta (against benchmark): "
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_beta"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Sharpe ratio (against benchmark): "
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/the_sharpe"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
