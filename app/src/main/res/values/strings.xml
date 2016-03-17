@@ -4,10 +4,10 @@
     <string name="action_settings">Settings</string>
     <string name="save_and_continue_button_text">Go</string>
     <string name="go_back_button">Back</string>
-    <string name="hint_set_company_EditText_1st_frag">Company ticker</string>
+    <string name="hint_set_company_text_view">Financial instrument</string>
+    <string name="hint_set_benchmark_text_view">Benchmark (optional)</string>
     <string name="hint_set_start_date_EditText_1st_frag">Start date</string>
     <string name="hint_set_end_date_EditText_1st_frag">End date</string>
-    <string name="title_2nd_frag_TextView">Results</string>
     <string name="hint_enter_c0">Enter $0</string>
     <string name="hint_enter_cf">Enter $f</string>
     <string name="hint_enter_t">Enter t</string>
@@ -19,6 +19,12 @@
     <string name="return_rate_dialog_r_text_view">Annualized return rate r (%)</string>
     <string name="return_rate_dialog_description_text_view">Check the desired variable and fill out the others</string>
     <string name="return_rate_dialog_question_mark_text_view">" \? "</string>
+    <string name="label_sharpe_ratio_text_view">Sharpe ratio:</string>
+    <string name="label_beta_text_view">Beta:</string>
+    <string name="label_correlation_with_index_text_view">Correlation:</string>
+    <string name="label_annualized_return_text_view">Annualized buy-and-hold return: (%)</string>
+    <string name="label_return_text_view">Buy-and-hold return: (%)</string>
+    <string name="label_stats_title_text_view">Stats</string>
 
 
 </resources>

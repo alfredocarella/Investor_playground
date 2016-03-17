@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,18 +19,11 @@ public class LinePlot extends View {
     private ArrayList<Float> mPoints;
     private int dx;
     private int dy;
-    private Float mmin;
-    private Float mmax;
+
     Paint paint=new Paint();
 
-    public LinePlot(Context context, int dxplot, int dyplot,ArrayList<Float> puntos) {
-
+    public LinePlot(Context context) {
         super(context);
-
-        mPoints=puntos;
-        dx=dxplot;
-        dy=dyplot;
-
     }
 
 
@@ -46,13 +37,8 @@ public class LinePlot extends View {
         int i = 0;
         int mlength=mPoints.size();
         if(mlength>0) {
-            mmin = Collections.min(mPoints);
-            mmax = Collections.max(mPoints);
-
-/*
-            ((MainActivity)getContext()).setMmax(mmax);
-            ((MainActivity)getContext()).setMmin(mmin);
-*/
+            Float mmin= Collections.min(mPoints);
+            Float mmax= Collections.max(mPoints);
 
             Float dxdp = (1.0f * dx) / mlength;
             while (it.hasNext()) {
@@ -68,6 +54,16 @@ public class LinePlot extends View {
             Log.e("LinePlot.OnDraw.dxdp","dxdp= " + String.valueOf(dxdp) + ";  dx= " +String.valueOf(dx) + ";  dy= " + String.valueOf(dy) + ";  min= " + String.valueOf(mmin) + ";  max= " +String.valueOf(mmax) + ";  i= " +String.valueOf(i));
         }
     }
+
+
+    public void addPoints(int dx_plot, int dy_plot, ArrayList<Float> puntos){
+
+        mPoints=puntos;
+        dx=dx_plot;
+        dy=dy_plot;
+    }
+
+
 
 
 }

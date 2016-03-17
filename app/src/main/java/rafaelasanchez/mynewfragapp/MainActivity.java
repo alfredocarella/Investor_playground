@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,8 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,17 +36,14 @@ import java.net.InetAddress;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private String theString;
-    private String theEndDateString;
-    private String theCurrentCompany;
-    int theCurrentFragment;
-
-
+    private int theCurrentFragment;
     private int startingDay;
     private int startingMonth;
     private int startingYear;
@@ -50,17 +51,22 @@ public class MainActivity extends AppCompatActivity {
     private int endingMonth;
     private int endingYear;
 
-    private boolean requestIndex=true;
-
-    private String theDownloadedData;
-    private String theDownloadedIndexData;
-    private ArrayList<Float> arrayList = new ArrayList<Float>();
-    private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
-
+    private boolean requestIndex=false;
+    private boolean requestCompany=false;
     private boolean startDateSet=false;
     private boolean endDateSet=false;
     private boolean companySet=false;
+    private boolean benchmarkSet=false;
 
+    private String theString;
+    private String theEndDateString;
+    private String theCurrentCompany;
+    private String theCurrentBenchmark;
+    private String theDownloadedData;
+    private String theDownloadedIndexData;
+
+    private ArrayList<Float> arrayList = new ArrayList<Float>();
+    private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
     private ArrayList<Integer> theDays = new ArrayList<Integer>();
     private ArrayList<Integer> theMonths = new ArrayList<Integer>();
     private ArrayList<Integer> theYears = new ArrayList<Integer>();
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String THE_STRING = "THE_STRING";
     public static final String THEENDDATESTRING = "THEENDDATESTRING";
     public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
+    public static final String THECURRENTBENCHMARK = "THECURRENTBENCHMARK";
     public static final String STARTINGDAY = "startingDay";
     public static final String STARTINGMONTH = "startingMonth";
     public static final String STARTINGYEAR = "startingYear";
@@ -81,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String ENDINGDAY = "endingDay";
     public static final String ENDINGMONTH = "endingMonth";
     public static final String ENDINGYEAR = "endingYear";
+
+    private FrameLayout graphContainer;
+    private FrameLayout graphContainer2;
 
 
     @Override
@@ -125,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Methods for loading fragments and updating the different views
+
     private void ChangeFragment(){
         if(theCurrentFragment==1){
             theCurrentFragment=2;
@@ -134,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         putRightFragment();
     }
 
-
     private void putRightFragment(){
         if(theCurrentFragment==1){
             put1stFrag();
@@ -142,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             put2ndFrag();
         }
     }
-
 
     private void put1stFrag(){
         FirstFragment firstFragment = new FirstFragment();
@@ -169,8 +179,7 @@ public class MainActivity extends AppCompatActivity {
         theBundle.putSerializable("theEndDateString", theEndDateString);
         theBundle.putSerializable("theCurrentFragment", theCurrentFragment);
         theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
-        theBundle.putSerializable("theDownloadedData", theDownloadedData);
-        theBundle.putSerializable("theDownloadedIndexData", theDownloadedIndexData);
+        theBundle.putSerializable("theCurrentBenchmark", theCurrentBenchmark);
         theBundle.putSerializable("startingDay", startingDay);
         theBundle.putSerializable("startingMonth",startingMonth);
         theBundle.putSerializable("startingYear",startingYear);
@@ -180,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
         return theBundle;
     }
 
-
-    public void onPriceGraphClicked() {
-
+    private void onPriceGraphClicked() {
         if(theCurrentFragment==1) {
             theCurrentFragment = 2;
             put2ndFrag();
@@ -190,56 +197,46 @@ public class MainActivity extends AppCompatActivity {
             theCurrentFragment = 1;
             put1stFrag();
         }
-
     }
 
 
     public void onNewGraph(){
-        startFileService();
+
+        dataIntoArrays();
+
     }
 
 
+    private void onParametersUpdated(boolean companyChanged, boolean benchmarkChanged,
+                                     boolean datesChanged){
 
-    public void onParametersUpdated(){
-        if(theCurrentFragment==1&&startDateSet&&endDateSet&&companySet){
+   /*     Log.e("onParametersUpdated","startDateSet "+ String.valueOf(startDateSet));
+        Log.e("onParametersUpdated","endDateSet "+ String.valueOf(endDateSet));
+        Log.e("onParametersUpdated","companySet "+ String.valueOf(companySet));
+        Log.e("onParametersUpdated", "benchmarkSet " + String.valueOf(benchmarkSet));
+        Log.e("onParametersUpdated", "requestIndex " + String.valueOf(requestIndex));
+        Log.e("onParametersUpdated", "requestCompany " + String.valueOf(requestCompany));
+*/
+        if((datesChanged&&companySet&&startDateSet&&endDateSet)
+                ||(companyChanged&&startDateSet&&endDateSet)){
+            requestCompany=true;
+            requestIndex=benchmarkSet;
+            startFileService("onParametersUpdated");
+        }else if(benchmarkChanged&&companySet&&startDateSet&&endDateSet){
+            Log.e("onParametersUpdated","benchmarkChanged");
+            requestCompany=false;
             requestIndex=true;
-            startFileService();
+            startFileService("onParametersUpdated");
         }
+
     }
 
 
 
+    // Methods for downloading price data and putting it into arrays
+    private void startFileService(String callingMethod) {
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDay).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingMonth).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingYear).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDay).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingMonth).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingYear).commit();
-
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THE_STRING, theString).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
-
-
-
-        super.onSaveInstanceState(outState);
-    }
-
-
-
-    // Methods for downloading stuff
-
-    public void startFileService() {
-
-        Log.e("requestindex",String.valueOf(requestIndex));
+        Log.e("startFileService","callingMethod: " + String.valueOf(callingMethod));
 
         if(isInternetAvailable()) {
 
@@ -252,23 +249,25 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, FileService.class);
         /*      http://ichart.yahoo.com/table.csv?s=REC.OL&a=0&b=1&c=2000&d=0&e=31&f=2010
-                a month0; b day0; c year0; rest the same but final
-                dividends splits replace date with &g=v     */
+                a month0; b day0; c year0;  similarly for the end dates
+                for dividends and splits replace date with &g=v     */
 
             String theURL1stPart = "http://ichart.yahoo.com/table.csv?s=";
-            String ticker;
+            String ticker="";
             if (requestIndex) {
-                ticker ="OSEBX";
-            } else {
+                ticker = theCurrentBenchmark;
+            } else if(requestCompany) {
                 ticker = theCurrentCompany;
             }
-            String theURLcomplete = theURL1stPart + ticker
-                    + ".OL&a=" + theMonth + "&b=" + theDay + "&c=" + theYear
-                    + "&d=" + theEndMonth + "&e=" + theEndDay + "&f=" + theEndYear;
+            if(!ticker.equals("")) {
+                String theURLcomplete = theURL1stPart + ticker
+                        + ".OL&a=" + theMonth + "&b=" + theDay + "&c=" + theYear
+                        + "&d=" + theEndMonth + "&e=" + theEndDay + "&f=" + theEndYear;
 
-            Log.e("theURLcomplete", theURLcomplete);
-            intent.putExtra("url", theURLcomplete);
-            this.startService(intent);
+                Log.e("theURLcomplete", theURLcomplete);
+                intent.putExtra("url", theURLcomplete);
+                this.startService(intent);
+            }
         }else{
             CharSequence text = "Check your internet connection";
             Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
@@ -281,13 +280,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("FileService","Service Received");
-            showFileContents();
+            getFileContents();
         }
     };
 
 
-
-    public void showFileContents(){
+    private void getFileContents(){
         StringBuilder sb;
         try {
             FileInputStream fis = this.openFileInput("myFile");
@@ -300,26 +298,18 @@ public class MainActivity extends AppCompatActivity {
                 sb.append(line).append('\n');
             }
 
-
             if (requestIndex) {
                 theDownloadedIndexData = sb.toString();
-
-                DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
-                arrayListIndex = dataReducerIndex.getTheArray();
-                theDaysIndex = dataReducerIndex.getTheDays();
-                theMonthsIndex = dataReducerIndex.getTheMonths();
-                theYearsIndex = dataReducerIndex.getTheYears();
-
                 requestIndex = false;
-                startFileService();
-            } else {
-
-                theDownloadedData = sb.toString();
-
-                plotStuff();
-                if (theCurrentFragment == 1) {
-                    showStats();
+                if(requestCompany) {
+                    startFileService("getFileContents");
+                }else{
+                    dataIntoArrays();
                 }
+            } else if(requestCompany) {
+                theDownloadedData = sb.toString();
+                requestCompany=false;
+                dataIntoArrays();
             }
 
         } catch (FileNotFoundException e) {
@@ -332,124 +322,218 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void plotStuff(){
+    private void dataIntoArrays(){
+        if (!theDownloadedIndexData.equals("")) {
+            DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
+            arrayListIndex = dataReducerIndex.getTheArray();
+            theDaysIndex = dataReducerIndex.getTheDays();
+            theMonthsIndex = dataReducerIndex.getTheMonths();
+            theYearsIndex = dataReducerIndex.getTheYears();
+        }
         if(!theDownloadedData.equals("")) {
-
-            Log.e("theDownloadedData",String.valueOf(theDownloadedData.length()));
             DataReducer dataReducer= new DataReducer(theDownloadedData);
             arrayList = dataReducer.getTheArray();
             theDays = dataReducer.getTheDays();
             theMonths = dataReducer.getTheMonths();
             theYears = dataReducer.getTheYears();
+        }
+        plotStuff();
+    }
+
+
+
+    // Plot the price data
+
+    private void plotStuff(){
+        if(!theDownloadedData.equals("")) {
+
+            Log.e("plotStuff", "theDownloadedData.length()= " + String.valueOf(theDownloadedData.length()));
+
+            double minDouble=-1;
+            double maxDouble=0;
+            try{
+                minDouble= Collections.min(arrayList).doubleValue();
+                maxDouble= Collections.max(arrayList).doubleValue();
+            }catch(NoSuchElementException e) {
+                e.printStackTrace();
+            }
+
+            DecimalFormat precision = new DecimalFormat("0.00E0");
 
             TextView startingTV;
             TextView endingTV;
             TextView minTV;
             TextView maxTV;
-            FrameLayout graphContainer;
 
             if(theCurrentFragment==2) {
-                Log.e("plotstuff.frag2","");
-                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer);
+
                 startingTV = (TextView) findViewById(R.id.axis_start_date);
                 endingTV = (TextView) findViewById(R.id.axis_end_date);
                 minTV = (TextView) findViewById(R.id.axis_min);
                 maxTV = (TextView) findViewById(R.id.axis_max);
+
+                String endingTVtext = theDays.get(0).toString() + "/" + theMonths.get(0).toString() + "/" + theYears.get(0).toString();
+                endingTV.setText(endingTVtext);
+                String startingTVtext = theDays.get(theDays.size() - 1).toString() + "/" + theMonths.get(theMonths.size() - 1).toString() + "/" + theYears.get(theYears.size() - 1).toString();
+                startingTV.setText(startingTVtext);
+
+                minTV.setText(precision.format(minDouble));
+                maxTV.setText(precision.format(maxDouble));
+
+                graphContainer2= (FrameLayout) findViewById(R.id.graficaContainer);
+                graphContainer2.setVisibility(View.VISIBLE);
+                graphContainer2.removeAllViews();
+
+                ViewTreeObserver vto2 = graphContainer2.getViewTreeObserver();
+                vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                            graphContainer2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            graphContainer2.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+
+                        int dxplot = graphContainer2.getWidth();
+                        int dyplot = graphContainer2.getHeight();
+
+
+                        LinePlot linePlot = new LinePlot(getApplicationContext());
+
+                        linePlot.addPoints(dxplot, dyplot, arrayList);
+                        graphContainer2.addView(linePlot);
+                        graphContainer2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onPriceGraphClicked();
+                            }
+                        });
+
+                    }
+                });
+
             }else{
-                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer_1stFrag);
+                LinearLayout theOuterContainer = (LinearLayout) findViewById(R.id.the_outer_container);
+                theOuterContainer.setVisibility(View.VISIBLE);
+
                 startingTV = (TextView) findViewById(R.id.axis_start_date_1stFrag);
                 endingTV = (TextView) findViewById(R.id.axis_end_date_1stFrag);
                 minTV = (TextView) findViewById(R.id.axis_min_1stFrag);
                 maxTV = (TextView) findViewById(R.id.axis_max_1stFrag);
+
+                String endingTVtext = theDays.get(0).toString() + "/" + theMonths.get(0).toString() + "/" + theYears.get(0).toString();
+                endingTV.setText(endingTVtext);
+                String startingTVtext = theDays.get(theDays.size() - 1).toString() + "/" + theMonths.get(theMonths.size() - 1).toString() + "/" + theYears.get(theYears.size() - 1).toString();
+                startingTV.setText(startingTVtext);
+
+                minTV.setText(precision.format(minDouble));
+                maxTV.setText(precision.format(maxDouble));
+
+                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer_1stFrag);
+                graphContainer.setVisibility(View.VISIBLE);
+                graphContainer.removeAllViews();
+
+                ViewTreeObserver vto = graphContainer.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                            graphContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            graphContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+
+                        int dxplot = graphContainer.getWidth();
+
+                        ViewGroup.LayoutParams params = graphContainer.getLayoutParams();
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                        params.height = Math.round(Math.min((float) 0.35 * metrics.heightPixels, (float) 0.5 * metrics.widthPixels));
+                        graphContainer.setLayoutParams(params);
+
+                        LinePlot linePlot = new LinePlot(getApplicationContext());
+                        int dyplot = params.height;
+
+                        linePlot.addPoints(dxplot, dyplot, arrayList);
+                        graphContainer.addView(linePlot);
+                        graphContainer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onPriceGraphClicked();
+                            }
+                        });
+
+                        showStats();
+
+                    }
+                });
+
             }
-
-            double minDouble= dataReducer.getMmin().doubleValue();
-            double maxDouble= dataReducer.getMmax().doubleValue();
-            DecimalFormat precision = new DecimalFormat("0.00E0");
-            minTV.setText(precision.format(minDouble));
-            maxTV.setText(precision.format(maxDouble));
-
-            String endingTVtext = theDays.get(0).toString() + "/" + theMonths.get(0).toString() + "/" + theYears.get(0).toString();
-            endingTV.setText(endingTVtext);
-            String startingTVtext = theDays.get(theDays.size() - 1).toString() + "/" + theMonths.get(theMonths.size() - 1).toString() + "/" + theYears.get(theYears.size() - 1).toString();
-            startingTV.setText(startingTVtext);
-
-
-            int dxplot = graphContainer.getWidth();
-            Log.e("graphContainer.Width", String.valueOf(dxplot));
-
-            int dyplot = graphContainer.getHeight();
-            Log.e("graphContainer.Height", String.valueOf(dyplot));
-
-            graphContainer.setBackgroundResource(R.drawable.back);
-            graphContainer.removeAllViews();
-            LinePlot linePlot = new LinePlot(this, dxplot, dyplot, arrayList);
-
-            graphContainer.addView(linePlot);
-
-            graphContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onPriceGraphClicked();
-                }
-            });
-
-            if(theCurrentFragment==1){
-                showStats();
-            }
-
 
         }
     }
 
 
-
-
-
+    //Show juicy stats into the screen
 
     private void showStats(){
 
+        Log.e("showStats", "method run");
         View outer_container = findViewById(R.id.the_stats);
-        outer_container.setVisibility(View.VISIBLE);
 
-        DataCruncher dataCruncher = new DataCruncher(
-                arrayList,
-                theDays,
-                theMonths,
-                theYears,
-                arrayListIndex,
-                theDaysIndex,
-                theMonthsIndex,
-                theYearsIndex);
+        if (companySet&&!theDownloadedData.equals("")) {
+            outer_container.setVisibility(View.VISIBLE);
+            Log.e("showStats", "companySet true");
 
+            DataCruncher dataCruncher = new DataCruncher(
+                    arrayList,
+                    theDays,
+                    theMonths,
+                    theYears,
+                    arrayListIndex,
+                    theDaysIndex,
+                    theMonthsIndex,
+                    theYearsIndex);
 
-        DecimalFormat thePrecision = new DecimalFormat("0.00");
+            Log.e("data cruncher printout"," "+String.valueOf(dataCruncher));
 
+            DecimalFormat thePrecision = new DecimalFormat("0.00");
 
-        TextView theReturnTextView = (TextView) findViewById(R.id.the_return);
-        Double theReturn = dataCruncher.getTheReturn();
-        theReturnTextView.setText(thePrecision.format(theReturn));
+            TextView theReturnTextView = (TextView) findViewById(R.id.the_return);
+            Double theReturn = dataCruncher.getTheReturn();
+            theReturnTextView.setText(thePrecision.format(theReturn));
 
-        Double theAnnualizedReturn = dataCruncher.getTheAnnualizedReturn();
-        TextView theAReturnTextView = (TextView) findViewById(R.id.the_a_return);
-        theAReturnTextView.setText(thePrecision.format(theAnnualizedReturn));
+            Double theAnnualizedReturn = dataCruncher.getTheAnnualizedReturn();
+            TextView theAReturnTextView = (TextView) findViewById(R.id.the_a_return);
+            theAReturnTextView.setText(thePrecision.format(theAnnualizedReturn));
 
-        TextView theBetaTextView = (TextView) findViewById(R.id.the_beta);
-        Double theBeta = dataCruncher.getTheBeta();
-        theBetaTextView.setText(thePrecision.format(theBeta));
+            LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
-        TextView theSharpeTextView = (TextView) findViewById(R.id.the_sharpe);
-        Double theSharpe = dataCruncher.getTheSharpe();
-        theSharpeTextView.setText(thePrecision.format(theSharpe));
+            if (benchmarkSet && !theDownloadedIndexData.equals("")) {
+                Log.e("showStats", "benchmarkSet && !requestIndex = true");
 
-        TextView theCorrTextView = (TextView) findViewById(R.id.the_correlation);
-        Double theCorrelation = dataCruncher.getTheCorrelation();
-        theCorrTextView.setText(thePrecision.format(theCorrelation));
+                theBenchmarkStats.setVisibility(View.VISIBLE);
 
+                TextView theCorrTextView = (TextView) findViewById(R.id.the_correlation);
+                Double theCorrelation = dataCruncher.getTheCorrelation();
+                theCorrTextView.setText(thePrecision.format(theCorrelation));
 
+                TextView theBetaTextView = (TextView) findViewById(R.id.the_beta);
+                Double theBeta = dataCruncher.getTheBeta();
+                theBetaTextView.setText(thePrecision.format(theBeta));
 
+                TextView theSharpeTextView = (TextView) findViewById(R.id.the_sharpe);
+                Double theSharpe = dataCruncher.getTheSharpe();
+                theSharpeTextView.setText(thePrecision.format(theSharpe));
+            } else{
+                theBenchmarkStats.setVisibility(View.GONE);
+            }
+
+        }else{
+            outer_container.setVisibility(View.GONE);
+        }
 
     }
 
@@ -460,53 +544,86 @@ public class MainActivity extends AppCompatActivity {
 
 
     // setters and getters
-    public void setTheEndDateString(String theEndDateString) {
-        this.theEndDateString = theEndDateString;
-    }
-
-    public void setEndingDay(int endingDay) {
-        this.endingDay = endingDay;
-    }
-
-    public void setEndingMonth(int endingMonth) {
-        this.endingMonth = endingMonth;
-    }
-
-    public void setEndingYear(int endingYear) {
-        this.endingYear = endingYear;
-        endDateSet=true;
-        onParametersUpdated();
-    }
-
-    public void setStartingDay(int startingDay) {
-        this.startingDay = startingDay;
-    }
-
-    public void setStartingMonth(int startingMonth) {
-        this.startingMonth = startingMonth;
-    }
-
-    public void setStartingYear(int startingYear) {
-        this.startingYear = startingYear;
-        startDateSet=true;
-        onParametersUpdated();
-    }
-
     public void setTheString(String theString) {
         this.theString = theString;
     }
 
-    public void setTheCurrentCompany(String theCurrentCompany) {
-        this.theCurrentCompany = theCurrentCompany;
-        companySet=true;
-        onParametersUpdated();
+    public void setTheEndDateString(String theEndDateString) {
+        this.theEndDateString = theEndDateString;
     }
 
 
 
 
+    public void setStartingDate(int startingDay_,int startingMonth_,int startingYear_) {
 
-    // Method to restore old values, called from onCreate
+        if(startingDay!=startingDay_||startingMonth!=startingMonth_||startingYear!=startingYear_){
+            startingDay = startingDay_;
+            startingMonth = startingMonth_;
+            startingYear = startingYear_;
+            startDateSet=true;
+            requestCompany = true;
+            requestIndex=true;
+            onParametersUpdated(false,false,true);
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+        }
+
+    }
+
+    public void setEndingDate(int endingDay_, int endingMonth_, int endingYear_) {
+
+        if(endingDay!=endingDay_||endingMonth!=endingMonth_||endingYear!=endingYear_){
+            endingDay = endingDay_;
+            endingMonth = endingMonth_;
+            endingYear = endingYear_;
+            endDateSet=true;
+            requestCompany = true;
+            requestIndex=true;
+            onParametersUpdated(false,false,true);
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+        }
+
+    }
+
+
+    public void setTheCurrentCompany(String theCurrentCompany) {
+        this.theCurrentCompany = theCurrentCompany;
+        if(theCurrentCompany.equals("")) {
+            theDownloadedData="";
+            companySet = false;
+            requestCompany=false;
+            LinearLayout thePriceGraph = (LinearLayout) findViewById(R.id.the_outer_container);
+            thePriceGraph.setVisibility(View.GONE);
+            View outer_container = findViewById(R.id.the_stats);
+            outer_container.setVisibility(View.GONE);
+        }else{
+            companySet = true;
+            requestCompany=true;
+            onParametersUpdated(true,false,false);
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+        }
+    }
+
+    public void setTheCurrentBenchmark(String theCurrentBenchmark) {
+        this.theCurrentBenchmark = theCurrentBenchmark;
+        if(theCurrentBenchmark.equals("")) {
+            benchmarkSet = false;
+            requestIndex = false;
+            theDownloadedIndexData="";
+            LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
+            theBenchmarkStats.setVisibility(View.GONE);
+        }else{
+            benchmarkSet = true;
+            requestIndex = true;
+            onParametersUpdated(false,true,false);
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+        }
+    }
+
+
+
+
+    // Method to restore the last values, called from onCreate
     private void restoreSavedValues(){
 
 
@@ -536,6 +653,14 @@ public class MainActivity extends AppCompatActivity {
             companySet=false;
         }
 
+        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTBENCHMARK,"").equals("")){
+            theCurrentBenchmark=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTBENCHMARK, "");
+            benchmarkSet=true;
+        }else{
+            theCurrentBenchmark="";
+            benchmarkSet=false;
+        }
+
         if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDDATA,"").equals("")){
             theDownloadedData=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDDATA, "");
         }else{
@@ -551,58 +676,80 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Calendar calendar = Calendar.getInstance();
+
 
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGDAY)){
             startingDay=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGDAY, -1);
         }else{
-            startingDay=calendar.get(Calendar.DAY_OF_MONTH);
+            startingDay=-1;//calendar.get(Calendar.DAY_OF_MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGMONTH)){
             startingMonth=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGMONTH, -1);
         }else{
-            startingMonth=calendar.get(Calendar.MONTH);
+            startingMonth=-1;//calendar.get(Calendar.MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGYEAR)){
             startingYear=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGYEAR, -1);
             startDateSet=true;
         }else{
-            startingYear=calendar.get(Calendar.YEAR);
+            startingYear=-1;//calendar.get(Calendar.YEAR);
             startDateSet=false;
         }
 
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGDAY)){
             endingDay=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGDAY, -1);
         }else{
-            endingDay=calendar.get(Calendar.DAY_OF_MONTH);
+            endingDay=-1;//calendar.get(Calendar.DAY_OF_MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGMONTH)){
             endingMonth=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGMONTH, -1);
         }else{
-            endingMonth=calendar.get(Calendar.MONTH);
+            endingMonth=-1;//calendar.get(Calendar.MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGYEAR)){
             endingYear=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGYEAR, -1);
             endDateSet=true;
         }else{
-            endingYear=calendar.get(Calendar.YEAR);
+            endingYear=-1;//calendar.get(Calendar.YEAR);
             endDateSet=false;
         }
-
 
     }
 
 
-
+    //Check internet availability, called from startFileService
     public boolean isInternetAvailable() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        Log.e("Connected to internet?",String.valueOf(netInfo != null && netInfo.isConnectedOrConnecting()));
+        Log.e("Connected to internet?", String.valueOf(netInfo != null && netInfo.isConnectedOrConnecting()));
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 
+    //Save the key variables before dying
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDay).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingMonth).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingYear).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDay).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingMonth).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingYear).commit();
+
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THE_STRING, theString).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
+
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTBENCHMARK, theCurrentBenchmark).commit();
+
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
+
+        super.onSaveInstanceState(outState);
+    }
 
 
 
