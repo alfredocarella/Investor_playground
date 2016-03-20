@@ -15,12 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@android:color/black">
+        >
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/back"
+            android:background="@drawable/rounded_border_colored"
             android:layout_margin="@dimen/standard_margin"
             android:padding="@dimen/small_padding">
 
@@ -33,22 +33,34 @@
                     android:layout_weight="1"
                     android:layout_column="0"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/standard_margin"
+                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/input_text_size"
                     android:hint="@string/hint_set_company_text_view"
                     android:textColorHint="@android:color/darker_gray"
-                    android:id="@+id/first_frag_company_text_view"/>
+                    android:shadowColor="@android:color/darker_gray"
+                    android:id="@+id/first_frag_company_text_view"
+                    android:background="@drawable/rounded_border"
+                    />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_column="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/standard_margin"
+                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/input_text_size"
                     android:hint="@string/hint_set_benchmark_text_view"
                     android:textColorHint="@android:color/darker_gray"
-                    android:id="@+id/first_frag_benchmark_text_view"/>
+                    android:id="@+id/first_frag_benchmark_text_view"
+                    android:background="@drawable/rounded_border"/>
 
             </TableRow>
             <TableRow
@@ -61,24 +73,34 @@
                     android:layout_weight="1"
                     android:layout_column="0"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/standard_margin"
+                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/input_text_size"
                     android:hint="@string/hint_set_start_date_EditText_1st_frag"
                     android:textColorHint="@android:color/darker_gray"
                     android:id="@+id/first_frag_start_date_text_view"
-                    android:gravity="start|fill_horizontal"/>
+                    android:gravity="start|fill_horizontal"
+                    android:background="@drawable/rounded_border"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_column="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/standard_margin"
+                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/input_text_size"
                     android:hint="@string/hint_set_end_date_EditText_1st_frag"
                     android:textColorHint="@android:color/darker_gray"
                     android:id="@+id/first_frag_end_date_text_view"
-                    android:gravity="end|fill_horizontal"/>
+                    android:gravity="end|fill_horizontal"
+                    android:background="@drawable/rounded_border"/>
 
             </TableRow>
 
