@@ -33,8 +33,8 @@
                     android:layout_weight="1"
                     android:layout_column="0"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/standard_margin"
-                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/small_margin"
                     android:paddingLeft="@dimen/standard_padding"
                     android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
@@ -43,6 +43,7 @@
                     android:textColorHint="@android:color/darker_gray"
                     android:shadowColor="@android:color/darker_gray"
                     android:id="@+id/first_frag_company_text_view"
+                    android:maxLines="2"
                     android:background="@drawable/rounded_border"
                     />
 
@@ -51,8 +52,8 @@
                     android:layout_weight="1"
                     android:layout_column="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/standard_margin"
-                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/small_margin"
                     android:paddingLeft="@dimen/standard_padding"
                     android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
@@ -60,6 +61,7 @@
                     android:hint="@string/hint_set_benchmark_text_view"
                     android:textColorHint="@android:color/darker_gray"
                     android:id="@+id/first_frag_benchmark_text_view"
+                    android:maxLines="2"
                     android:background="@drawable/rounded_border"/>
 
             </TableRow>
@@ -73,8 +75,8 @@
                     android:layout_weight="1"
                     android:layout_column="0"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/standard_margin"
-                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/small_margin"
                     android:paddingLeft="@dimen/standard_padding"
                     android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
@@ -82,6 +84,7 @@
                     android:hint="@string/hint_set_start_date_EditText_1st_frag"
                     android:textColorHint="@android:color/darker_gray"
                     android:id="@+id/first_frag_start_date_text_view"
+                    android:maxLines="1"
                     android:gravity="start|fill_horizontal"
                     android:background="@drawable/rounded_border"/>
 
@@ -90,8 +93,8 @@
                     android:layout_weight="1"
                     android:layout_column="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/standard_margin"
-                    android:layout_marginLeft="@dimen/standard_margin"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/small_margin"
                     android:paddingLeft="@dimen/standard_padding"
                     android:paddingRight="@dimen/standard_padding"
                     android:textColor="@android:color/white"
@@ -99,6 +102,7 @@
                     android:hint="@string/hint_set_end_date_EditText_1st_frag"
                     android:textColorHint="@android:color/darker_gray"
                     android:id="@+id/first_frag_end_date_text_view"
+                    android:maxLines="1"
                     android:gravity="end|fill_horizontal"
                     android:background="@drawable/rounded_border"/>
 
