@@ -44,12 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private int theCurrentFragment;
-    private int startingDay;
-    private int startingMonth;
-    private int startingYear;
-    private int endingDay;
-    private int endingMonth;
-    private int endingYear;
+    private ArrayList<Integer> startingDate = new ArrayList<Integer>();
+    private ArrayList<Integer> endingDate = new ArrayList<Integer>();
 
     private boolean requestIndex=false;
     private boolean requestCompany=false;
@@ -178,12 +174,12 @@ public class MainActivity extends AppCompatActivity {
         theBundle.putSerializable("theCurrentFragment", theCurrentFragment);
         theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
         theBundle.putSerializable("theCurrentBenchmark", theCurrentBenchmark);
-        theBundle.putSerializable("startingDay", startingDay);
-        theBundle.putSerializable("startingMonth",startingMonth);
-        theBundle.putSerializable("startingYear",startingYear);
-        theBundle.putSerializable("endingDay",endingDay);
-        theBundle.putSerializable("endingMonth", endingMonth);
-        theBundle.putSerializable("endingYear", endingYear);
+        theBundle.putSerializable("startingDay", startingDate.get(0));
+        theBundle.putSerializable("startingMonth",startingDate.get(1));
+        theBundle.putSerializable("startingYear",startingDate.get(2));
+        theBundle.putSerializable("endingDay",endingDate.get(0));
+        theBundle.putSerializable("endingMonth", endingDate.get(1));
+        theBundle.putSerializable("endingYear", endingDate.get(2));
         return theBundle;
     }
 
@@ -238,12 +234,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(isInternetAvailable()) {
 
-            String theDay = Integer.toString(startingDay);
-            String theMonth = Integer.toString(startingMonth);
-            String theYear = Integer.toString(startingYear);
-            String theEndDay = Integer.toString(endingDay);
-            String theEndMonth = Integer.toString(endingMonth);
-            String theEndYear = Integer.toString(endingYear);
+            String theDay = Integer.toString(startingDate.get(0));
+            String theMonth = Integer.toString(startingDate.get(1));
+            String theYear = Integer.toString(startingDate.get(2));
+            String theEndDay = Integer.toString(endingDate.get(0));
+            String theEndMonth = Integer.toString(endingDate.get(1));
+            String theEndYear = Integer.toString(endingDate.get(2));
 
             Intent intent = new Intent(this, FileService.class);
         /*      http://ichart.yahoo.com/table.csv?s=REC.OL&a=0&b=1&c=2000&d=0&e=31&f=2010
@@ -545,12 +541,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void setStartingDate(int startingDay_,int startingMonth_,int startingYear_) {
+    public void setStartingDate(ArrayList<Integer> startingDate_) {
 
-        if(startingDay!=startingDay_||startingMonth!=startingMonth_||startingYear!=startingYear_){
-            startingDay = startingDay_;
-            startingMonth = startingMonth_;
-            startingYear = startingYear_;
+        if(startingDate!=startingDate_){
+            startingDate = startingDate_;
             startDateSet=true;
             requestCompany = true;
             requestIndex=true;
@@ -560,12 +554,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setEndingDate(int endingDay_, int endingMonth_, int endingYear_) {
+    public void setEndingDate(ArrayList<Integer> endingDate_) {
 
-        if(endingDay!=endingDay_||endingMonth!=endingMonth_||endingYear!=endingYear_){
-            endingDay = endingDay_;
-            endingMonth = endingMonth_;
-            endingYear = endingYear_;
+        if(endingDate!=endingDate_){
+            endingDate = endingDate_;
             endDateSet=true;
             requestCompany = true;
             requestIndex=true;
@@ -669,38 +661,39 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGDAY)){
-            startingDay=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGDAY, -1);
+            startingDate.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGDAY, -1));
         }else{
-            startingDay=-1;//calendar.get(Calendar.DAY_OF_MONTH);
+            startingDate.add(0,-1);//calendar.get(Calendar.DAY_OF_MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGMONTH)){
-            startingMonth=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGMONTH, -1);
+            startingDate.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGMONTH, -1));
         }else{
-            startingMonth=-1;//calendar.get(Calendar.MONTH);
+            startingDate.add(1,-1);//calendar.get(Calendar.MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGYEAR)){
-            startingYear=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGYEAR, -1);
+            startingDate.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGYEAR, -1));
             startDateSet=true;
         }else{
-            startingYear=-1;//calendar.get(Calendar.YEAR);
+            startingDate.add(2,-1);//calendar.get(Calendar.YEAR);
             startDateSet=false;
         }
 
+
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGDAY)){
-            endingDay=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGDAY, -1);
+            endingDate.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGDAY, -1));
         }else{
-            endingDay=-1;//calendar.get(Calendar.DAY_OF_MONTH);
+            endingDate.add(0,-1);//calendar.get(Calendar.DAY_OF_MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGMONTH)){
-            endingMonth=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGMONTH, -1);
+            endingDate.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGMONTH, -1));
         }else{
-            endingMonth=-1;//calendar.get(Calendar.MONTH);
+            endingDate.add(1,-1);//calendar.get(Calendar.MONTH);
         }
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGYEAR)){
-            endingYear=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGYEAR, -1);
+            endingDate.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGYEAR, -1));
             endDateSet=true;
         }else{
-            endingYear=-1;//calendar.get(Calendar.YEAR);
+            endingDate.add(2,-1);//calendar.get(Calendar.YEAR);
             endDateSet=false;
         }
 
@@ -721,12 +714,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDay).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingMonth).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingYear).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDay).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingMonth).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingYear).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDate.get(0)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingDate.get(1)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingDate.get(2)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDate.get(0)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingDate.get(1)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
 
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THE_STRING, theString).commit();

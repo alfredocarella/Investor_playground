@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 
 
 public class FirstFragment extends Fragment {
@@ -181,7 +182,11 @@ public class FirstFragment extends Fragment {
             startingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-            ((MainActivity) getActivity()).setStartingDate(startingDay,startingMonth,startingYear);
+            ArrayList<Integer> startingDate = new ArrayList<Integer>();
+            startingDate.add(0,startingDay);
+            startingDate.add(1,startingMonth);
+            startingDate.add(2,startingYear);
+            ((MainActivity) getActivity()).setStartingDate(startingDate);
 
             int startingMonth_=startingMonth+1;
             String dateString = startingDay+"/"+startingMonth_+"/"+startingYear;
@@ -199,8 +204,11 @@ public class FirstFragment extends Fragment {
             endingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-
-            ((MainActivity) getActivity()).setEndingDate(endingDay, endingMonth, endingYear);
+            ArrayList<Integer> endingDate = new ArrayList<Integer>();
+            endingDate.add(0,endingDay);
+            endingDate.add(1,endingMonth);
+            endingDate.add(2,endingYear);
+            ((MainActivity) getActivity()).setEndingDate(endingDate);
 
             int endingMonth_=endingMonth+1;
             String dateString = endingDay+"/"+endingMonth_+"/"+endingYear;
