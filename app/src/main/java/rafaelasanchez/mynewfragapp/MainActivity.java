@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Float> arrayList = new ArrayList<Float>();
     private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
-    private ArrayList<Integer> theDaysIndex = new ArrayList<Integer>();
-    private ArrayList<Integer> theMonthsIndex = new ArrayList<Integer>();
-    private ArrayList<Integer> theYearsIndex = new ArrayList<Integer>();
     private ArrayList<ArrayList<Integer>> theDates=new ArrayList<ArrayList<Integer>>();
+    private ArrayList<ArrayList<Integer>> theDatesBenchmark=new ArrayList<ArrayList<Integer>>();
+
+
 
     public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
     public static final String THECURRENTFRAGMENT = "theCurrentFragment";
@@ -324,9 +324,9 @@ public class MainActivity extends AppCompatActivity {
         if (!theDownloadedIndexData.equals("")) {
             DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
             arrayListIndex = dataReducerIndex.getTheArray();
-            theDaysIndex = dataReducerIndex.getTheDays();
-            theMonthsIndex = dataReducerIndex.getTheMonths();
-            theYearsIndex = dataReducerIndex.getTheYears();
+            theDatesBenchmark.add(0,dataReducerIndex.getTheDays());
+            theDatesBenchmark.add(1,dataReducerIndex.getTheMonths());
+            theDatesBenchmark.add(2,dataReducerIndex.getTheYears());
         }
         if(!theDownloadedData.equals("")) {
             DataReducer dataReducer= new DataReducer(theDownloadedData);
@@ -334,8 +334,6 @@ public class MainActivity extends AppCompatActivity {
             theDates.add(0,dataReducer.getTheDays());
             theDates.add(1,dataReducer.getTheMonths());
             theDates.add(2, dataReducer.getTheYears());
-
-
         }
         plotStuff();
     }
@@ -490,10 +488,8 @@ public class MainActivity extends AppCompatActivity {
             DataCruncher dataCruncher = new DataCruncher(
                     arrayList,
                     arrayListIndex,
-                    theDaysIndex,
-                    theMonthsIndex,
-                    theYearsIndex,
-                    theDates);
+                    theDates,
+                    theDatesBenchmark);
 
             Log.e("data cruncher printout"," "+String.valueOf(dataCruncher));
 
