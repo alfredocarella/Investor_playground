@@ -324,16 +324,12 @@ public class MainActivity extends AppCompatActivity {
         if (!theDownloadedIndexData.equals("")) {
             DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
             arrayListIndex = dataReducerIndex.getTheArray();
-            theDatesBenchmark.add(0,dataReducerIndex.getTheDays());
-            theDatesBenchmark.add(1,dataReducerIndex.getTheMonths());
-            theDatesBenchmark.add(2,dataReducerIndex.getTheYears());
+            theDatesBenchmark = dataReducerIndex.getTheDates();
         }
         if(!theDownloadedData.equals("")) {
             DataReducer dataReducer= new DataReducer(theDownloadedData);
             arrayList = dataReducer.getTheArray();
-            theDates.add(0,dataReducer.getTheDays());
-            theDates.add(1,dataReducer.getTheMonths());
-            theDates.add(2, dataReducer.getTheYears());
+            theDates = dataReducer.getTheDates();
         }
         plotStuff();
     }
