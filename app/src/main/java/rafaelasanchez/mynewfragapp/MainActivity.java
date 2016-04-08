@@ -67,12 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Float> arrayList = new ArrayList<Float>();
     private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
-    private ArrayList<Integer> theDays = new ArrayList<Integer>();
-    private ArrayList<Integer> theMonths = new ArrayList<Integer>();
-    private ArrayList<Integer> theYears = new ArrayList<Integer>();
     private ArrayList<Integer> theDaysIndex = new ArrayList<Integer>();
     private ArrayList<Integer> theMonthsIndex = new ArrayList<Integer>();
     private ArrayList<Integer> theYearsIndex = new ArrayList<Integer>();
+    private ArrayList<ArrayList<Integer>> theDates=new ArrayList<ArrayList<Integer>>();
 
     public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
     public static final String THECURRENTFRAGMENT = "theCurrentFragment";
@@ -333,9 +331,11 @@ public class MainActivity extends AppCompatActivity {
         if(!theDownloadedData.equals("")) {
             DataReducer dataReducer= new DataReducer(theDownloadedData);
             arrayList = dataReducer.getTheArray();
-            theDays = dataReducer.getTheDays();
-            theMonths = dataReducer.getTheMonths();
-            theYears = dataReducer.getTheYears();
+            theDates.add(0,dataReducer.getTheDays());
+            theDates.add(1,dataReducer.getTheMonths());
+            theDates.add(2, dataReducer.getTheYears());
+
+
         }
         plotStuff();
     }
@@ -364,6 +364,10 @@ public class MainActivity extends AppCompatActivity {
             TextView endingTV;
             TextView minTV;
             TextView maxTV;
+            String endingTVtext = theDates.get(0).get(0).toString() + "/" + theDates.get(1).get(0).toString() + "/" + theDates.get(2).get(0).toString();
+            String startingTVtext = theDates.get(0).get(theDates.get(0).size() - 1).toString() + "/" + theDates.get(1).get(theDates.get(1).size() - 1).toString() + "/" + theDates.get(2).get(theDates.get(2).size() - 1).toString();
+
+
 
             if(theCurrentFragment==2) {
 
@@ -372,9 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 minTV = (TextView) findViewById(R.id.axis_min);
                 maxTV = (TextView) findViewById(R.id.axis_max);
 
-                String endingTVtext = theDays.get(0).toString() + "/" + theMonths.get(0).toString() + "/" + theYears.get(0).toString();
                 endingTV.setText(endingTVtext);
-                String startingTVtext = theDays.get(theDays.size() - 1).toString() + "/" + theMonths.get(theMonths.size() - 1).toString() + "/" + theYears.get(theYears.size() - 1).toString();
                 startingTV.setText(startingTVtext);
 
                 minTV.setText(precision.format(minDouble));
@@ -422,9 +424,7 @@ public class MainActivity extends AppCompatActivity {
                 minTV = (TextView) findViewById(R.id.axis_min_1stFrag);
                 maxTV = (TextView) findViewById(R.id.axis_max_1stFrag);
 
-                String endingTVtext = theDays.get(0).toString() + "/" + theMonths.get(0).toString() + "/" + theYears.get(0).toString();
                 endingTV.setText(endingTVtext);
-                String startingTVtext = theDays.get(theDays.size() - 1).toString() + "/" + theMonths.get(theMonths.size() - 1).toString() + "/" + theYears.get(theYears.size() - 1).toString();
                 startingTV.setText(startingTVtext);
 
                 minTV.setText(precision.format(minDouble));
@@ -489,13 +489,11 @@ public class MainActivity extends AppCompatActivity {
 
             DataCruncher dataCruncher = new DataCruncher(
                     arrayList,
-                    theDays,
-                    theMonths,
-                    theYears,
                     arrayListIndex,
                     theDaysIndex,
                     theMonthsIndex,
-                    theYearsIndex);
+                    theYearsIndex,
+                    theDates);
 
             Log.e("data cruncher printout"," "+String.valueOf(dataCruncher));
 
