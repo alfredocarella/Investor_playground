@@ -46,7 +46,7 @@ public class ListOfSmthFrag extends DialogFragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String theCompany = theCompaniesArray[position];
                 getArguments().putSerializable(SELECTED_FINANCIAL_INSTRUMENT, theCompany);
-                Log.e("look at this shit", theCompany);
+//                Log.e("New company selected: ", theCompany + "\n");
                 if (getTargetFragment() == null) return;
                 Intent intent = new Intent();
                 intent.putExtra(SELECTED_FINANCIAL_INSTRUMENT, theCompany);

@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,6 +39,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean companySet=false;
     private boolean benchmarkSet=false;
 
-    private String theString;
+    private String theStartDateString;
     private String theEndDateString;
     private String theCurrentCompany;
     private String theCurrentBenchmark;
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
     public static final String THECURRENTFRAGMENT = "theCurrentFragment";
-    public static final String THE_STRING = "THE_STRING";
+    public static final String THESTARTDATESTRING = "THESTARTDATESTRING";
     public static final String THEENDDATESTRING = "THEENDDATESTRING";
     public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
     public static final String THECURRENTBENCHMARK = "THECURRENTBENCHMARK";
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     private Bundle bundlelizer() {
         //This method puts all the important stuff in a bundle and returns it
         Bundle theBundle = new Bundle();
-        theBundle.putSerializable("theString", theString);
+        theBundle.putSerializable("theStartDateString", theStartDateString);
         theBundle.putSerializable("theEndDateString", theEndDateString);
         theBundle.putSerializable("theCurrentFragment", theCurrentFragment);
         theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
@@ -201,27 +204,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void onParametersUpdated(boolean companyChanged, boolean benchmarkChanged,
-                                     boolean datesChanged){
+    private void onParametersUpdated(boolean companyChanged,
+                                     boolean benchmarkChanged,
+                                     boolean datesChanged,
+                                     String callingMethod){
 
-   /*     Log.e("onParametersUpdated","startDateSet "+ String.valueOf(startDateSet));
-        Log.e("onParametersUpdated","endDateSet "+ String.valueOf(endDateSet));
-        Log.e("onParametersUpdated","companySet "+ String.valueOf(companySet));
-        Log.e("onParametersUpdated", "benchmarkSet " + String.valueOf(benchmarkSet));
-        Log.e("onParametersUpdated", "requestIndex " + String.valueOf(requestIndex));
-        Log.e("onParametersUpdated", "requestCompany " + String.valueOf(requestCompany));
-*/
-        if((datesChanged&&companySet&&startDateSet&&endDateSet)
-                ||(companyChanged&&startDateSet&&endDateSet)){
-            requestCompany=true;
-            requestIndex=benchmarkSet;
-            startFileService("onParametersUpdated");
+
+        Log.e("onParametersUpdated", "companySet " + String.valueOf(companySet) +  ",  startDateSet " + String.valueOf(startDateSet) + ";  endDateSet " + String.valueOf(endDateSet) + "  ; callingMethod: " + callingMethod);
+
+        if(companySet&&(companyChanged||datesChanged)&&!benchmarkChanged){
+            // if only the company has been selected, add some random dates to speed up the user experience
+            if(!startDateSet&&!endDateSet){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+
+                setEndingDate(calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.YEAR),
+                        false);
+
+                calendar.add(Calendar.YEAR, -1);
+                setStartingDate(calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.YEAR),
+                        false);
+            }
+            if(companySet&&startDateSet&&endDateSet){
+                requestCompany=true;
+                requestIndex=benchmarkSet;
+                startFileService("onParametersUpdated");
+            }
+
         }else if(benchmarkChanged&&companySet&&startDateSet&&endDateSet){
-            Log.e("onParametersUpdated","benchmarkChanged");
             requestCompany=false;
             requestIndex=true;
             startFileService("onParametersUpdated");
         }
+
 
     }
 
@@ -337,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
     private void plotStuff(){
         if(!theDownloadedData.equals("")) {
 
-            Log.e("plotStuff", "theDownloadedData.length()= " + String.valueOf(theDownloadedData.length()));
+//            Log.e("plotStuff", "theDownloadedData.length()= " + String.valueOf(theDownloadedData.length()));
 
             double minDouble=-1;
             double maxDouble=0;
@@ -470,12 +489,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void showStats(){
 
-        Log.e("showStats", "method run");
         View outer_container = findViewById(R.id.the_stats);
 
         if (companySet&&!theDownloadedData.equals("")) {
             outer_container.setVisibility(View.VISIBLE);
-            Log.e("showStats", "companySet true");
 
             DataCruncher dataCruncher = new DataCruncher(
                     arrayList,
@@ -483,7 +500,6 @@ public class MainActivity extends AppCompatActivity {
                     theDates,
                     theDatesBenchmark);
 
-            Log.e("data cruncher printout"," "+String.valueOf(dataCruncher));
 
             DecimalFormat thePrecision = new DecimalFormat("0.00");
 
@@ -498,7 +514,6 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
             if (benchmarkSet && !theDownloadedIndexData.equals("")) {
-                Log.e("showStats", "benchmarkSet && !requestIndex = true");
 
                 theBenchmarkStats.setVisibility(View.VISIBLE);
 
@@ -530,8 +545,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     // setters and getters
-    public void setTheString(String theString) {
-        this.theString = theString;
+    public void setTheStartDateString(String theStartDateString) {
+        this.theStartDateString = theStartDateString;
     }
 
     public void setTheEndDateString(String theEndDateString) {
@@ -541,28 +556,52 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void setStartingDate(ArrayList<Integer> startingDate_) {
+    public void setStartingDate(int day_, int month_, int year_, boolean callOnParametersUpdated) {
+
+        ArrayList<Integer> startingDate_ = new ArrayList<Integer>();
+        startingDate_.add(0,day_);
+        startingDate_.add(1,month_);
+        startingDate_.add(2,year_);
 
         if(startingDate!=startingDate_){
             startingDate = startingDate_;
             startDateSet=true;
-            requestCompany = true;
-            requestIndex=true;
-            onParametersUpdated(false,false,true);
-            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+
+            int startingMonth_=startingDate.get(1)+1;
+            String dateString = startingDate.get(0)+"/"+startingMonth_+"/"+startingDate.get(2);
+            setTheStartDateString(dateString);
+            TextView startDateTextView = (TextView) findViewById(R.id.first_frag_start_date_text_view);
+            startDateTextView.setText(dateString);
+
+            if(callOnParametersUpdated) {
+                onParametersUpdated(false, false, true, "setStartingDate");
+                //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
+            }
         }
 
     }
 
-    public void setEndingDate(ArrayList<Integer> endingDate_) {
+    public void setEndingDate(int day_, int month_, int year_, boolean callOnParametersUpdated) {
+
+        ArrayList<Integer> endingDate_ = new ArrayList<Integer>();
+        endingDate_.add(0,day_);
+        endingDate_.add(1,month_);
+        endingDate_.add(2,year_);
 
         if(endingDate!=endingDate_){
             endingDate = endingDate_;
             endDateSet=true;
-            requestCompany = true;
-            requestIndex=true;
-            onParametersUpdated(false,false,true);
-            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+
+            int endingMonth_=endingDate.get(1)+1;
+            String dateString = endingDate.get(0)+"/"+endingMonth_+"/"+endingDate.get(2);
+            setTheEndDateString(dateString);
+            TextView endDateTextView = (TextView) findViewById(R.id.first_frag_end_date_text_view);
+            endDateTextView.setText(dateString);
+
+            if(callOnParametersUpdated){
+                onParametersUpdated(false,false,true,"setEndingDate");
+                //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
+            }
         }
 
     }
@@ -578,11 +617,25 @@ public class MainActivity extends AppCompatActivity {
             thePriceGraph.setVisibility(View.GONE);
             View outer_container = findViewById(R.id.the_stats);
             outer_container.setVisibility(View.GONE);
+
+/*            startDateSet=false;
+            TextView startDate = (TextView) findViewById(R.id.first_frag_start_date_text_view);
+            setTheStartDateString("");
+            startDate.setText(theStartDateString);
+            endDateSet=false;
+            TextView endDate = (TextView) findViewById(R.id.first_frag_end_date_text_view);
+            setTheEndDateString("");
+            endDate.setText(theEndDateString);
+            benchmarkSet=false;
+            TextView theBenchmark = (TextView) findViewById(R.id.first_frag_benchmark_text_view);
+            setTheCurrentBenchmark("");
+            theBenchmark.setText(theCurrentBenchmark);
+*/
         }else{
             companySet = true;
             requestCompany=true;
-            onParametersUpdated(true,false,false);
-            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+            onParametersUpdated(true,false,false,"setTheCurrentCompany");
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
         }
     }
 
@@ -597,8 +650,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             benchmarkSet = true;
             requestIndex = true;
-            onParametersUpdated(false,true,false);
-            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged
+            onParametersUpdated(false,true,false,"setTheCurrentBenchmark");
+            //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
         }
     }
 
@@ -615,10 +668,10 @@ public class MainActivity extends AppCompatActivity {
             theCurrentFragment=1;
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THE_STRING,"").equals("")){
-            theString=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THE_STRING, "");
+        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THESTARTDATESTRING,"").equals("")){
+            theStartDateString=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THESTARTDATESTRING, "");
         }else{
-            theString="";
+            theStartDateString="";
         }
 
         if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEENDDATESTRING,"").equals("")){
@@ -705,7 +758,6 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        Log.e("Connected to internet?", String.valueOf(netInfo != null && netInfo.isConnectedOrConnecting()));
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
@@ -722,7 +774,7 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
 
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THE_STRING, theString).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
 
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();

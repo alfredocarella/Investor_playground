@@ -51,7 +51,7 @@ public class LinePlot extends View {
 //                Log.e("x,y= ", String.valueOf(dxdp * (mlength - (i + 1))) + ";  " + String.valueOf(dy * (mmax - p) / (mmax - mmin)));
                 i++;
             }
-            Log.e("LinePlot.OnDraw.dxdp","dxdp= " + String.valueOf(dxdp) + ";  dx= " +String.valueOf(dx) + ";  dy= " + String.valueOf(dy) + ";  min= " + String.valueOf(mmin) + ";  max= " +String.valueOf(mmax) + ";  i= " +String.valueOf(i));
+//            Log.e("LinePlot.OnDraw.dxdp","dxdp= " + String.valueOf(dxdp) + ";  dx= " +String.valueOf(dx) + ";  dy= " + String.valueOf(dy) + ";  min= " + String.valueOf(mmin) + ";  max= " +String.valueOf(mmax) + ";  i= " +String.valueOf(i));
         }
     }
 

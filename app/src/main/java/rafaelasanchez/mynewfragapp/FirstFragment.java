@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class FirstFragment extends Fragment {
 
-    private  String theString;
+    private  String theStartDateString;
     private  String theEndDateString;
     private  String theCurrentCompany;
     private  String theCurrentBenchmark;
@@ -84,7 +84,7 @@ public class FirstFragment extends Fragment {
         super.onCreate(bundle);
         Log.e("FF.onCreate", "Run");
 
-        theString =(String) getArguments().getSerializable("theString");
+        theStartDateString =(String) getArguments().getSerializable("theStartDateString");
         theEndDateString =(String) getArguments().getSerializable("theEndDateString");
         theCurrentCompany = (String) getArguments().getSerializable("theCurrentCompany");
         theCurrentBenchmark = (String) getArguments().getSerializable("theCurrentBenchmark");
@@ -110,7 +110,7 @@ public class FirstFragment extends Fragment {
         TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
         TextView companyTextView = (TextView) getActivity().findViewById(R.id.first_frag_company_text_view);
         TextView benchmarkTextView = (TextView) getActivity().findViewById(R.id.first_frag_benchmark_text_view);
-        startDateTextView.setText(theString);
+        startDateTextView.setText(theStartDateString);
         endDateTextView.setText(theEndDateString);
         companyTextView.setText(theCurrentCompany);
         benchmarkTextView.setText(theCurrentBenchmark);
@@ -125,7 +125,8 @@ public class FirstFragment extends Fragment {
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
-                        .newInstance(startingYear, startingMonth, startingDay, "Enter start date");
+                        .newInstance(startingYear, startingMonth, startingDay, "Enter start date",
+                                1,endingYear,endingMonth,endingDay);
                 dateDialogFragment.setTargetFragment(FirstFragment.this, REQUEST_START_DATE);
                 dateDialogFragment.show(fragmentManager, SELECT_START_DATE);
             }
@@ -136,7 +137,8 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
-                        .newInstance(endingYear, endingMonth, endingDay, "Enter end date");
+                        .newInstance(endingYear, endingMonth, endingDay, "Enter end date",
+                                -1,startingYear,startingMonth,startingDay);
                 dateDialogFragment.setTargetFragment(FirstFragment.this, REQUEST_END_DATE);
                 dateDialogFragment.show(fragmentManager, SELECT_END_DATE);
             }
@@ -182,19 +184,8 @@ public class FirstFragment extends Fragment {
             startingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-            ArrayList<Integer> startingDate = new ArrayList<Integer>();
-            startingDate.add(0,startingDay);
-            startingDate.add(1,startingMonth);
-            startingDate.add(2,startingYear);
-            ((MainActivity) getActivity()).setStartingDate(startingDate);
+            ((MainActivity) getActivity()).setStartingDate(startingDay, startingMonth, startingYear,true);
 
-            int startingMonth_=startingMonth+1;
-            String dateString = startingDay+"/"+startingMonth_+"/"+startingYear;
-            Log.e("Start dateString",dateString);
-
-            ((MainActivity)getActivity()).setTheString(dateString);
-            TextView startDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_start_date_text_view);
-            startDateTextView.setText(dateString);
         }
         if (requestCode==REQUEST_END_DATE){
             endingDay = (int)
@@ -204,19 +195,7 @@ public class FirstFragment extends Fragment {
             endingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-            ArrayList<Integer> endingDate = new ArrayList<Integer>();
-            endingDate.add(0,endingDay);
-            endingDate.add(1,endingMonth);
-            endingDate.add(2,endingYear);
-            ((MainActivity) getActivity()).setEndingDate(endingDate);
-
-            int endingMonth_=endingMonth+1;
-            String dateString = endingDay+"/"+endingMonth_+"/"+endingYear;
-            Log.e("End dateString",dateString);
-
-            ((MainActivity)getActivity()).setTheEndDateString(dateString);
-            TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
-            endDateTextView.setText(dateString);
+            ((MainActivity) getActivity()).setEndingDate(endingDay, endingMonth, endingYear,true);
 
         }
         if (requestCode==REQUEST_COMPANY){

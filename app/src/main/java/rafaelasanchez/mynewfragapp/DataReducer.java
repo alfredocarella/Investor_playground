@@ -45,7 +45,7 @@ public class DataReducer  {
                 ready=true;
             }
         }
-        Log.e("count lines",String.valueOf(lines));
+//        Log.e("DataReducer", "count lines: " + String.valueOf(lines));
 
 
         int i=theDownloadingData.indexOf("\n", 0); // Avoid the titles
