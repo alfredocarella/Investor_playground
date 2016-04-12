@@ -41,6 +41,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private int theCurrentFragment;
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
+    private ArrayList<Integer> startingDateInfimum=new ArrayList<Integer>();
 
     private boolean requestIndex=false;
     private boolean requestCompany=false;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ArrayList<Integer>> theDates=new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> theDatesBenchmark=new ArrayList<ArrayList<Integer>>();
 
-
+    FirstFragment firstFragment;
 
     public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
     public static final String THECURRENTFRAGMENT = "theCurrentFragment";
@@ -85,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String ENDINGDAY = "endingDay";
     public static final String ENDINGMONTH = "endingMonth";
     public static final String ENDINGYEAR = "endingYear";
+
+    public static final String INFIMUM_0 = "INFIMUM_0";
+    public static final String INFIMUM_1 = "INFIMUM_1";
+    public static final String INFIMUM_2 = "INFIMUM_2";
+
+
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
@@ -152,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void put1stFrag(){
-        FirstFragment firstFragment = new FirstFragment();
+        firstFragment = new FirstFragment();
         firstFragment.setArguments(bundlelizer());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, firstFragment)
@@ -335,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     private void dataIntoArrays(){
         if (!theDownloadedIndexData.equals("")) {
             DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
@@ -346,6 +356,45 @@ public class MainActivity extends AppCompatActivity {
             arrayList = dataReducer.getTheArray();
             theDates = dataReducer.getTheDates();
         }
+
+
+
+        int nItems=theDates.get(0).size()-1;
+        int infDay =theDates.get(0).get(nItems);
+        int infMonth =theDates.get(1).get(nItems);
+        int infYear =theDates.get(2).get(nItems);
+
+        Calendar infimumDate = Calendar.getInstance();
+        infimumDate.set(infYear, infMonth-1, infDay);
+
+        Calendar currentMinDate=Calendar.getInstance();
+        currentMinDate.set( startingDate.get(2),
+                            startingDate.get(1),
+                            startingDate.get(0));
+
+        long diff = currentMinDate.getTimeInMillis()-infimumDate.getTimeInMillis();
+
+        int diffDays = (int) TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
+
+        if(diffDays<-14){
+            setStartingDate(
+                    infimumDate.get(Calendar.DAY_OF_MONTH),
+                    infimumDate.get(Calendar.MONTH),
+                    infimumDate.get(Calendar.YEAR),
+                    false);
+
+            startingDateInfimum.set(0, startingDate.get(0));
+            startingDateInfimum.set(1,startingDate.get(1));
+            startingDateInfimum.set(2,startingDate.get(2));
+
+            firstFragment.setDateInfimum(startingDateInfimum);
+        }
+
+        //+ ";    diff= " + TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS)
+        Log.e("infimum ", infimumDate.getTime().toString() );
+        Log.e("currentMin ", currentMinDate.getTime().toString() );
+        Log.e("diffDays  ", diffDays + " days");
+
         plotStuff();
     }
 
@@ -573,6 +622,10 @@ public class MainActivity extends AppCompatActivity {
             TextView startDateTextView = (TextView) findViewById(R.id.first_frag_start_date_text_view);
             startDateTextView.setText(dateString);
 
+            firstFragment.setStartingDay(startingDate.get(0));
+            firstFragment.setStartingMonth(startingDate.get(1));
+            firstFragment.setStartingYear(startingDate.get(2));
+
             if(callOnParametersUpdated) {
                 onParametersUpdated(false, false, true, "setStartingDate");
                 //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
@@ -609,6 +662,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTheCurrentCompany(String theCurrentCompany) {
         this.theCurrentCompany = theCurrentCompany;
+
+        startingDateInfimum.add(0,-1);
+        startingDateInfimum.add(1,-1);
+        startingDateInfimum.add(2,-1);
+
         if(theCurrentCompany.equals("")) {
             theDownloadedData="";
             companySet = false;
@@ -634,7 +692,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             companySet = true;
             requestCompany=true;
-            onParametersUpdated(true,false,false,"setTheCurrentCompany");
+            onParametersUpdated(true, false, false, "setTheCurrentCompany");
             //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
         }
     }
@@ -655,7 +713,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    public ArrayList<Integer> getStartingDateInfimum() {
+        return startingDateInfimum;
+    }
 
 
     // Method to restore the last values, called from onCreate
@@ -731,6 +791,23 @@ public class MainActivity extends AppCompatActivity {
             startDateSet=false;
         }
 
+        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_0)){
+            startingDateInfimum.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_0, -1));
+        }else{
+            startingDateInfimum.add(0,-1);
+        }
+        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_1)){
+            startingDateInfimum.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_1, -1));
+        }else{
+            startingDateInfimum.add(1,-1);
+        }
+        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_2)){
+            startingDateInfimum.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_2, -1));
+        }else{
+            startingDateInfimum.add(2,-1);
+        }
+
+
 
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGDAY)){
             endingDate.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGDAY, -1));
@@ -749,6 +826,8 @@ public class MainActivity extends AppCompatActivity {
             endingDate.add(2,-1);//calendar.get(Calendar.YEAR);
             endDateSet=false;
         }
+
+
 
     }
 
@@ -772,6 +851,10 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDate.get(0)).commit();
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingDate.get(1)).commit();
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
+
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_0, startingDateInfimum.get(0)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
+        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
 
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
         getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();

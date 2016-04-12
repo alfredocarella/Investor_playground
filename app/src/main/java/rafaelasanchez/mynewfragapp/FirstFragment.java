@@ -16,6 +16,8 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class FirstFragment extends Fragment {
@@ -38,6 +40,8 @@ public class FirstFragment extends Fragment {
     private int endingDay;
     private int endingMonth;
     private int endingYear;
+    private ArrayList<Integer> dateInfimum;
+
 
     private String[] theCompaniesArray={
             "",
@@ -95,6 +99,7 @@ public class FirstFragment extends Fragment {
         endingMonth = (int) getArguments().getSerializable("endingMonth");
         endingYear = (int) getArguments().getSerializable("endingYear");
 
+
     }
 
     @Override
@@ -102,12 +107,13 @@ public class FirstFragment extends Fragment {
         return inflater.inflate(R.layout.first_frag_layout, container, false);
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
 
         TextView startDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_start_date_text_view);
-        TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
+        final TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
         TextView companyTextView = (TextView) getActivity().findViewById(R.id.first_frag_company_text_view);
         TextView benchmarkTextView = (TextView) getActivity().findViewById(R.id.first_frag_benchmark_text_view);
         startDateTextView.setText(theStartDateString);
@@ -116,17 +122,28 @@ public class FirstFragment extends Fragment {
         benchmarkTextView.setText(theCurrentBenchmark);
 
 
-        ((MainActivity)getActivity()).onNewGraph();
+        final Calendar today = Calendar.getInstance();
+        today.setTime(new Date());
+
+        ((MainActivity) getActivity()).onNewGraph();
 
         startDateTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                Calendar endingDate=Calendar.getInstance();
+                endingDate.set(endingYear,endingMonth,endingDay);
+                endingDate.add(Calendar.MONTH, -1);
+
+                dateInfimum= ((MainActivity) getActivity()).getStartingDateInfimum();
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
                         .newInstance(startingYear, startingMonth, startingDay, "Enter start date",
-                                1,endingYear,endingMonth,endingDay);
+                                dateInfimum.get(2),dateInfimum.get(1),dateInfimum.get(0),
+                                endingDate.get(Calendar.YEAR),endingDate.get(Calendar.MONTH),
+                                endingDate.get(Calendar.DAY_OF_MONTH));
                 dateDialogFragment.setTargetFragment(FirstFragment.this, REQUEST_START_DATE);
                 dateDialogFragment.show(fragmentManager, SELECT_START_DATE);
             }
@@ -135,10 +152,17 @@ public class FirstFragment extends Fragment {
         endDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Calendar startDate = Calendar.getInstance();
+                startDate.set(startingYear,startingMonth,startingDay);
+                startDate.add(Calendar.MONTH,1);
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
                         .newInstance(endingYear, endingMonth, endingDay, "Enter end date",
-                                -1,startingYear,startingMonth,startingDay);
+                                startDate.get(Calendar.YEAR),startDate.get(Calendar.MONTH),
+                                startDate.get(Calendar.DAY_OF_MONTH),
+                                today.get(Calendar.YEAR),today.get(Calendar.MONTH),today.get(Calendar.DAY_OF_MONTH));
                 dateDialogFragment.setTargetFragment(FirstFragment.this, REQUEST_END_DATE);
                 dateDialogFragment.show(fragmentManager, SELECT_END_DATE);
             }
@@ -217,5 +241,25 @@ public class FirstFragment extends Fragment {
 
         }
     }
+
+
+
+    public void setStartingDay(int startingDay) {
+        this.startingDay = startingDay;
+    }
+
+    public void setStartingMonth(int startingMonth) {
+        this.startingMonth = startingMonth;
+    }
+
+    public void setStartingYear(int startingYear) {
+        this.startingYear = startingYear;
+    }
+
+    public void setDateInfimum(ArrayList<Integer> dateInfimum) {
+        this.dateInfimum = dateInfimum;
+    }
+
+
 
 }
