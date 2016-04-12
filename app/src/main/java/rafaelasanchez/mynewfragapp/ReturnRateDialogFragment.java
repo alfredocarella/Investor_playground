@@ -1,5 +1,6 @@
 package rafaelasanchez.mynewfragapp;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -39,7 +41,7 @@ public class ReturnRateDialogFragment extends DialogFragment {
         final CheckBox t_CB = (CheckBox) theView.findViewById(R.id.t_checkbox);
         final CheckBox r_CB = (CheckBox) theView.findViewById(R.id.r_checkbox);
 
-        final TextView question_mark = (TextView) theView.findViewById(R.id.return_rate_question_mark);
+        final ImageView question_mark = (ImageView) theView.findViewById(R.id.return_rate_question_mark);
 
         r_CB.setChecked(true);
         r_ET.setEnabled(false);      r_ET.setHint("");

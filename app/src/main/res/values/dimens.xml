@@ -16,7 +16,7 @@
     <dimen name="rrdt_EditTexts_lwidth">0dp</dimen>
     <dimen name="rrdt_CheckBoxes_lwidth">0dp</dimen>
 
-    <item name="rrdt_check_box_weight" format="float" type="dimen" >1.5</item>
-    <item name="rrdt_edit_text_weight" format="integer" type="dimen">10</item>
-    <item name="rrdt_text_view_weight" format="integer" type="dimen">15</item>
+    <item name="rrdt_check_box_weight" format="float" type="dimen" >1</item>
+    <item name="rrdt_edit_text_weight" format="integer" type="dimen">5</item>
+    <item name="rrdt_text_view_weight" format="integer" type="dimen">5</item>
 </resources>

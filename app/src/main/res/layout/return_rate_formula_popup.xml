@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/return_rate_formula_text_view"
         android:textStyle="italic"
-        android:padding="@dimen/large_padding"
-        android:gravity="center_horizontal"
+        android:padding= "@dimen/large_padding"
+        android:gravity="start|center_vertical"
         />
 </LinearLayout>

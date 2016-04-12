@@ -100,15 +100,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bar_calc:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
-                returnRateDialogFragment.show(fragmentManager,"");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if(item.getItemId()==R.id.bar_calc) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
+            returnRateDialogFragment.show(fragmentManager, "");
+            return true;
         }
+        else if(item.getItemId()==R.id.bar_config) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            ConfigDialogFragment configDialogFragment = ConfigDialogFragment.newInstance();
+            configDialogFragment.show(fragmentManager, "");
+            return true;
+        }else {
+            return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override

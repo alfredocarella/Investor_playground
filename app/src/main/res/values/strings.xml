@@ -12,12 +12,11 @@
     <string name="hint_enter_cf">Enter $f</string>
     <string name="hint_enter_t">Enter t</string>
     <string name="hint_enter_r">Enter r</string>
-    <string name="return_rate_formula_text_view">Compound interest \n $f/$0 = (1+r)^t</string>
-    <string name="return_rate_dialog_present_value_text_view">Present value $0 (@ t=t0)</string>
-    <string name="return_rate_dialog_future_value_text_view">Future value $f (@ t=tf)</string>
-    <string name="return_rate_dialog_t_span_text_view">Time span t=tf-t0 (years)</string>
-    <string name="return_rate_dialog_r_text_view">Annualized return rate r (%)</string>
-    <string name="return_rate_dialog_description_text_view">Check the desired variable and fill out the others</string>
+    <string name="return_rate_formula_text_view">Check the desired variable and fill out the others \n \nCompound interest: \n$f/$0 = (1+r)^t</string>
+    <string name="return_rate_dialog_present_value_text_view">Present value</string>
+    <string name="return_rate_dialog_future_value_text_view">Future value</string>
+    <string name="return_rate_dialog_t_span_text_view">Time span (years)</string>
+    <string name="return_rate_dialog_r_text_view">Annualized return rate (%)</string>
     <string name="return_rate_dialog_question_mark_text_view">" \? "</string>
     <string name="label_sharpe_ratio_text_view">Sharpe ratio:</string>
     <string name="label_beta_text_view">Beta:</string>
