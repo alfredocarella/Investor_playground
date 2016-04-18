@@ -1,6 +1,5 @@
 package rafaelasanchez.mynewfragapp;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -13,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * Created by rafa on 2/10/16.

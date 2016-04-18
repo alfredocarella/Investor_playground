@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INFIMUM_1 = "INFIMUM_1";
     public static final String INFIMUM_2 = "INFIMUM_2";
 
-
+    public UserValues userValues;
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
@@ -726,6 +726,8 @@ public class MainActivity extends AppCompatActivity {
     // Method to restore the last values, called from onCreate
     private void restoreSavedValues(){
 
+
+        userValues = new UserValues(this);
 
         if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(THECURRENTFRAGMENT,0)!=0){
             theCurrentFragment=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(THECURRENTFRAGMENT, 0);

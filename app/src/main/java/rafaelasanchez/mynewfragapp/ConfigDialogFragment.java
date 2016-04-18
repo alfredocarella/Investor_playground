@@ -5,7 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import java.util.ArrayList;
 public class ConfigDialogFragment extends DialogFragment {
 
 
-    Integer period;
-    Float fee;
+    private Integer period;
+    private Float fee;
 
     public static final String myAppKey = "Investor Playground";
 
@@ -45,7 +44,7 @@ public class ConfigDialogFragment extends DialogFragment {
         // period
 
         final EditText period_ET  = (EditText) theView.findViewById(R.id.config_period_edit_text);
-        period = startInteger("config_period_edit_text",14);
+        period = ((MainActivity)getActivity()).userValues.getPeriod();
         period_ET.setText(String.valueOf(period));
         period_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,11 +55,7 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToInteger(s) != null) {
                     period = charToInteger(s);
-                    getActivity()
-                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                            .edit()
-                            .putInt("config_period_edit_text", period)
-                            .commit();
+                    ((MainActivity) getActivity()).userValues.setPeriod(period);
                 }
             }
 
@@ -73,7 +68,7 @@ public class ConfigDialogFragment extends DialogFragment {
         // fee
 
         final EditText fee_ET = (EditText) theView.findViewById(R.id.config_fees_edit_text);
-        fee =startFloat("config_fees_edit_text",0.1f);
+        fee = ((MainActivity)getActivity()).userValues.getFee();
         fee_ET.setText(String.valueOf(fee));
         fee_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -84,11 +79,7 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToFloat(s) != null) {
                     fee = charToFloat(s);
-                    getActivity()
-                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                            .edit()
-                            .putFloat("config_fees_edit_text", fee)
-                            .commit();
+                    ((MainActivity)getActivity()).userValues.setFee(fee);
                 }
             }
 
