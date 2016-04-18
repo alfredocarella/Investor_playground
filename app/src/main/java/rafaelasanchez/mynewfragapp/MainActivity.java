@@ -361,45 +361,44 @@ public class MainActivity extends AppCompatActivity {
             DataReducer dataReducer= new DataReducer(theDownloadedData);
             arrayList = dataReducer.getTheArray();
             theDates = dataReducer.getTheDates();
+
+            int nItems=theDates.get(0).size()-1;
+            int infDay =theDates.get(0).get(nItems);
+            int infMonth =theDates.get(1).get(nItems);
+            int infYear =theDates.get(2).get(nItems);
+
+            Calendar infimumDate = Calendar.getInstance();
+            infimumDate.set(infYear, infMonth-1, infDay);
+
+            Calendar currentMinDate=Calendar.getInstance();
+            currentMinDate.set( startingDate.get(2),
+                    startingDate.get(1),
+                    startingDate.get(0));
+
+            long diff = currentMinDate.getTimeInMillis()-infimumDate.getTimeInMillis();
+
+            int diffDays = (int) TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
+
+            if(diffDays<-14){
+                setStartingDate(
+                        infimumDate.get(Calendar.DAY_OF_MONTH),
+                        infimumDate.get(Calendar.MONTH),
+                        infimumDate.get(Calendar.YEAR),
+                        false);
+
+                startingDateInfimum.set(0, startingDate.get(0));
+                startingDateInfimum.set(1,startingDate.get(1));
+                startingDateInfimum.set(2,startingDate.get(2));
+
+                firstFragment.setDateInfimum(startingDateInfimum);
+            }
         }
 
 
 
-        int nItems=theDates.get(0).size()-1;
-        int infDay =theDates.get(0).get(nItems);
-        int infMonth =theDates.get(1).get(nItems);
-        int infYear =theDates.get(2).get(nItems);
 
-        Calendar infimumDate = Calendar.getInstance();
-        infimumDate.set(infYear, infMonth-1, infDay);
 
-        Calendar currentMinDate=Calendar.getInstance();
-        currentMinDate.set( startingDate.get(2),
-                            startingDate.get(1),
-                            startingDate.get(0));
 
-        long diff = currentMinDate.getTimeInMillis()-infimumDate.getTimeInMillis();
-
-        int diffDays = (int) TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
-
-        if(diffDays<-14){
-            setStartingDate(
-                    infimumDate.get(Calendar.DAY_OF_MONTH),
-                    infimumDate.get(Calendar.MONTH),
-                    infimumDate.get(Calendar.YEAR),
-                    false);
-
-            startingDateInfimum.set(0, startingDate.get(0));
-            startingDateInfimum.set(1,startingDate.get(1));
-            startingDateInfimum.set(2,startingDate.get(2));
-
-            firstFragment.setDateInfimum(startingDateInfimum);
-        }
-
-        //+ ";    diff= " + TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS)
-        Log.e("infimum ", infimumDate.getTime().toString() );
-        Log.e("currentMin ", currentMinDate.getTime().toString() );
-        Log.e("diffDays  ", diffDays + " days");
 
         plotStuff();
     }

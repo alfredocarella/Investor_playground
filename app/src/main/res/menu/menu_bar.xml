@@ -11,7 +11,8 @@
         android:id="@+id/bar_config"
         android:icon="@drawable/ic_settings_white_48dp"
         android:title="Settings"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        />
 
 
 </menu>

@@ -11,37 +11,50 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Investment Strategy constants"
+            android:textStyle="bold"
+            android:padding="@dimen/small_padding"
+            android:textSize="@dimen/text_size"
+            android:gravity="center"
+            />
+
         <LinearLayout
-            android:gravity="start|center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            >
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
                 android:layout_height="wrap_content"
                 android:text="Indicator period (days)"
                 />
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
                 android:layout_height="wrap_content"
                 android:hint="14"
+                android:digits="0123456789"
                 android:inputType="number"
                 android:id="@+id/config_period_edit_text"/>
         </LinearLayout>
         <LinearLayout
-            android:gravity="start|center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            >
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.75"
                 android:layout_height="wrap_content"
                 android:text="Fee per transaction (%)"
                 />
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
                 android:layout_height="wrap_content"
                 android:hint="0.1"
                 android:inputType="numberDecimal"
@@ -95,7 +108,7 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/config_checkbox"
+                android:id="@+id/config_buying_ADX_checkbox"
                 />
             <TextView
                 android:layout_width="@dimen/rrdt_TextViews_lwidth"
@@ -114,6 +127,37 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="true">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/config_buying_stop_loss_checkbox"
+                />
+            <TextView
+                android:layout_width="@dimen/rrdt_TextViews_lwidth"
+                android:layout_weight="@dimen/rrdt_text_view_weight"
+                android:layout_height="wrap_content"
+                android:text="Trailing stop loss (%)"/>
+            <EditText
+                android:layout_width="@dimen/rrdt_EditTexts_lwidth"
+                android:layout_weight="@dimen/rrdt_edit_text_weight"
+                android:layout_height="wrap_content"
+                android:hint="15"
+                android:inputType="numberDecimal"
+                android:id="@+id/config_buying_stop_loss_edit_text"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_help_outline_black_36dp"/>
+        </LinearLayout>
+
+
 
         <TextView
             android:layout_width="match_parent"
@@ -208,6 +252,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
+
+
 
     </LinearLayout>
 </ScrollView>
