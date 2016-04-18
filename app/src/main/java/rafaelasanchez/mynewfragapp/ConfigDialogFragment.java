@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-
 import java.util.ArrayList;
 
 /**
@@ -24,9 +23,7 @@ public class ConfigDialogFragment extends DialogFragment {
     Integer period;
     Float fee;
 
-    public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
-    public static final String CONFIG_PERIOD = "CONFIG_PERIOD";
-    public static final String CONFIG_FEES = "CONFIG_FEES";
+    public static final String myAppKey = "Investor Playground";
 
     private ArrayList<Boolean> theBooleans = new ArrayList<>();
     private ArrayList<Integer> theIntegers = new ArrayList<>();
@@ -44,16 +41,11 @@ public class ConfigDialogFragment extends DialogFragment {
         View theView = inflater.inflate(R.layout.config_layout,container);
         getDialog().setTitle("Settings");
 
+
+        // period
+
         final EditText period_ET  = (EditText) theView.findViewById(R.id.config_period_edit_text);
-        final EditText fee_ET     = (EditText) theView.findViewById(R.id.config_fees_edit_text);
-
-
-
-        if (getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).contains(CONFIG_PERIOD)){
-            period=getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).getInt(CONFIG_PERIOD, -1);
-        } else {
-            period=14;
-        }
+        period = startInteger("config_period_edit_text",14);
         period_ET.setText(String.valueOf(period));
         period_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,7 +56,11 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToInteger(s) != null) {
                     period = charToInteger(s);
-                    getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).edit().putInt(CONFIG_PERIOD, period).commit();
+                    getActivity()
+                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
+                            .edit()
+                            .putInt("config_period_edit_text", period)
+                            .commit();
                 }
             }
 
@@ -74,12 +70,10 @@ public class ConfigDialogFragment extends DialogFragment {
         });
 
 
+        // fee
 
-        if (getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).contains(CONFIG_FEES)){
-            fee=getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).getFloat(CONFIG_FEES, -1);
-        } else {
-            fee=0.1f;
-        }
+        final EditText fee_ET = (EditText) theView.findViewById(R.id.config_fees_edit_text);
+        fee =startFloat("config_fees_edit_text",0.1f);
         fee_ET.setText(String.valueOf(fee));
         fee_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,7 +84,11 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToFloat(s) != null) {
                     fee = charToFloat(s);
-                    getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE).edit().putFloat(CONFIG_FEES, fee).commit();
+                    getActivity()
+                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
+                            .edit()
+                            .putFloat("config_fees_edit_text", fee)
+                            .commit();
                 }
             }
 
@@ -159,13 +157,6 @@ public class ConfigDialogFragment extends DialogFragment {
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_selling_stop_loss_edit_text));
 
 
-        Log.e("theBooleanKeys", String.valueOf(theBooleanKeys));
-        Log.e("theIntegerKeys",String.valueOf(theIntegerKeys));
-        Log.e("theIntDefValues",String.valueOf(theIntDefValues));
-        Log.e("theCheckBoxes",String.valueOf(theCheckBoxes));
-        Log.e("theEditTexts",String.valueOf(theEditTexts));
-
-
         // Get all the stuff set
         for (int pos=0; pos<theEditTexts.size(); pos++ ) {
             callMethods(pos);
@@ -182,8 +173,7 @@ public class ConfigDialogFragment extends DialogFragment {
         return configDialogFragment;
     }
 
-
-
+    
     private Integer charToInteger(CharSequence s){
 
         try {
@@ -193,6 +183,7 @@ public class ConfigDialogFragment extends DialogFragment {
         }
 
     }
+
 
     private Float charToFloat(CharSequence s){
 
@@ -205,14 +196,13 @@ public class ConfigDialogFragment extends DialogFragment {
     }
 
 
-
     private boolean startBoolean(String theBooleanKey){
 
         boolean theBoolean;
 
-        if (getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                 .contains(theBooleanKey)){
-            theBoolean=getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+            theBoolean=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                     .getBoolean(theBooleanKey, true);
         } else {
             theBoolean=true;
@@ -223,14 +213,13 @@ public class ConfigDialogFragment extends DialogFragment {
     }
 
 
-
     private Integer startInteger(String theValueKey, Integer theDefaultValue){
 
         Integer theValue;
 
-        if (getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                 .contains(theValueKey)){
-            theValue=getActivity().getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+            theValue=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                     .getInt(theValueKey, -1);
         } else {
             theValue=theDefaultValue;
@@ -241,6 +230,21 @@ public class ConfigDialogFragment extends DialogFragment {
     }
 
 
+    private Float startFloat(String theValueKey, Float theDefaultValue){
+
+        Float theValue;
+
+        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
+                .contains(theValueKey)){
+            theValue=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
+                    .getFloat(theValueKey, -1.f);
+        } else {
+            theValue=theDefaultValue;
+        }
+
+        return theValue;
+
+    }
 
 
     private void setEditTextListener(final Integer thePosition, EditText theEditText){
@@ -255,7 +259,7 @@ public class ConfigDialogFragment extends DialogFragment {
                 if (charToInteger(s) != null) {
                     theIntegers.set(thePosition, charToInteger(s));
                     getActivity()
-                            .getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                             .edit()
                             .putInt(theIntegerKeys.get(thePosition), theIntegers.get(thePosition))
                             .commit();
@@ -280,7 +284,7 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 theBooleans.set(thePosition, isChecked);
                 getActivity()
-                        .getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, Context.MODE_PRIVATE)
+                        .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                         .edit()
                         .putBoolean(theBooleanKeys.get(thePosition), theBooleans.get(thePosition))
                         .commit();
@@ -307,6 +311,7 @@ public class ConfigDialogFragment extends DialogFragment {
         setEditTextListener(thePosition, theEditTexts.get(thePosition));
 
     }
+
 
 
 
