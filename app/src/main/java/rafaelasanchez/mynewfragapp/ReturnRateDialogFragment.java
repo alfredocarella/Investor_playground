@@ -48,9 +48,9 @@ public class ReturnRateDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                ReturnRateFormulaPopUp returnRateFormulaPopUp = ReturnRateFormulaPopUp.newInstance();
-                returnRateFormulaPopUp.setTargetFragment(ReturnRateDialogFragment.this,0);
-                returnRateFormulaPopUp.show(fragmentManager,"");
+                PopUpDialogFragment popUpDialogFragment = PopUpDialogFragment.newInstance(getString(R.string.return_rate_formula_text_view));
+                popUpDialogFragment.setTargetFragment(ReturnRateDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
             }
         });
 
