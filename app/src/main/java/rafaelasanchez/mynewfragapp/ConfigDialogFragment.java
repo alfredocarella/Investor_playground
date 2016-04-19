@@ -22,7 +22,7 @@ public class ConfigDialogFragment extends DialogFragment {
     private Integer period;
     private Float fee;
 
-    public static final String myAppKey = "Investor Playground";
+    private String myAppKey;
 
     private ArrayList<Boolean> theBooleans = new ArrayList<>();
     private ArrayList<Integer> theIntegers = new ArrayList<>();
@@ -40,8 +40,15 @@ public class ConfigDialogFragment extends DialogFragment {
         View theView = inflater.inflate(R.layout.config_layout,container);
         getDialog().setTitle("Settings");
 
+        //Retrieve constants and last/default values from UserValues
+        theBooleans=((MainActivity)getActivity()).userValues.getTheBooleans();
+        theIntegers=((MainActivity)getActivity()).userValues.getTheIntegers();
+        theBooleanKeys=UserValues.getTheBooleanKeys();
+        theIntegerKeys=UserValues.getTheIntegerKeys();
+        theIntDefValues=UserValues.getTheIntDefValues();
+        myAppKey =UserValues.getMyAppKey();
 
-        // period
+        // period field
 
         final EditText period_ET  = (EditText) theView.findViewById(R.id.config_period_edit_text);
         period = ((MainActivity)getActivity()).userValues.getPeriod();
@@ -65,7 +72,7 @@ public class ConfigDialogFragment extends DialogFragment {
         });
 
 
-        // fee
+        // fee field
 
         final EditText fee_ET = (EditText) theView.findViewById(R.id.config_fees_edit_text);
         fee = ((MainActivity)getActivity()).userValues.getFee();
@@ -89,66 +96,41 @@ public class ConfigDialogFragment extends DialogFragment {
         });
 
 
-
-
-
-        // BUY FIELDS
-
+        // BUY FIELDS:
         Integer p=0;
 
         // RSI =Relative Strength Index
-        theBooleanKeys.add(p,"config_buying_RSI_checkbox");
-        theIntegerKeys.add(p, "config_buying_RSI_edit_text");
-        theIntDefValues.add(p, 30);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_buying_RSI_checkbox));
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_buying_RSI_edit_text));
 
         // ADX =Average Directional Index
         p=p+1;
-        theBooleanKeys.add(p,"config_buying_ADX_checkbox");
-        theIntegerKeys.add(p,"config_buying_ADX_edit_text");
-        theIntDefValues.add(p,30);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_buying_ADX_checkbox));
         theEditTexts.add(p,(EditText) theView.findViewById(R.id.config_buying_ADX_edit_text));
 
         // SL=Stop Loss
         p=p+1;
-        theBooleanKeys.add(p,"config_buying_stop_loss_checkbox");
-        theIntegerKeys.add(p,"config_buying_stop_loss_edit_text");
-        theIntDefValues.add(p,15);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_buying_stop_loss_checkbox));
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_buying_stop_loss_edit_text));
 
-
-
         // SELL FIELDS
-
         // RSI
         p=p+1;
-        theBooleanKeys.add(p,"config_selling_RSI_checkbox");
-        theIntegerKeys.add(p,"config_selling_RSI_edit_text");
-        theIntDefValues.add(p,70);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_selling_RSI_checkbox));
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_selling_RSI_edit_text));
 
         // ADX
         p=p+1;
-        theBooleanKeys.add(p,"config_selling_ADX_checkbox");
-        theIntegerKeys.add(p,"config_selling_ADX_edit_text");
-        theIntDefValues.add(p,20);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_selling_ADX_checkbox));
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_selling_ADX_edit_text));
 
         // SL
         p=p+1;
-        theBooleanKeys.add(p,"config_selling_stop_loss_checkbox");
-        theIntegerKeys.add(p,"config_selling_stop_loss_edit_text");
-        theIntDefValues.add(p,15);
         theCheckBoxes.add(p, (CheckBox) theView.findViewById(R.id.config_selling_stop_loss_checkbox));
         theEditTexts.add(p, (EditText) theView.findViewById(R.id.config_selling_stop_loss_edit_text));
 
 
-        // Get all the stuff set
+        // Get all the fields set
         for (int pos=0; pos<theEditTexts.size(); pos++ ) {
             callMethods(pos);
         }
@@ -187,57 +169,6 @@ public class ConfigDialogFragment extends DialogFragment {
     }
 
 
-    private boolean startBoolean(String theBooleanKey){
-
-        boolean theBoolean;
-
-        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                .contains(theBooleanKey)){
-            theBoolean=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                    .getBoolean(theBooleanKey, true);
-        } else {
-            theBoolean=true;
-        }
-
-        return theBoolean;
-
-    }
-
-
-    private Integer startInteger(String theValueKey, Integer theDefaultValue){
-
-        Integer theValue;
-
-        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                .contains(theValueKey)){
-            theValue=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                    .getInt(theValueKey, -1);
-        } else {
-            theValue=theDefaultValue;
-        }
-
-        return theValue;
-
-    }
-
-
-    private Float startFloat(String theValueKey, Float theDefaultValue){
-
-        Float theValue;
-
-        if (getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                .contains(theValueKey)){
-            theValue=getActivity().getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                    .getFloat(theValueKey, -1.f);
-        } else {
-            theValue=theDefaultValue;
-        }
-
-        return theValue;
-
-    }
-
-
     private void setEditTextListener(final Integer thePosition, EditText theEditText){
 
         theEditText.addTextChangedListener(new TextWatcher() {
@@ -249,11 +180,8 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToInteger(s) != null) {
                     theIntegers.set(thePosition, charToInteger(s));
-                    getActivity()
-                            .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                            .edit()
-                            .putInt(theIntegerKeys.get(thePosition), theIntegers.get(thePosition))
-                            .commit();
+                    ((MainActivity)getActivity()).userValues
+                            .setTheIntegers(thePosition, theIntegers.get(thePosition));
                 }
             }
 
@@ -274,11 +202,8 @@ public class ConfigDialogFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 theBooleans.set(thePosition, isChecked);
-                getActivity()
-                        .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                        .edit()
-                        .putBoolean(theBooleanKeys.get(thePosition), theBooleans.get(thePosition))
-                        .commit();
+                ((MainActivity)getActivity()).userValues
+                        .setTheBooleans(thePosition, isChecked);
                 theEditText.setEnabled(isChecked);
             }
         });
@@ -288,13 +213,11 @@ public class ConfigDialogFragment extends DialogFragment {
 
     private void callMethods(Integer thePosition){
 
-        //Start the CheckBox by retrieving the last value or setting the default
-        theBooleans.add(thePosition, startBoolean(theBooleanKeys.get(thePosition)));
+        //Start the CheckBox in the DialogFragment
         theCheckBoxes.get(thePosition).setChecked(theBooleans.get(thePosition));
         //Add a listener to the CheckBox
         setCheckBoxListener(thePosition, theCheckBoxes.get(thePosition), theEditTexts.get(thePosition));
-        //Start the value
-        theIntegers.add(thePosition, startInteger(theIntegerKeys.get(thePosition), theIntDefValues.get(thePosition)));
+        //Start the EditText box in the DialogFragment
         theEditTexts.get(thePosition).setText(String.valueOf(theIntegers.get(thePosition)));
         //Initially, enable or disable the EditText according to the Checkbox
         theEditTexts.get(thePosition).setEnabled(theBooleans.get(thePosition));
