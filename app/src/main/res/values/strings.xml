@@ -25,5 +25,27 @@
     <string name="label_return_text_view">Buy-and-hold return: (%)</string>
     <string name="label_stats_title_text_view">Stats</string>
 
+    <string name="q_RSI_buy_text_view">The Relative Strength Index (RSI)
+        is an indicator that can help detect overbought (approaching 100)
+        and oversold (approaching zero) situations</string>
+
+    <string name="q_RSI_sell_text_view">The Relative Strength Index (RSI)
+        is an indicator that can help detect overbought (approaching 100)
+        and oversold (approaching zero) situations</string>
+
+    <string name="q_ADX_buy_text_view">The average directional movement
+        (ADX) is an indicator of trend strength</string>
+
+    <string name="q_ADX_sell_text_view">The average directional movement
+        (ADX) is an indicator of trend strength</string>
+
+    <string name="q_SL_buy_text_view">Stop Loss is an order to buy
+        that triggers once the price increases a certain amount
+        above the last minimum</string>
+
+    <string name="q_SL_sell_text_view">Stop Loss is an order to sell
+        that triggers once the price decreases a certain amount
+        above the last maximum</string>
+
 
 </resources>

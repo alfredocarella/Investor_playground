@@ -3,6 +3,7 @@ package rafaelasanchez.mynewfragapp;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 
 /**
@@ -134,6 +137,90 @@ public class ConfigDialogFragment extends DialogFragment {
         for (int pos=0; pos<theEditTexts.size(); pos++ ) {
             callMethods(pos);
         }
+
+
+        // Question marks
+        final ImageView q_RSI_buy = (ImageView) theView.findViewById(R.id.q_RSI_buy);
+        q_RSI_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_RSI_buy_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+        final ImageView q_ADX_buy = (ImageView) theView.findViewById(R.id.q_ADX_buy);
+        q_ADX_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_ADX_buy_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+        final ImageView q_SL_buy = (ImageView) theView.findViewById(R.id.q_SL_buy);
+        q_SL_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_SL_buy_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+        final ImageView q_RSI_sell = (ImageView) theView.findViewById(R.id.q_RSI_sell);
+        q_RSI_sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_RSI_sell_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+        final ImageView q_ADX_sell = (ImageView) theView.findViewById(R.id.q_ADX_sell);
+        q_ADX_sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_ADX_sell_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+        final ImageView q_SL_sell = (ImageView) theView.findViewById(R.id.q_SL_sell);
+        q_SL_sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                PopUpDialogFragment popUpDialogFragment =
+                        PopUpDialogFragment
+                                .newInstance(getString(R.string.q_SL_sell_text_view));
+                popUpDialogFragment.setTargetFragment(ConfigDialogFragment.this,0);
+                popUpDialogFragment.show(fragmentManager,"");
+            }
+        });
+
+
+
+
 
         return theView;
     }

@@ -96,6 +96,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_RSI_buy"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
@@ -125,6 +126,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_ADX_buy"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
@@ -154,6 +156,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_SL_buy"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
@@ -192,6 +195,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_RSI_sell"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
@@ -221,6 +225,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_ADX_sell"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
@@ -250,6 +255,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/q_SL_sell"
                 android:src="@drawable/ic_help_outline_black_36dp"/>
         </LinearLayout>
 
