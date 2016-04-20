@@ -19,16 +19,13 @@ public class Strategy {
     public Strategy(UserValues theInput) {
 
         period=theInput.getPeriod();
-        Log.e("period ",String.valueOf(period));
         fee=theInput.getFee();
         theIntegers=theInput.getTheIntegers();
         theBooleans=theInput.getTheBooleans();
         arrayList=theInput.getArrayList();
 
-        Log.e("arrayList: ",String.valueOf(arrayList));
 
         int n=arrayList.size();
-        Log.e("n ",String.valueOf(n));
 
         ArrayList<Float> change = zeros(n);
         ArrayList<Float> gains = zeros(n);
@@ -52,7 +49,6 @@ public class Strategy {
             Float todayRS=avgGains/avgLosses;
             rsi.set(d,100.f-100.f/(1+todayRS));
         }
-        Log.e("rsi ",String.valueOf(rsi));
 
         theResult=rsi;
     }
