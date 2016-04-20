@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
-
+    private boolean request2Frag=false;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             theCurrentFragment=1;
         }
+        userValues.setTheCurrentFragment(theCurrentFragment);
         putRightFragment();
     }
 
@@ -199,9 +200,11 @@ public class MainActivity extends AppCompatActivity {
     private void onPriceGraphClicked() {
         if(theCurrentFragment==1) {
             theCurrentFragment = 2;
+            userValues.setTheCurrentFragment(theCurrentFragment);
             put2ndFrag();
         }else{
             theCurrentFragment = 1;
+            userValues.setTheCurrentFragment(theCurrentFragment);
             put1stFrag();
         }
     }
@@ -358,6 +361,9 @@ public class MainActivity extends AppCompatActivity {
             arrayList = dataReducer.getTheArray();
             theDates = dataReducer.getTheDates();
 
+            userValues.setArrayList(arrayList);
+            userValues.setTheDates(theDates);
+
             int nItems=theDates.get(0).size()-1;
             int infDay =theDates.get(0).get(nItems);
             int infMonth =theDates.get(1).get(nItems);
@@ -382,19 +388,13 @@ public class MainActivity extends AppCompatActivity {
                         infimumDate.get(Calendar.YEAR),
                         false);
 
-                startingDateInfimum.set(0, startingDate.get(0));
+                startingDateInfimum.set(0,startingDate.get(0));
                 startingDateInfimum.set(1,startingDate.get(1));
                 startingDateInfimum.set(2,startingDate.get(2));
 
                 firstFragment.setDateInfimum(startingDateInfimum);
             }
         }
-
-
-
-
-
-
 
         plotStuff();
     }
@@ -408,85 +408,43 @@ public class MainActivity extends AppCompatActivity {
 
 //            Log.e("plotStuff", "theDownloadedData.length()= " + String.valueOf(theDownloadedData.length()));
 
-            double minDouble=-1;
-            double maxDouble=0;
-            try{
-                minDouble= Collections.min(arrayList).doubleValue();
-                maxDouble= Collections.max(arrayList).doubleValue();
-            }catch(NoSuchElementException e) {
-                e.printStackTrace();
-            }
-
-            DecimalFormat precision = new DecimalFormat("0.00E0");
-
-            TextView startingTV;
-            TextView endingTV;
-            TextView minTV;
-            TextView maxTV;
-            String endingTVtext = theDates.get(0).get(0).toString() + "/" + theDates.get(1).get(0).toString() + "/" + theDates.get(2).get(0).toString();
-            String startingTVtext = theDates.get(0).get(theDates.get(0).size() - 1).toString() + "/" + theDates.get(1).get(theDates.get(1).size() - 1).toString() + "/" + theDates.get(2).get(theDates.get(2).size() - 1).toString();
 
 
 
             if(theCurrentFragment==2) {
 
-                startingTV = (TextView) findViewById(R.id.axis_start_date);
-                endingTV = (TextView) findViewById(R.id.axis_end_date);
-                minTV = (TextView) findViewById(R.id.axis_min);
-                maxTV = (TextView) findViewById(R.id.axis_max);
+                graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
-                endingTV.setText(endingTVtext);
-                startingTV.setText(startingTVtext);
-
-                minTV.setText(precision.format(minDouble));
-                maxTV.setText(precision.format(maxDouble));
-
-                graphContainer2= (FrameLayout) findViewById(R.id.graficaContainer);
-                graphContainer2.setVisibility(View.VISIBLE);
-                graphContainer2.removeAllViews();
-
-                ViewTreeObserver vto2 = graphContainer2.getViewTreeObserver();
-                vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                if(!request2Frag) {
+                    userValues.setTheCurrentGraph(1);
+                }
+                Graph graph = new Graph(this);
+                graph.newInstance(userValues);
+                View theGraph = graph.getTheGraph();
+                graphContainer2.addView(theGraph);
+                graphContainer2.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onGlobalLayout() {
-
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                            graphContainer2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            graphContainer2.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
-
-                        int dxplot = graphContainer2.getWidth();
-                        int dyplot = graphContainer2.getHeight();
-
-
-                        LinePlot linePlot = new LinePlot(getApplicationContext());
-
-                        linePlot.addPoints(dxplot, dyplot, arrayList);
-                        graphContainer2.addView(linePlot);
-                        graphContainer2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onPriceGraphClicked();
-                            }
-                        });
-
+                    public void onClick(View v) {
+                        request2Frag=false;
+                        onPriceGraphClicked();
                     }
                 });
 
             }else{
 
-                graphContainer = (FrameLayout) findViewById(R.id.the_outer_container);
-                graphContainer.setVisibility(View.VISIBLE);
-                graphContainer.removeAllViews();
+                graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
+                if(!request2Frag) {
+                    userValues.setTheCurrentGraph(1);
+                }
                 Graph graph = new Graph(this);
-                graph.newInstance(arrayList,theDates);
+                graph.newInstance(userValues);
                 View theGraph = graph.getTheGraph();
                 graphContainer.addView(theGraph);
                 graphContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        request2Frag=true;
                         onPriceGraphClicked();
                     }
                 });
@@ -507,19 +465,25 @@ public class MainActivity extends AppCompatActivity {
 
         Strategy strategy = new Strategy(userValues);
         ArrayList<Float> strategyResult=strategy.getTheResult();
+        userValues.setStrategyResult(strategyResult);
 
 
         FrameLayout strategyContainer =
-                (FrameLayout) findViewById(R.id.graficaContainer_1stFrag_strat);
-        strategyContainer.setVisibility(View.VISIBLE);
-        strategyContainer.removeAllViews();
+                (FrameLayout) findViewById(R.id.strategy_1st_frag_the_outer_container);
 
-
+        userValues.setTheCurrentGraph(2);
         Graph graph = new Graph(this);
-        graph.newInstance(strategyResult, theDates);
+        graph.newInstance(userValues);
         View theGraph = graph.getTheGraph();
         strategyContainer.addView(theGraph);
 
+        strategyContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                request2Frag=true;
+                onPriceGraphClicked();
+            }
+        });
     }
 
 
@@ -659,11 +623,11 @@ public class MainActivity extends AppCompatActivity {
             theDownloadedData="";
             companySet = false;
             requestCompany=false;
-            FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.the_outer_container);
+            FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
             thePriceGraph.setVisibility(View.GONE);
 
-//            LinearLayout theContainer = (LinearLayout) findViewById(R.id.graph_outer_linear_layout);
-//            theContainer.setVisibility(View.GONE);
+            FrameLayout theStrategyGraph = (FrameLayout) findViewById(R.id.strategy_1st_frag_the_outer_container);
+            theStrategyGraph.setVisibility(View.GONE);
 
             View outer_container = findViewById(R.id.the_stats);
             outer_container.setVisibility(View.GONE);
@@ -721,6 +685,26 @@ public class MainActivity extends AppCompatActivity {
         }else{
             theCurrentFragment=1;
         }
+        userValues.setTheCurrentFragment(theCurrentFragment);
+
+
+
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt("theCurrentGraph",0)!=0){
+            userValues.setTheCurrentGraph(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt("theCurrentGraph", 0));
+        }else{
+            userValues.setTheCurrentGraph(1);
+        }
+
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains("request2Frag")){
+            request2Frag=getSharedPreferences(myAppKey,MODE_PRIVATE).getBoolean("request2Frag", false);
+        }else{
+            request2Frag=false;
+        }
+
+
+
+
+
 
         if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING,"").equals("")){
             theStartDateString=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING, "");
@@ -860,10 +844,11 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
 
-        
-        
-        
-        
+
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putBoolean("request2Frag", request2Frag).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt("theCurrentGraph", userValues.getTheCurrentGraph()).commit();
+
+
         super.onSaveInstanceState(outState);
     }
 

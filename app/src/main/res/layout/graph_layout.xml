@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/large_margin"
     android:layout_marginBottom="@dimen/large_margin"
@@ -34,24 +34,27 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/graph_right_relative_layout">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="fill_parent"
             android:layout_margin="@dimen/standard_margin"
-            android:layout_gravity="center"
             android:id="@+id/graph_plot_container_frame_layout"
             android:background="@drawable/back"
+            android:layout_above="@+id/graph_x_axis_relative_layout"
             >
         </FrameLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/graph_x_axis_relative_layout"
+            android:layout_alignParentBottom="true"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -72,7 +75,7 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

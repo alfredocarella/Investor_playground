@@ -19,7 +19,11 @@ public class UserValues implements Serializable {
     public static final String myAppKey = "Investor Playground";
     private static final ArrayList<Integer> theIntDefValues = new ArrayList<>();
     private ArrayList<Float> arrayList;
+    private ArrayList<ArrayList<Integer>> theDates;
+    private ArrayList<Float> strategyResult;
+    private int theCurrentFragment;
 
+    private int theCurrentGraph;
 
     Context context;
 
@@ -205,6 +209,39 @@ public class UserValues implements Serializable {
         return arrayList;
     }
 
+
+    public ArrayList<ArrayList<Integer>> getTheDates() {
+        return theDates;
+    }
+
+    public void setTheDates(ArrayList<ArrayList<Integer>> theDates) {
+        this.theDates = theDates;
+    }
+
+    public int getTheCurrentFragment() {
+        return theCurrentFragment;
+    }
+
+    public void setTheCurrentFragment(int theCurrentFragment) {
+        this.theCurrentFragment = theCurrentFragment;
+    }
+
+
+    public ArrayList<Float> getStrategyResult() {
+        return strategyResult;
+    }
+
+    public void setStrategyResult(ArrayList<Float> strategyResult) {
+        this.strategyResult = strategyResult;
+    }
+
+    public int getTheCurrentGraph() {
+        return theCurrentGraph;
+    }
+
+    public void setTheCurrentGraph(int theCurrentGraph) {
+        this.theCurrentGraph = theCurrentGraph;
+    }
 
 
 

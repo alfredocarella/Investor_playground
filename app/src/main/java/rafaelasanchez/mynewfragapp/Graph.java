@@ -29,10 +29,21 @@ public class Graph extends View {
         context=context_;
     }
 
-    public void newInstance(final ArrayList<Float> thePrices,
-                 final ArrayList<ArrayList<Integer>> theDates) {
+    public void newInstance(UserValues userValues) {
 
+        final ArrayList<Float> theData;
+        int theCurrentGraph = userValues.getTheCurrentGraph();
+
+        if(theCurrentGraph==2){
+            theData=userValues.getStrategyResult();
+        }else{
+            theData=userValues.getArrayList();
+        }
+
+        final ArrayList<ArrayList<Integer>> theDates=userValues.getTheDates();
+        final int theCurrentFragment=userValues.getTheCurrentFragment();
         final FrameLayout theFrameLayout;
+        final FrameLayout theFragmentFrame;
 
         final Activity activity = (Activity) context;
         theView = activity.getLayoutInflater().inflate(R.layout.graph_layout,null);
@@ -43,6 +54,24 @@ public class Graph extends View {
         final TextView yAxisMin = (TextView) theView.findViewById(R.id.graph_y_axis_min_text_view);
         final TextView yAxisMax = (TextView) theView.findViewById(R.id.graph_y_axis_max_text_view);
         theFrameLayout = (FrameLayout) theView.findViewById(R.id.graph_plot_container_frame_layout);
+
+        if(theCurrentFragment==1) {
+            if(theCurrentGraph==1) {
+                theFragmentFrame = (FrameLayout) ((Activity) context)
+                        .findViewById(R.id.prices_1st_frag_the_outer_container);
+            }else {
+                theFragmentFrame = (FrameLayout) ((Activity) context)
+                        .findViewById(R.id.strategy_1st_frag_the_outer_container);
+            }
+            theFragmentFrame.removeAllViews();
+            theFragmentFrame.setVisibility(View.VISIBLE);
+
+            ViewGroup.LayoutParams params = theFragmentFrame.getLayoutParams();
+            DisplayMetrics metrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            params.height = Math.round(Math.min((float) 0.5 * metrics.heightPixels, (float) 0.6 * metrics.widthPixels));
+            theFragmentFrame.setLayoutParams(params);
+        }
 
 
         ViewTreeObserver vto = theFrameLayout.getViewTreeObserver();
@@ -58,12 +87,12 @@ public class Graph extends View {
 
 
                 //Work out the x&y axes:
-                double minDouble=-1;
-                double maxDouble=0;
-                try{
-                    minDouble= Collections.min(thePrices).doubleValue();
-                    maxDouble= Collections.max(thePrices).doubleValue();
-                }catch(NoSuchElementException e) {
+                double minDouble = -1;
+                double maxDouble = 0;
+                try {
+                    minDouble = Collections.min(theData).doubleValue();
+                    maxDouble = Collections.max(theData).doubleValue();
+                } catch (NoSuchElementException e) {
                     e.printStackTrace();
                 }
 
@@ -74,18 +103,13 @@ public class Graph extends View {
                 yAxisMin.setText(precision.format(minDouble));
                 yAxisMax.setText(precision.format(maxDouble));
 
-                //Apply right graph size:
-                ViewGroup.LayoutParams params = theFrameLayout.getLayoutParams();
-                DisplayMetrics metrics = new DisplayMetrics();
-                activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                params.height = Math.round(Math.min((float) 0.35 * metrics.heightPixels, (float) 0.5 * metrics.widthPixels));
-                theFrameLayout.setLayoutParams(params);
+                int dyPlot = theFrameLayout.getHeight();
+                int dxPlot = theFrameLayout.getWidth();
+
 
                 //Add the plot points
                 LinePlot linePlot = new LinePlot(activity.getApplicationContext());
-                int dyPlot = params.height;
-                int dxPlot = theFrameLayout.getWidth();
-                linePlot.addPoints(dxPlot, dyPlot, thePrices);
+                linePlot.addPoints(dxPlot, dyPlot, theData);
                 theFrameLayout.addView(linePlot);
 
 
@@ -95,6 +119,10 @@ public class Graph extends View {
 
 
     }
+
+
+
+
 
 
     public View getTheGraph() {

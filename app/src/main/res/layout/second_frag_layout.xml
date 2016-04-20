@@ -1,71 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:padding="@dimen/standard_padding"
-    android:orientation="horizontal"
     android:id="@+id/the_2nd_frag">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="30dp"
-            >
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/axis_max"
-                android:textColor="@android:color/white"
-                android:layout_alignParentTop="true"
-                />
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/axis_min"
-                android:textColor="@android:color/white"
-                android:layout_alignParentBottom="true"
-                />
-        </RelativeLayout>
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/standard_margin"
-                android:layout_gravity="center"
-                android:id="@+id/graficaContainer"
-                android:background="@drawable/back">
-            </FrameLayout>
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_start_date"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_end_date"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

@@ -112,21 +112,19 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
-            android:id="@+id/the_outer_container"
+            android:id="@+id/prices_1st_frag_the_outer_container"
             android:visibility="gone">
         </FrameLayout>
 
-
-
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
-            android:id="@+id/graficaContainer_1stFrag_strat"
+            android:id="@+id/strategy_1st_frag_the_outer_container"
             android:visibility="gone">
         </FrameLayout>
 
