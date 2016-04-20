@@ -110,160 +110,28 @@
 
         </TableLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
             android:id="@+id/the_outer_container"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
+        </FrameLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                >
 
-                <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_max_1stFrag"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentTop="true"
-                    />
 
-                <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_min_1stFrag"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentBottom="true"
-                    />
-
-            </RelativeLayout>
-
-            <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin="@dimen/standard_margin"
-                    android:layout_gravity="center"
-                    android:id="@+id/graficaContainer_1stFrag"
-                    android:background="@drawable/back"
-                    >
-                </FrameLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_below_graph"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_start_date_1stFrag"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_end_date_1stFrag"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        />
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
-            android:id="@+id/the_outer_container_strat"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                >
-
-                <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_max_1stFrag_strat"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentTop="true"
-                    />
-
-                <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_min_1stFrag_strat"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentBottom="true"
-                    />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin="@dimen/standard_margin"
-                    android:layout_gravity="center"
-                    android:id="@+id/graficaContainer_1stFrag_strat"
-                    android:background="@drawable/back"
-                    >
-                </FrameLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/axis_below_graph_strat"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_start_date_1stFrag_strat"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/axis_end_date_1stFrag_strat"
-                        android:textColor="@android:color/white"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        />
-
-                </RelativeLayout>
-
-            </LinearLayout>
+            android:id="@+id/graficaContainer_1stFrag_strat"
+            android:visibility="gone">
+        </FrameLayout>
 
 
-        </LinearLayout>
+        
 
         <LinearLayout
             android:layout_width="match_parent"

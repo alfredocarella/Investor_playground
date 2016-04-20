@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/large_margin"
+    android:layout_marginBottom="@dimen/large_margin"
+    android:id="@+id/graph_outer_linear_layout"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"
+        >
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/graph_y_axis_max_text_view"
+            android:textColor="@android:color/white"
+            android:layout_alignParentTop="true"
+            />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/graph_y_axis_min_text_view"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_gravity="center"
+            android:id="@+id/graph_plot_container_frame_layout"
+            android:background="@drawable/back"
+            >
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/graph_x_axis_start_text_view"
+                android:textColor="@android:color/white"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/graph_x_axis_end_text_view"
+                android:textColor="@android:color/white"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+

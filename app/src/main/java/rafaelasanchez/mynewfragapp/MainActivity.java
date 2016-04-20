@@ -1,5 +1,6 @@
 package rafaelasanchez.mynewfragapp;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -474,60 +475,24 @@ public class MainActivity extends AppCompatActivity {
                 });
 
             }else{
-                LinearLayout theOuterContainer = (LinearLayout) findViewById(R.id.the_outer_container);
-                theOuterContainer.setVisibility(View.VISIBLE);
 
-                startingTV = (TextView) findViewById(R.id.axis_start_date_1stFrag);
-                endingTV = (TextView) findViewById(R.id.axis_end_date_1stFrag);
-                minTV = (TextView) findViewById(R.id.axis_min_1stFrag);
-                maxTV = (TextView) findViewById(R.id.axis_max_1stFrag);
-
-                endingTV.setText(endingTVtext);
-                startingTV.setText(startingTVtext);
-
-                minTV.setText(precision.format(minDouble));
-                maxTV.setText(precision.format(maxDouble));
-
-                graphContainer = (FrameLayout) findViewById(R.id.graficaContainer_1stFrag);
+                graphContainer = (FrameLayout) findViewById(R.id.the_outer_container);
                 graphContainer.setVisibility(View.VISIBLE);
                 graphContainer.removeAllViews();
 
-                ViewTreeObserver vto = graphContainer.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                Graph graph = new Graph(this);
+                graph.newInstance(arrayList,theDates);
+                View theGraph = graph.getTheGraph();
+                graphContainer.addView(theGraph);
+                graphContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onGlobalLayout() {
-
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                            graphContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            graphContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
-
-                        int dxplot = graphContainer.getWidth();
-
-                        ViewGroup.LayoutParams params = graphContainer.getLayoutParams();
-                        DisplayMetrics metrics = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                        params.height = Math.round(Math.min((float) 0.35 * metrics.heightPixels, (float) 0.5 * metrics.widthPixels));
-                        graphContainer.setLayoutParams(params);
-
-                        LinePlot linePlot = new LinePlot(getApplicationContext());
-                        int dyplot = params.height;
-
-                        linePlot.addPoints(dxplot, dyplot, arrayList);
-                        graphContainer.addView(linePlot);
-                        graphContainer.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onPriceGraphClicked();
-                            }
-                        });
-
-                        showStrategy();
-                        showStats();
-
+                    public void onClick(View v) {
+                        onPriceGraphClicked();
                     }
                 });
+
+                showStrategy();
+                showStats();
 
             }
 
@@ -548,20 +513,12 @@ public class MainActivity extends AppCompatActivity {
                 (FrameLayout) findViewById(R.id.graficaContainer_1stFrag_strat);
         strategyContainer.setVisibility(View.VISIBLE);
         strategyContainer.removeAllViews();
-        
-        int dxplot = strategyContainer.getWidth();
-        ViewGroup.LayoutParams params = strategyContainer.getLayoutParams();
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        params.height = Math.round(Math.min((float) 0.35 * metrics.heightPixels, (float) 0.5 * metrics.widthPixels));
-        strategyContainer.setLayoutParams(params);
 
-        LinePlot linePlot = new LinePlot(getApplicationContext());
-        int dyplot = params.height;
 
-        linePlot.addPoints(dxplot, dyplot, strategyResult);
-        strategyContainer.addView(linePlot);
-
+        Graph graph = new Graph(this);
+        graph.newInstance(strategyResult, theDates);
+        View theGraph = graph.getTheGraph();
+        strategyContainer.addView(theGraph);
 
     }
 
@@ -702,8 +659,12 @@ public class MainActivity extends AppCompatActivity {
             theDownloadedData="";
             companySet = false;
             requestCompany=false;
-            LinearLayout thePriceGraph = (LinearLayout) findViewById(R.id.the_outer_container);
+            FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.the_outer_container);
             thePriceGraph.setVisibility(View.GONE);
+
+//            LinearLayout theContainer = (LinearLayout) findViewById(R.id.graph_outer_linear_layout);
+//            theContainer.setVisibility(View.GONE);
+
             View outer_container = findViewById(R.id.the_stats);
             outer_container.setVisibility(View.GONE);
 
