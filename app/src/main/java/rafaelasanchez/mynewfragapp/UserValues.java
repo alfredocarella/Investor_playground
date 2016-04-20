@@ -1,12 +1,14 @@
 package rafaelasanchez.mynewfragapp;
 
 import android.content.Context;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by R on 18/04/2016.
  */
-public class UserValues {
+public class UserValues implements Serializable {
 
     private Integer period;
     private Float fee;
@@ -16,6 +18,8 @@ public class UserValues {
     private static final ArrayList<String> theBooleanKeys = new ArrayList<>();
     public static final String myAppKey = "Investor Playground";
     private static final ArrayList<Integer> theIntDefValues = new ArrayList<>();
+    private ArrayList<Float> arrayList;
+
 
     Context context;
 
@@ -57,7 +61,7 @@ public class UserValues {
                                 .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                                 .getBoolean(theBooleanKeys.get(pos), true));
             } else {
-                theBooleans.add(pos,true);
+                theBooleans.add(pos, true);
             }
 
             //the values themselves:
@@ -68,7 +72,7 @@ public class UserValues {
                                 .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                                 .getInt(theIntegerKeys.get(pos), -1));
             } else {
-                theIntegers.add(pos,theIntDefValues.get(pos));
+                theIntegers.add(pos, theIntDefValues.get(pos));
             }
 
         }
@@ -191,6 +195,16 @@ public class UserValues {
         theIntegerKeys.add(p,"config_selling_stop_loss_edit_text");
         theIntDefValues.add(p,15);
     }
+
+
+    public void setArrayList(ArrayList<Float> arrayList) {
+        this.arrayList = arrayList;
+    }
+
+    public ArrayList<Float> getArrayList() {
+        return arrayList;
+    }
+
 
 
 

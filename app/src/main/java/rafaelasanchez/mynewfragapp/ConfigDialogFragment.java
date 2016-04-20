@@ -24,14 +24,8 @@ public class ConfigDialogFragment extends DialogFragment {
 
     private Integer period;
     private Float fee;
-
-    private String myAppKey;
-
     private ArrayList<Boolean> theBooleans = new ArrayList<>();
     private ArrayList<Integer> theIntegers = new ArrayList<>();
-    private ArrayList<String> theIntegerKeys = new ArrayList<>();
-    private ArrayList<String> theBooleanKeys = new ArrayList<>();
-    private ArrayList<Integer> theIntDefValues = new ArrayList<>();
     private ArrayList<CheckBox> theCheckBoxes = new ArrayList<>();
     private ArrayList<EditText> theEditTexts = new ArrayList<>();
 
@@ -46,10 +40,7 @@ public class ConfigDialogFragment extends DialogFragment {
         //Retrieve constants and last/default values from UserValues
         theBooleans=((MainActivity)getActivity()).userValues.getTheBooleans();
         theIntegers=((MainActivity)getActivity()).userValues.getTheIntegers();
-        theBooleanKeys=UserValues.getTheBooleanKeys();
-        theIntegerKeys=UserValues.getTheIntegerKeys();
-        theIntDefValues=UserValues.getTheIntDefValues();
-        myAppKey =UserValues.getMyAppKey();
+
 
         // period field
 
@@ -139,6 +130,103 @@ public class ConfigDialogFragment extends DialogFragment {
         }
 
 
+        addPopUps(theView);
+
+
+        return theView;
+    }
+
+
+    public static ConfigDialogFragment newInstance(){
+        Bundle bundle = new Bundle();
+        ConfigDialogFragment configDialogFragment = new ConfigDialogFragment();
+        configDialogFragment.setArguments(bundle);
+        return configDialogFragment;
+    }
+
+    
+    private Integer charToInteger(CharSequence s){
+
+        try {
+            return Integer.parseInt(s.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+    }
+
+
+    private Float charToFloat(CharSequence s){
+
+        try {
+            return Float.parseFloat(s.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+    }
+
+
+    private void setEditTextListener(final Integer thePosition, EditText theEditText){
+
+        theEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (charToInteger(s) != null) {
+                    theIntegers.set(thePosition, charToInteger(s));
+                    ((MainActivity)getActivity()).userValues
+                            .setTheIntegers(thePosition, theIntegers.get(thePosition));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+
+    private void setCheckBoxListener(final Integer thePosition,
+                              CheckBox theCheckBox,
+                              final EditText theEditText){
+
+
+        theCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                theBooleans.set(thePosition, isChecked);
+                ((MainActivity) getActivity()).userValues
+                        .setTheBooleans(thePosition, isChecked);
+                theEditText.setEnabled(isChecked);
+            }
+        });
+
+    }
+
+
+    private void callMethods(Integer thePosition){
+
+        //Start the CheckBox in the DialogFragment
+        theCheckBoxes.get(thePosition).setChecked(theBooleans.get(thePosition));
+        //Add a listener to the CheckBox
+        setCheckBoxListener(thePosition, theCheckBoxes.get(thePosition), theEditTexts.get(thePosition));
+        //Start the EditText box in the DialogFragment
+        theEditTexts.get(thePosition).setText(String.valueOf(theIntegers.get(thePosition)));
+        //Initially, enable or disable the EditText according to the Checkbox
+        theEditTexts.get(thePosition).setEnabled(theBooleans.get(thePosition));
+        //Add a listener for the ExitText
+        setEditTextListener(thePosition, theEditTexts.get(thePosition));
+
+    }
+
+
+    private void addPopUps(View theView){
+
         // Question marks
         final ImageView q_RSI_buy = (ImageView) theView.findViewById(R.id.q_RSI_buy);
         q_RSI_buy.setOnClickListener(new View.OnClickListener() {
@@ -219,101 +307,7 @@ public class ConfigDialogFragment extends DialogFragment {
         });
 
 
-
-
-
-        return theView;
     }
-
-
-    public static ConfigDialogFragment newInstance(){
-        Bundle bundle = new Bundle();
-        ConfigDialogFragment configDialogFragment = new ConfigDialogFragment();
-        configDialogFragment.setArguments(bundle);
-        return configDialogFragment;
-    }
-
-    
-    private Integer charToInteger(CharSequence s){
-
-        try {
-            return Integer.parseInt(s.toString());
-        } catch (NumberFormatException e) {
-            return null;
-        }
-
-    }
-
-
-    private Float charToFloat(CharSequence s){
-
-        try {
-            return Float.parseFloat(s.toString());
-        } catch (NumberFormatException e) {
-            return null;
-        }
-
-    }
-
-
-    private void setEditTextListener(final Integer thePosition, EditText theEditText){
-
-        theEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (charToInteger(s) != null) {
-                    theIntegers.set(thePosition, charToInteger(s));
-                    ((MainActivity)getActivity()).userValues
-                            .setTheIntegers(thePosition, theIntegers.get(thePosition));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-    }
-
-
-    private void setCheckBoxListener(final Integer thePosition,
-                              CheckBox theCheckBox,
-                              final EditText theEditText){
-
-
-        theCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                theBooleans.set(thePosition, isChecked);
-                ((MainActivity)getActivity()).userValues
-                        .setTheBooleans(thePosition, isChecked);
-                theEditText.setEnabled(isChecked);
-            }
-        });
-
-    }
-
-
-    private void callMethods(Integer thePosition){
-
-        //Start the CheckBox in the DialogFragment
-        theCheckBoxes.get(thePosition).setChecked(theBooleans.get(thePosition));
-        //Add a listener to the CheckBox
-        setCheckBoxListener(thePosition, theCheckBoxes.get(thePosition), theEditTexts.get(thePosition));
-        //Start the EditText box in the DialogFragment
-        theEditTexts.get(thePosition).setText(String.valueOf(theIntegers.get(thePosition)));
-        //Initially, enable or disable the EditText according to the Checkbox
-        theEditTexts.get(thePosition).setEnabled(theBooleans.get(thePosition));
-        //Add a listener for the ExitText
-        setEditTextListener(thePosition, theEditTexts.get(thePosition));
-
-    }
-
-
 
 
 }

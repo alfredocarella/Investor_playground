@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,14 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -34,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirstFragment firstFragment;
 
-    public static final String RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND = "Investor Playground";
+    public static final String myAppKey = "Investor Playground";
     public static final String THECURRENTFRAGMENT = "theCurrentFragment";
     public static final String THESTARTDATESTRING = "THESTARTDATESTRING";
     public static final String THEENDDATESTRING = "THEENDDATESTRING";
@@ -197,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         theBundle.putSerializable("endingDay",endingDate.get(0));
         theBundle.putSerializable("endingMonth", endingDate.get(1));
         theBundle.putSerializable("endingYear", endingDate.get(2));
+        theBundle.putSerializable("userValues",userValues);
         return theBundle;
     }
 
@@ -528,6 +523,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
+                        showStrategy();
                         showStats();
 
                     }
@@ -536,6 +532,37 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+
+    //strategy
+    private void showStrategy(){
+
+        userValues.setArrayList(arrayList);
+
+        Strategy strategy = new Strategy(userValues);
+        ArrayList<Float> strategyResult=strategy.getTheResult();
+
+
+        FrameLayout strategyContainer =
+                (FrameLayout) findViewById(R.id.graficaContainer_1stFrag_strat);
+        strategyContainer.setVisibility(View.VISIBLE);
+        strategyContainer.removeAllViews();
+        
+        int dxplot = strategyContainer.getWidth();
+        ViewGroup.LayoutParams params = strategyContainer.getLayoutParams();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        params.height = Math.round(Math.min((float) 0.35 * metrics.heightPixels, (float) 0.5 * metrics.widthPixels));
+        strategyContainer.setLayoutParams(params);
+
+        LinePlot linePlot = new LinePlot(getApplicationContext());
+        int dyplot = params.height;
+
+        linePlot.addPoints(dxplot, dyplot, strategyResult);
+        strategyContainer.addView(linePlot);
+
+
     }
 
 
@@ -664,7 +691,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void setTheCurrentCompany(String theCurrentCompany) {
         this.theCurrentCompany = theCurrentCompany;
 
@@ -729,48 +755,48 @@ public class MainActivity extends AppCompatActivity {
 
         userValues = new UserValues(this);
 
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(THECURRENTFRAGMENT,0)!=0){
-            theCurrentFragment=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(THECURRENTFRAGMENT, 0);
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT,0)!=0){
+            theCurrentFragment=getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT, 0);
         }else{
             theCurrentFragment=1;
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THESTARTDATESTRING,"").equals("")){
-            theStartDateString=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THESTARTDATESTRING, "");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING,"").equals("")){
+            theStartDateString=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING, "");
         }else{
             theStartDateString="";
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEENDDATESTRING,"").equals("")){
-            theEndDateString=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEENDDATESTRING,"");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEENDDATESTRING,"").equals("")){
+            theEndDateString=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEENDDATESTRING,"");
         }else{
             theEndDateString="";
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTCOMPANY,"").equals("")){
-            theCurrentCompany=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTCOMPANY, "");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTCOMPANY,"").equals("")){
+            theCurrentCompany=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTCOMPANY, "");
             companySet=true;
         }else{
             theCurrentCompany="";
             companySet=false;
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTBENCHMARK,"").equals("")){
-            theCurrentBenchmark=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THECURRENTBENCHMARK, "");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTBENCHMARK,"").equals("")){
+            theCurrentBenchmark=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTBENCHMARK, "");
             benchmarkSet=true;
         }else{
             theCurrentBenchmark="";
             benchmarkSet=false;
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDDATA,"").equals("")){
-            theDownloadedData=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDDATA, "");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEDOWNLOADEDDATA,"").equals("")){
+            theDownloadedData=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEDOWNLOADEDDATA, "");
         }else{
             theDownloadedData="";
         }
 
-        if(!getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDINDEXDATA,"").equals("")){
-            theDownloadedIndexData=getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getString(THEDOWNLOADEDINDEXDATA, "");
+        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEDOWNLOADEDINDEXDATA,"").equals("")){
+            theDownloadedIndexData=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEDOWNLOADEDINDEXDATA, "");
         }else{
             theDownloadedIndexData="";
         }
@@ -780,54 +806,54 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGDAY)){
-            startingDate.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGDAY, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(STARTINGDAY)){
+            startingDate.add(0,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(STARTINGDAY, -1));
         }else{
             startingDate.add(0,-1);//calendar.get(Calendar.DAY_OF_MONTH);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGMONTH)){
-            startingDate.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGMONTH, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(STARTINGMONTH)){
+            startingDate.add(1,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(STARTINGMONTH, -1));
         }else{
             startingDate.add(1,-1);//calendar.get(Calendar.MONTH);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(STARTINGYEAR)){
-            startingDate.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(STARTINGYEAR, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(STARTINGYEAR)){
+            startingDate.add(2,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(STARTINGYEAR, -1));
             startDateSet=true;
         }else{
             startingDate.add(2,-1);//calendar.get(Calendar.YEAR);
             startDateSet=false;
         }
 
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_0)){
-            startingDateInfimum.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_0, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(INFIMUM_0)){
+            startingDateInfimum.add(0,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(INFIMUM_0, -1));
         }else{
             startingDateInfimum.add(0,-1);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_1)){
-            startingDateInfimum.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_1, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(INFIMUM_1)){
+            startingDateInfimum.add(1,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(INFIMUM_1, -1));
         }else{
             startingDateInfimum.add(1,-1);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(INFIMUM_2)){
-            startingDateInfimum.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(INFIMUM_2, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(INFIMUM_2)){
+            startingDateInfimum.add(2,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(INFIMUM_2, -1));
         }else{
             startingDateInfimum.add(2,-1);
         }
 
 
 
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGDAY)){
-            endingDate.add(0,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGDAY, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(ENDINGDAY)){
+            endingDate.add(0,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(ENDINGDAY, -1));
         }else{
             endingDate.add(0,-1);//calendar.get(Calendar.DAY_OF_MONTH);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGMONTH)){
-            endingDate.add(1,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGMONTH, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(ENDINGMONTH)){
+            endingDate.add(1,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(ENDINGMONTH, -1));
         }else{
             endingDate.add(1,-1);//calendar.get(Calendar.MONTH);
         }
-        if(getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).contains(ENDINGYEAR)){
-            endingDate.add(2,getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND,MODE_PRIVATE).getInt(ENDINGYEAR, -1));
+        if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(ENDINGYEAR)){
+            endingDate.add(2,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(ENDINGYEAR, -1));
             endDateSet=true;
         }else{
             endingDate.add(2,-1);//calendar.get(Calendar.YEAR);
@@ -852,27 +878,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDate.get(0)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingDate.get(1)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingDate.get(2)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDate.get(0)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingDate.get(1)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDate.get(0)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingDate.get(1)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingDate.get(2)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDate.get(0)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingDate.get(1)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_0, startingDateInfimum.get(0)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_0, startingDateInfimum.get(0)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THECURRENTBENCHMARK, theCurrentBenchmark).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTBENCHMARK, theCurrentBenchmark).commit();
 
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
-        getSharedPreferences(RAFAANTOSANCHEZ_INVESTOR_PLAYGROUND, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
 
+        
+        
+        
+        
         super.onSaveInstanceState(outState);
     }
 
