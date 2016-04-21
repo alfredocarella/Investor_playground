@@ -1,0 +1,20 @@
+04-21 15:33:17.447  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/FF.onCreate﹕ Run
+04-21 15:33:17.599  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/insertedJSON﹕ {"theBooleans":[true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15]}
+04-21 15:33:17.599  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/the saved stuff﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:28.195  29767-29795/rafaantosanchez_at_gmail.com_Investor_playground E/Surface﹕ getSlotFromBufferLocked: unknown buffer: 0xb94f17b8
+04-21 15:33:28.246  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/FF.onCreate﹕ Run
+04-21 15:33:28.393  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/insertedJSON﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:28.393  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/the saved stuff﹕ {"theBooleans":[true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15]}
+04-21 15:33:28.469  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/ActivityThread﹕ Activity rafaelasanchez.mynewfragapp.MainActivity has leaked IntentReceiver rafaelasanchez.mynewfragapp.MainActivity$1@ff7d359 that was originally registered here. Are you missing a call to unregisterReceiver()?
+
+04-21 15:33:29.793  29767-29795/rafaantosanchez_at_gmail.com_Investor_playground E/Surface﹕ getSlotFromBufferLocked: unknown buffer: 0xb94f7618
+04-21 15:33:29.840  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/FF.onCreate﹕ Run
+04-21 15:33:29.950  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/insertedJSON﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:29.950  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/the saved stuff﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:30.026  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/ActivityThread﹕ Activity rafaelasanchez.mynewfragapp.MainActivity has leaked IntentReceiver rafaelasanchez.mynewfragapp.MainActivity$1@4748965 that was originally registered here. Are you missing a call to unregisterReceiver()?
+
+04-21 15:33:30.972  29767-29795/rafaantosanchez_at_gmail.com_Investor_playground E/Surface﹕ getSlotFromBufferLocked: unknown buffer: 0xb95bc4a0
+04-21 15:33:31.007  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/FF.onCreate﹕ Run
+04-21 15:33:31.110  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/insertedJSON﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:31.110  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/the saved stuff﹕ {"theBooleans":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"theCurrentFragment":1,"theCurrentGraph":2,"theIntegers":[30,30,15,70,20,15,30,30,15,70,20,15,30,30,15,70,20,15]}
+04-21 15:33:31.176  29767-29767/rafaantosanchez_at_gmail.com_Investor_playground E/ActivityThread﹕ Activity rafaelasanchez.mynewfragapp.MainActivity has leaked IntentReceiver rafaelasanchez.mynewfragapp.MainActivity$1@829aa8d that was originally registered here. Are you missing a call to unregisterReceiver()?

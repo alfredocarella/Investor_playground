@@ -2,13 +2,13 @@ package rafaelasanchez.mynewfragapp;
 
 import android.content.Context;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 
 /**
  * Created by R on 18/04/2016.
  */
-public class UserValues implements Serializable {
+public class UserValues {
 
     private Integer period;
     private Float fee;
@@ -28,7 +28,10 @@ public class UserValues implements Serializable {
     Context context;
 
 
-    public UserValues(Context context_) {
+    public UserValues() {
+    }
+
+    public void newInstance(Context context_){
         context=context_;
 
         loadConstants();

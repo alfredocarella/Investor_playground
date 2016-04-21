@@ -24,12 +24,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -193,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
         theBundle.putSerializable("endingDay",endingDate.get(0));
         theBundle.putSerializable("endingMonth", endingDate.get(1));
         theBundle.putSerializable("endingYear", endingDate.get(2));
-        theBundle.putSerializable("userValues",userValues);
         return theBundle;
     }
 
@@ -455,6 +458,38 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
+
+        SimpleUserValues simpleUserValues = SimpleUserValues.newInstance();
+        simpleUserValues.setTheCurrentGraph(userValues.getTheCurrentGraph());
+        simpleUserValues.setTheCurrentFragment(userValues.getTheCurrentFragment());
+        simpleUserValues.setTheBooleans(userValues.getTheBooleans());
+        simpleUserValues.setTheIntegers(userValues.getTheIntegers());
+
+
+        Gson gson = new Gson();
+        Type classType = new TypeToken<SimpleUserValues>() {}.getType();
+        String insertedJSON = gson.toJson(simpleUserValues, classType);
+
+
+        Log.e("insertedJSON  ", insertedJSON);
+
+        if (getSharedPreferences(myAppKey, MODE_PRIVATE).contains("JSON")){
+            Log.e("the saved stuff ", getSharedPreferences(myAppKey, MODE_PRIVATE).getString("JSON", ""));
+            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().remove("JSON").commit();
+            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString("JSON",insertedJSON).commit();
+        }else{
+            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString("JSON",insertedJSON).commit();
+        }
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -678,7 +713,14 @@ public class MainActivity extends AppCompatActivity {
     private void restoreSavedValues(){
 
 
-        userValues = new UserValues(this);
+
+
+
+
+        userValues = new UserValues();
+        userValues.newInstance(this);
+
+
 
         if(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT,0)!=0){
             theCurrentFragment=getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT, 0);
@@ -847,6 +889,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putBoolean("request2Frag", request2Frag).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt("theCurrentGraph", userValues.getTheCurrentGraph()).commit();
+
+
+
 
 
         super.onSaveInstanceState(outState);
