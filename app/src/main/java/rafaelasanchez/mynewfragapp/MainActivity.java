@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private SimpleUserValues values;
+    public UserValues userValues;
 
 
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
@@ -53,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean benchmarkSet=false;
     private boolean request2Frag=false;
 
-    private String theStartDateString;
-    private String theEndDateString;
     private String theCurrentCompany;
     private String theCurrentBenchmark;
     private String theDownloadedData;
@@ -68,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
     FirstFragment firstFragment;
 
     public static final String myAppKey = "Investor Playground";
-    public static final String THESTARTDATESTRING = "THESTARTDATESTRING";
-    public static final String THEENDDATESTRING = "THEENDDATESTRING";
     public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
     public static final String THECURRENTBENCHMARK = "THECURRENTBENCHMARK";
     public static final String STARTINGDAY = "startingDay";
@@ -85,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String INFIMUM_1 = "INFIMUM_1";
     public static final String INFIMUM_2 = "INFIMUM_2";
 
-    public UserValues userValues;
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
@@ -173,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void put2ndFrag(){
         SecondFragment secondFragment = new SecondFragment();
-        secondFragment.setArguments(bundlelizer());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, secondFragment)
                 .addToBackStack(null)
@@ -183,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
     private Bundle bundlelizer() {
         //This method puts all the important stuff in a bundle and returns it
         Bundle theBundle = new Bundle();
-        theBundle.putSerializable("theStartDateString", theStartDateString);
-        theBundle.putSerializable("theEndDateString", theEndDateString);
         theBundle.putSerializable("theCurrentFragment", values.getTheCurrentFragment());
         theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
         theBundle.putSerializable("theCurrentBenchmark", theCurrentBenchmark);
@@ -194,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         theBundle.putSerializable("endingDay",endingDate.get(0));
         theBundle.putSerializable("endingMonth", endingDate.get(1));
         theBundle.putSerializable("endingYear", endingDate.get(2));
+        theBundle.putSerializable("values", values);
         return theBundle;
     }
 
@@ -417,11 +411,10 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
                 if(!request2Frag) {
-                    userValues.setTheCurrentGraph(1);
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
-                graph.newInstance(userValues);
+                graph.newInstance(userValues,values);
                 View theGraph = graph.getTheGraph();
                 graphContainer2.addView(theGraph);
                 graphContainer2.setOnClickListener(new View.OnClickListener() {
@@ -437,11 +430,10 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
                 if(!request2Frag) {
-                    userValues.setTheCurrentGraph(1);
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
-                graph.newInstance(userValues);
+                graph.newInstance(userValues,values);
                 View theGraph = graph.getTheGraph();
                 graphContainer.addView(theGraph);
                 graphContainer.setOnClickListener(new View.OnClickListener() {
@@ -476,10 +468,9 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout strategyContainer =
                 (FrameLayout) findViewById(R.id.strategy_1st_frag_the_outer_container);
 
-        userValues.setTheCurrentGraph(2);
         values.setTheCurrentGraph(2);
         Graph graph = new Graph(this);
-        graph.newInstance(userValues);
+        graph.newInstance(userValues,values);
         View theGraph = graph.getTheGraph();
         strategyContainer.addView(theGraph);
 
@@ -553,13 +544,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // setters and getters
-    public void setTheStartDateString(String theStartDateString) {
-        this.theStartDateString = theStartDateString;
-    }
 
-    public void setTheEndDateString(String theEndDateString) {
-        this.theEndDateString = theEndDateString;
-    }
 
 
 
@@ -573,11 +558,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(startingDate!=startingDate_){
             startingDate = startingDate_;
+            values.setStartingDate(startingDate);
             startDateSet=true;
 
             int startingMonth_=startingDate.get(1)+1;
             String dateString = startingDate.get(0)+"/"+startingMonth_+"/"+startingDate.get(2);
-            setTheStartDateString(dateString);
+            values.setTheStartDateString(dateString);
             TextView startDateTextView = (TextView) findViewById(R.id.first_frag_start_date_text_view);
             startDateTextView.setText(dateString);
 
@@ -606,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
 
             int endingMonth_=endingDate.get(1)+1;
             String dateString = endingDate.get(0)+"/"+endingMonth_+"/"+endingDate.get(2);
-            setTheEndDateString(dateString);
+            values.setTheEndDateString(dateString);
             TextView endDateTextView = (TextView) findViewById(R.id.first_frag_end_date_text_view);
             endDateTextView.setText(dateString);
 
@@ -638,19 +624,6 @@ public class MainActivity extends AppCompatActivity {
             View outer_container = findViewById(R.id.the_stats);
             outer_container.setVisibility(View.GONE);
 
-/*            startDateSet=false;
-            TextView startDate = (TextView) findViewById(R.id.first_frag_start_date_text_view);
-            setTheStartDateString("");
-            startDate.setText(theStartDateString);
-            endDateSet=false;
-            TextView endDate = (TextView) findViewById(R.id.first_frag_end_date_text_view);
-            setTheEndDateString("");
-            endDate.setText(theEndDateString);
-            benchmarkSet=false;
-            TextView theBenchmark = (TextView) findViewById(R.id.first_frag_benchmark_text_view);
-            setTheCurrentBenchmark("");
-            theBenchmark.setText(theCurrentBenchmark);
-*/
         }else{
             companySet = true;
             requestCompany=true;
@@ -700,7 +673,6 @@ public class MainActivity extends AppCompatActivity {
         userValues = new UserValues();
         userValues.newInstance(this);
         userValues.setTheCurrentFragment(values.getTheCurrentFragment());
-        userValues.setTheCurrentGraph(values.getTheCurrentGraph());
 
 
 
@@ -719,17 +691,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING,"").equals("")){
-            theStartDateString=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THESTARTDATESTRING, "");
-        }else{
-            theStartDateString="";
-        }
 
-        if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEENDDATESTRING,"").equals("")){
-            theEndDateString=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THEENDDATESTRING,"");
-        }else{
-            theEndDateString="";
-        }
+
+
 
         if(!getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTCOMPANY,"").equals("")){
             theCurrentCompany=getSharedPreferences(myAppKey,MODE_PRIVATE).getString(THECURRENTCOMPANY, "");
@@ -858,9 +822,6 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
 
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
-
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTBENCHMARK, theCurrentBenchmark).commit();
 
@@ -879,7 +840,6 @@ public class MainActivity extends AppCompatActivity {
         values = SimpleUserValues.newInstance();
 
         values.setTheCurrentFragment(userValues.getTheCurrentFragment());
-        values.setTheCurrentGraph(userValues.getTheCurrentGraph());
         values.setTheBooleans(userValues.getTheBooleans());
         values.setTheIntegers(userValues.getTheIntegers());
         values.setTheDates(userValues.getTheDates());

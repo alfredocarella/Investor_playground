@@ -22,8 +22,6 @@ import java.util.Date;
 
 public class FirstFragment extends Fragment {
 
-    private  String theStartDateString;
-    private  String theEndDateString;
     private  String theCurrentCompany;
     private  String theCurrentBenchmark;
     private static final int REQUEST_START_DATE=0;
@@ -41,6 +39,7 @@ public class FirstFragment extends Fragment {
     private int endingMonth;
     private int endingYear;
     private ArrayList<Integer> dateInfimum;
+    private SimpleUserValues values;
 
 
     private String[] theCompaniesArray={
@@ -88,8 +87,8 @@ public class FirstFragment extends Fragment {
         super.onCreate(bundle);
         Log.e("FF.onCreate", "Run");
 
-        theStartDateString =(String) getArguments().getSerializable("theStartDateString");
-        theEndDateString =(String) getArguments().getSerializable("theEndDateString");
+        values = (SimpleUserValues) getArguments().getSerializable("values");
+
         theCurrentCompany = (String) getArguments().getSerializable("theCurrentCompany");
         theCurrentBenchmark = (String) getArguments().getSerializable("theCurrentBenchmark");
         startingDay = (int) getArguments().getSerializable("startingDay");
@@ -116,8 +115,8 @@ public class FirstFragment extends Fragment {
         final TextView endDateTextView = (TextView) getActivity().findViewById(R.id.first_frag_end_date_text_view);
         TextView companyTextView = (TextView) getActivity().findViewById(R.id.first_frag_company_text_view);
         TextView benchmarkTextView = (TextView) getActivity().findViewById(R.id.first_frag_benchmark_text_view);
-        startDateTextView.setText(theStartDateString);
-        endDateTextView.setText(theEndDateString);
+        startDateTextView.setText(values.getTheStartDateString());
+        endDateTextView.setText(values.getTheEndDateString());
         companyTextView.setText(theCurrentCompany);
         benchmarkTextView.setText(theCurrentBenchmark);
 

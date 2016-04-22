@@ -29,10 +29,10 @@ public class Graph extends View {
         context=context_;
     }
 
-    public void newInstance(UserValues userValues) {
+    public void newInstance(UserValues userValues, SimpleUserValues values) {
 
         final ArrayList<Float> theData;
-        int theCurrentGraph = userValues.getTheCurrentGraph();
+        Integer theCurrentGraph = values.getTheCurrentGraph();
 
         if(theCurrentGraph==2){
             theData=userValues.getStrategyResult();

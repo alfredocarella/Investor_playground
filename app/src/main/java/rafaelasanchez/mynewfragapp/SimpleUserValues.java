@@ -1,14 +1,15 @@
 package rafaelasanchez.mynewfragapp;
 
-import android.content.Context;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by R on 21/04/2016.
  */
-public class SimpleUserValues {
+public class SimpleUserValues implements Serializable {
 
+    private String theStartDateString="";
+    private String theEndDateString="";
 
     private Integer theCurrentFragment=null;
     private Integer theCurrentGraph=null;
@@ -34,6 +35,24 @@ public class SimpleUserValues {
 
 
     //All getters & setters
+    // String
+
+
+    public String getTheEndDateString() {
+        return theEndDateString;
+    }
+
+    public void setTheEndDateString(String theEndDateString) {
+        this.theEndDateString = theEndDateString;
+    }
+
+    public String getTheStartDateString() {
+        return theStartDateString;
+    }
+
+    public void setTheStartDateString(String theStartDateString) {
+        this.theStartDateString = theStartDateString;
+    }
 
     // int
     public Integer getTheCurrentFragment() {
