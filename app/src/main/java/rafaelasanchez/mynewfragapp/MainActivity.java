@@ -1,24 +1,19 @@
 package rafaelasanchez.mynewfragapp;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,16 +32,15 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private SimpleUserValues values;
 
-    private int theCurrentFragment;
+
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
     private ArrayList<Integer> startingDateInfimum=new ArrayList<Integer>();
@@ -57,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean endDateSet=false;
     private boolean companySet=false;
     private boolean benchmarkSet=false;
+    private boolean request2Frag=false;
 
     private String theStartDateString;
     private String theEndDateString;
@@ -73,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     FirstFragment firstFragment;
 
     public static final String myAppKey = "Investor Playground";
-    public static final String THECURRENTFRAGMENT = "theCurrentFragment";
     public static final String THESTARTDATESTRING = "THESTARTDATESTRING";
     public static final String THEENDDATESTRING = "THEENDDATESTRING";
     public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
@@ -95,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
-    private boolean request2Frag=false;
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(FileService.TRANSACTION_DONE);
         registerReceiver(downloadReceiver, intentFilter);
+
     }
 
     @Override
@@ -148,17 +145,17 @@ public class MainActivity extends AppCompatActivity {
     // Methods for loading fragments and updating the different views
 
     private void ChangeFragment(){
-        if(theCurrentFragment==1){
-            theCurrentFragment=2;
+        if(values.getTheCurrentFragment()==1){
+            values.setTheCurrentFragment(2);
         }else{
-            theCurrentFragment=1;
+            values.setTheCurrentFragment(1);
         }
-        userValues.setTheCurrentFragment(theCurrentFragment);
+        userValues.setTheCurrentFragment(values.getTheCurrentFragment());
         putRightFragment();
     }
 
     private void putRightFragment(){
-        if(theCurrentFragment==1){
+        if(values.getTheCurrentFragment()==1){
             put1stFrag();
         }else{
             put2ndFrag();
@@ -188,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle theBundle = new Bundle();
         theBundle.putSerializable("theStartDateString", theStartDateString);
         theBundle.putSerializable("theEndDateString", theEndDateString);
-        theBundle.putSerializable("theCurrentFragment", theCurrentFragment);
+        theBundle.putSerializable("theCurrentFragment", values.getTheCurrentFragment());
         theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
         theBundle.putSerializable("theCurrentBenchmark", theCurrentBenchmark);
         theBundle.putSerializable("startingDay", startingDate.get(0));
@@ -201,13 +198,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onPriceGraphClicked() {
-        if(theCurrentFragment==1) {
-            theCurrentFragment = 2;
-            userValues.setTheCurrentFragment(theCurrentFragment);
+        if(values.getTheCurrentFragment()==1) {
+            values.setTheCurrentFragment(2);
+            userValues.setTheCurrentFragment(values.getTheCurrentFragment());
             put2ndFrag();
         }else{
-            theCurrentFragment = 1;
-            userValues.setTheCurrentFragment(theCurrentFragment);
+            values.setTheCurrentFragment(1);
+            userValues.setTheCurrentFragment(values.getTheCurrentFragment());
             put1stFrag();
         }
     }
@@ -275,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
             String theEndDay = Integer.toString(endingDate.get(0));
             String theEndMonth = Integer.toString(endingDate.get(1));
             String theEndYear = Integer.toString(endingDate.get(2));
+
 
             Intent intent = new Intent(this, FileService.class);
         /*      http://ichart.yahoo.com/table.csv?s=REC.OL&a=0&b=1&c=2000&d=0&e=31&f=2010
@@ -414,12 +412,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            if(theCurrentFragment==2) {
+            if(values.getTheCurrentFragment()==2) {
 
                 graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
                 if(!request2Frag) {
                     userValues.setTheCurrentGraph(1);
+                    values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
                 graph.newInstance(userValues);
@@ -439,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!request2Frag) {
                     userValues.setTheCurrentGraph(1);
+                    values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
                 graph.newInstance(userValues);
@@ -459,37 +459,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-        SimpleUserValues simpleUserValues = SimpleUserValues.newInstance();
-        simpleUserValues.setTheCurrentGraph(userValues.getTheCurrentGraph());
-        simpleUserValues.setTheCurrentFragment(userValues.getTheCurrentFragment());
-        simpleUserValues.setTheBooleans(userValues.getTheBooleans());
-        simpleUserValues.setTheIntegers(userValues.getTheIntegers());
-
-
-        Gson gson = new Gson();
-        Type classType = new TypeToken<SimpleUserValues>() {}.getType();
-        String insertedJSON = gson.toJson(simpleUserValues, classType);
-
-
-        Log.e("insertedJSON  ", insertedJSON);
-
-        if (getSharedPreferences(myAppKey, MODE_PRIVATE).contains("JSON")){
-            Log.e("the saved stuff ", getSharedPreferences(myAppKey, MODE_PRIVATE).getString("JSON", ""));
-            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().remove("JSON").commit();
-            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString("JSON",insertedJSON).commit();
-        }else{
-            getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString("JSON",insertedJSON).commit();
-        }
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -497,16 +466,18 @@ public class MainActivity extends AppCompatActivity {
     private void showStrategy(){
 
         userValues.setArrayList(arrayList);
+        values.setArrayList(arrayList);
 
         Strategy strategy = new Strategy(userValues);
         ArrayList<Float> strategyResult=strategy.getTheResult();
         userValues.setStrategyResult(strategyResult);
-
+        values.setStrategyResult(strategyResult);
 
         FrameLayout strategyContainer =
                 (FrameLayout) findViewById(R.id.strategy_1st_frag_the_outer_container);
 
         userValues.setTheCurrentGraph(2);
+        values.setTheCurrentGraph(2);
         Graph graph = new Graph(this);
         graph.newInstance(userValues);
         View theGraph = graph.getTheGraph();
@@ -711,31 +682,31 @@ public class MainActivity extends AppCompatActivity {
 
     // Method to restore the last values, called from onCreate
     private void restoreSavedValues(){
-
-
-
+        
+        if(getSharedPreferences(myAppKey, MODE_PRIVATE).contains("JSON")) {
+            Gson gson = new Gson();
+            Type classType = new TypeToken<SimpleUserValues>() {}.getType();
+            values = gson.fromJson(
+                    getSharedPreferences(myAppKey, MODE_PRIVATE)
+                            .getString("JSON", "")
+                    , classType
+            );
+        }else{
+            values=SimpleUserValues.newInstance();
+        }
 
 
 
         userValues = new UserValues();
         userValues.newInstance(this);
+        userValues.setTheCurrentFragment(values.getTheCurrentFragment());
+        userValues.setTheCurrentGraph(values.getTheCurrentGraph());
 
 
 
-        if(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT,0)!=0){
-            theCurrentFragment=getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(THECURRENTFRAGMENT, 0);
-        }else{
-            theCurrentFragment=1;
-        }
-        userValues.setTheCurrentFragment(theCurrentFragment);
 
 
 
-        if(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt("theCurrentGraph",0)!=0){
-            userValues.setTheCurrentGraph(getSharedPreferences(myAppKey,MODE_PRIVATE).getInt("theCurrentGraph", 0));
-        }else{
-            userValues.setTheCurrentGraph(1);
-        }
 
         if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains("request2Frag")){
             request2Frag=getSharedPreferences(myAppKey,MODE_PRIVATE).getBoolean("request2Frag", false);
@@ -861,9 +832,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Kill the BroadcastReceiver
+    @Override
+    protected void onStop()
+    {
+        unregisterReceiver(downloadReceiver);
+        super.onStop();
+    }
+
+
     //Save the key variables before dying
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
+
 
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDate.get(0)).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingDate.get(1)).commit();
@@ -876,7 +858,6 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
 
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(THECURRENTFRAGMENT, theCurrentFragment).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THESTARTDATESTRING, theStartDateString).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEENDDATESTRING, theEndDateString).commit();
 
@@ -888,11 +869,35 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putBoolean("request2Frag", request2Frag).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt("theCurrentGraph", userValues.getTheCurrentGraph()).commit();
+
+
+
+        Gson gson = new Gson();
+        Type classType = new TypeToken<SimpleUserValues>() {}.getType();
+        String JSONString;
+
+        values = SimpleUserValues.newInstance();
+
+        values.setTheCurrentFragment(userValues.getTheCurrentFragment());
+        values.setTheCurrentGraph(userValues.getTheCurrentGraph());
+        values.setTheBooleans(userValues.getTheBooleans());
+        values.setTheIntegers(userValues.getTheIntegers());
+        values.setTheDates(userValues.getTheDates());
+        values.setArrayList(userValues.getArrayList());
+        values.setStrategyResult(userValues.getStrategyResult());
 
 
 
 
+
+        JSONString = gson.toJson(values, classType);
+
+        SimpleUserValues simpleUserValues1= gson.fromJson(JSONString,classType);
+        Log.e("simpleUserValues1",".getTheDates() " + simpleUserValues1.getTheDates());
+
+        Log.e("insertedJSON ",JSONString);
+        getSharedPreferences(myAppKey, MODE_PRIVATE).edit()
+                .putString("JSON", JSONString).commit();
 
         super.onSaveInstanceState(outState);
     }

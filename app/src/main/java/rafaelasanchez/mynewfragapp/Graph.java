@@ -41,7 +41,7 @@ public class Graph extends View {
         }
 
         final ArrayList<ArrayList<Integer>> theDates=userValues.getTheDates();
-        final int theCurrentFragment=userValues.getTheCurrentFragment();
+        final Integer theCurrentFragment=userValues.getTheCurrentFragment();
         final FrameLayout theFrameLayout;
         final FrameLayout theFragmentFrame;
 

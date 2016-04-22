@@ -1,6 +1,7 @@
 package rafaelasanchez.mynewfragapp;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class UserValues {
     private ArrayList<Float> arrayList;
     private ArrayList<ArrayList<Integer>> theDates;
     private ArrayList<Float> strategyResult;
-    private int theCurrentFragment;
+    private Integer theCurrentFragment;
 
-    private int theCurrentGraph;
+    private Integer theCurrentGraph;
 
     Context context;
 
@@ -33,6 +34,9 @@ public class UserValues {
 
     public void newInstance(Context context_){
         context=context_;
+
+
+
 
         loadConstants();
 
@@ -74,10 +78,10 @@ public class UserValues {
             //the values themselves:
             if (context.getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                     .contains(theIntegerKeys.get(pos))){
-                theIntegers
-                        .add(pos, context
-                                .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
-                                .getInt(theIntegerKeys.get(pos), -1));
+                    theIntegers
+                            .add(pos, context
+                                    .getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
+                                    .getInt(theIntegerKeys.get(pos), -1));
             } else {
                 theIntegers.add(pos, theIntDefValues.get(pos));
             }
@@ -88,7 +92,7 @@ public class UserValues {
 
 
     public void setTheBooleans(Integer p, boolean value) {
-        this.theBooleans.set(p,value);
+        this.theBooleans.set(p, value);
         context.getSharedPreferences(myAppKey, Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean(theBooleanKeys.get(p), value)
@@ -165,42 +169,44 @@ public class UserValues {
 
         Integer p=0;
 
-        // BUY FIELDS
-        // RSI =Relative Strength Index
-        theBooleanKeys.add(p,"config_buying_RSI_checkbox");
-        theIntegerKeys.add(p, "config_buying_RSI_edit_text");
-        theIntDefValues.add(p,30);
+        if(theBooleanKeys.isEmpty()) {
+            // BUY FIELDS
+            // RSI =Relative Strength Index
+            theBooleanKeys.add(p, "config_buying_RSI_checkbox");
+            theIntegerKeys.add(p, "config_buying_RSI_edit_text");
+            theIntDefValues.add(p, 30);
 
-        // ADX =Average Directional Index
-        p=p+1;
-        theBooleanKeys.add(p,"config_buying_ADX_checkbox");
-        theIntegerKeys.add(p,"config_buying_ADX_edit_text");
-        theIntDefValues.add(p,30);
+            // ADX =Average Directional Index
+            p = p + 1;
+            theBooleanKeys.add(p, "config_buying_ADX_checkbox");
+            theIntegerKeys.add(p, "config_buying_ADX_edit_text");
+            theIntDefValues.add(p, 30);
 
-        // SL=Stop Loss
-        p=p+1;
-        theBooleanKeys.add(p,"config_buying_stop_loss_checkbox");
-        theIntegerKeys.add(p,"config_buying_stop_loss_edit_text");
-        theIntDefValues.add(p,15);
+            // SL=Stop Loss
+            p = p + 1;
+            theBooleanKeys.add(p, "config_buying_stop_loss_checkbox");
+            theIntegerKeys.add(p, "config_buying_stop_loss_edit_text");
+            theIntDefValues.add(p, 15);
 
-        // SELL FIELDS
-        // RSI
-        p=p+1;
-        theBooleanKeys.add(p,"config_selling_RSI_checkbox");
-        theIntegerKeys.add(p,"config_selling_RSI_edit_text");
-        theIntDefValues.add(p,70);
+            // SELL FIELDS
+            // RSI
+            p = p + 1;
+            theBooleanKeys.add(p, "config_selling_RSI_checkbox");
+            theIntegerKeys.add(p, "config_selling_RSI_edit_text");
+            theIntDefValues.add(p, 70);
 
-        // ADX
-        p=p+1;
-        theBooleanKeys.add(p,"config_selling_ADX_checkbox");
-        theIntegerKeys.add(p,"config_selling_ADX_edit_text");
-        theIntDefValues.add(p,20);
+            // ADX
+            p = p + 1;
+            theBooleanKeys.add(p, "config_selling_ADX_checkbox");
+            theIntegerKeys.add(p, "config_selling_ADX_edit_text");
+            theIntDefValues.add(p, 20);
 
-        // SL
-        p=p+1;
-        theBooleanKeys.add(p,"config_selling_stop_loss_checkbox");
-        theIntegerKeys.add(p,"config_selling_stop_loss_edit_text");
-        theIntDefValues.add(p,15);
+            // SL
+            p = p + 1;
+            theBooleanKeys.add(p, "config_selling_stop_loss_checkbox");
+            theIntegerKeys.add(p, "config_selling_stop_loss_edit_text");
+            theIntDefValues.add(p, 15);
+        }
     }
 
 
@@ -221,11 +227,11 @@ public class UserValues {
         this.theDates = theDates;
     }
 
-    public int getTheCurrentFragment() {
+    public Integer getTheCurrentFragment() {
         return theCurrentFragment;
     }
 
-    public void setTheCurrentFragment(int theCurrentFragment) {
+    public void setTheCurrentFragment(Integer theCurrentFragment) {
         this.theCurrentFragment = theCurrentFragment;
     }
 
@@ -238,11 +244,11 @@ public class UserValues {
         this.strategyResult = strategyResult;
     }
 
-    public int getTheCurrentGraph() {
+    public Integer getTheCurrentGraph() {
         return theCurrentGraph;
     }
 
-    public void setTheCurrentGraph(int theCurrentGraph) {
+    public void setTheCurrentGraph(Integer theCurrentGraph) {
         this.theCurrentGraph = theCurrentGraph;
     }
 
