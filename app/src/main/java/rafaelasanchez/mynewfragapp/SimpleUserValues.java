@@ -8,16 +8,19 @@ import java.util.ArrayList;
  */
 public class SimpleUserValues implements Serializable {
 
-    private String theStartDateString="";
-    private String theEndDateString="";
-
+    private Boolean startDateSet=null;
+    private Boolean endDateSet=null;
     private Integer theCurrentFragment=null;
     private Integer theCurrentGraph=null;
+    private String theCurrentCompany="";
+    private String theCurrentBenchmark="";
+    private String theEndDateString="";
+    private String theStartDateString="";
     private ArrayList<Boolean> theBooleans;
     private ArrayList<Integer> theIntegers;
-    private ArrayList<Integer> endingDate = new ArrayList<Integer>();
-    private ArrayList<Integer> startingDate = new ArrayList<Integer>();
-    private ArrayList<Integer> startingDateInfimum=new ArrayList<Integer>();
+    private ArrayList<Integer> endingDate;
+    private ArrayList<Integer> startingDate;
+    private ArrayList<Integer> startingDateInfimum;
     private ArrayList<Float> arrayList;
     private ArrayList<Float> strategyResult;
     private ArrayList<ArrayList<Integer>> theDates;
@@ -35,8 +38,73 @@ public class SimpleUserValues implements Serializable {
 
 
     //All getters & setters
-    // String
 
+    //Boolean
+    public Boolean getEndDateSet() {
+        if(endDateSet==null){
+            endDateSet=false;
+        }
+        return endDateSet;
+    }
+
+    public void setEndDateSet(Boolean endDateSet) {
+        this.endDateSet = endDateSet;
+    }
+
+    public Boolean getStartDateSet() {
+        if(startDateSet==null){
+            startDateSet=false;
+        }
+        return startDateSet;
+    }
+
+    public void setStartDateSet(Boolean startDateSet) {
+        this.startDateSet = startDateSet;
+    }
+
+
+
+    // Integer
+    public Integer getTheCurrentFragment() {
+        if(theCurrentFragment==null) {
+            theCurrentFragment= 1;
+        }
+        return theCurrentFragment;
+    }
+
+    public void setTheCurrentFragment(Integer theCurrentFragment) {
+        this.theCurrentFragment = theCurrentFragment;
+    }
+
+    public Integer getTheCurrentGraph() {
+        if(theCurrentGraph==null) {
+            theCurrentGraph= 1;
+        }
+        return theCurrentGraph;
+    }
+
+    public void setTheCurrentGraph(Integer theCurrentGraph) {
+        this.theCurrentGraph = theCurrentGraph;
+    }
+
+
+
+    // String
+    public String getTheCurrentBenchmark() {
+        return theCurrentBenchmark;
+    }
+
+    public void setTheCurrentBenchmark(String theCurrentBenchmark) {
+        this.theCurrentBenchmark = theCurrentBenchmark;
+    }
+
+    public String getTheCurrentCompany() {
+        return theCurrentCompany;
+    }
+
+    public void setTheCurrentCompany(String theCurrentCompany) {
+        this.theCurrentCompany = theCurrentCompany;
+    }
 
     public String getTheEndDateString() {
         return theEndDateString;
@@ -54,31 +122,6 @@ public class SimpleUserValues implements Serializable {
         this.theStartDateString = theStartDateString;
     }
 
-    // int
-    public Integer getTheCurrentFragment() {
-        if(theCurrentFragment!=null) {
-            return theCurrentFragment;
-        }else {
-            return 1;
-        }
-    }
-
-    public void setTheCurrentFragment(Integer theCurrentFragment) {
-        this.theCurrentFragment = theCurrentFragment;
-    }
-
-    public Integer getTheCurrentGraph() {
-        if(theCurrentGraph!=null) {
-            return theCurrentGraph;
-        }else{
-            return 1;
-        }
-    }
-
-    public void setTheCurrentGraph(Integer theCurrentGraph) {
-        this.theCurrentGraph = theCurrentGraph;
-    }
-
 
 
     // ArrayList<Boolean>
@@ -93,15 +136,13 @@ public class SimpleUserValues implements Serializable {
 
 
     // ArrayList<Integer>
-    public ArrayList<Integer> getTheIntegers() {
-        return theIntegers;
-    }
-
-    public void setTheIntegers(ArrayList<Integer> theIntegers) {
-        this.theIntegers = theIntegers;
-    }
-
     public ArrayList<Integer> getEndingDate() {
+        if(endingDate.isEmpty()){
+            endingDate=new ArrayList<Integer>();
+            endingDate.add(0,-1);
+            endingDate.add(1,-1);
+            endingDate.add(2,-1);
+        }
         return endingDate;
     }
 
@@ -110,6 +151,12 @@ public class SimpleUserValues implements Serializable {
     }
 
     public ArrayList<Integer> getStartingDate() {
+        if(startingDate.isEmpty()) {
+            startingDate=new ArrayList<Integer>();
+            startingDate.add(0,-1);
+            startingDate.add(1,-1);
+            startingDate.add(2,-1);
+        }
         return startingDate;
     }
 
@@ -118,6 +165,12 @@ public class SimpleUserValues implements Serializable {
     }
 
     public ArrayList<Integer> getStartingDateInfimum() {
+        if(startingDateInfimum.isEmpty()){
+            startingDateInfimum=new ArrayList<Integer>();
+            startingDateInfimum.add(0,-1);
+            startingDateInfimum.add(1,-1);
+            startingDateInfimum.add(2,-1);
+        }
         return startingDateInfimum;
     }
 
@@ -125,6 +178,13 @@ public class SimpleUserValues implements Serializable {
         this.startingDateInfimum = startingDateInfimum;
     }
 
+    public ArrayList<Integer> getTheIntegers() {
+        return theIntegers;
+    }
+
+    public void setTheIntegers(ArrayList<Integer> theIntegers) {
+        this.theIntegers = theIntegers;
+    }
 
 
     // ArrayList<Float>

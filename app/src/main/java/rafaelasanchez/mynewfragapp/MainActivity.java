@@ -46,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
     private ArrayList<Integer> startingDateInfimum=new ArrayList<Integer>();
 
-    private boolean requestIndex=false;
-    private boolean requestCompany=false;
-    private boolean startDateSet=false;
-    private boolean endDateSet=false;
-    private boolean companySet=false;
     private boolean benchmarkSet=false;
+    private boolean companySet=false;
+    private boolean endDateSet=false;
+    private boolean startDateSet=false;
     private boolean request2Frag=false;
+    private boolean requestCompany=false;
+    private boolean requestIndex=false;
+
 
     private String theCurrentCompany;
     private String theCurrentBenchmark;
@@ -159,8 +160,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void put1stFrag(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("values",values);
         firstFragment = new FirstFragment();
-        firstFragment.setArguments(bundlelizer());
+        firstFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, firstFragment)
                 .addToBackStack(null)
@@ -175,21 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private Bundle bundlelizer() {
-        //This method puts all the important stuff in a bundle and returns it
-        Bundle theBundle = new Bundle();
-        theBundle.putSerializable("theCurrentFragment", values.getTheCurrentFragment());
-        theBundle.putSerializable("theCurrentCompany", theCurrentCompany);
-        theBundle.putSerializable("theCurrentBenchmark", theCurrentBenchmark);
-        theBundle.putSerializable("startingDay", startingDate.get(0));
-        theBundle.putSerializable("startingMonth",startingDate.get(1));
-        theBundle.putSerializable("startingYear",startingDate.get(2));
-        theBundle.putSerializable("endingDay",endingDate.get(0));
-        theBundle.putSerializable("endingMonth", endingDate.get(1));
-        theBundle.putSerializable("endingYear", endingDate.get(2));
-        theBundle.putSerializable("values", values);
-        return theBundle;
-    }
+
 
     private void onPriceGraphClicked() {
         if(values.getTheCurrentFragment()==1) {
@@ -205,9 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onNewGraph(){
-
         dataIntoArrays();
-
     }
 
 
@@ -567,10 +554,6 @@ public class MainActivity extends AppCompatActivity {
             TextView startDateTextView = (TextView) findViewById(R.id.first_frag_start_date_text_view);
             startDateTextView.setText(dateString);
 
-            firstFragment.setStartingDay(startingDate.get(0));
-            firstFragment.setStartingMonth(startingDate.get(1));
-            firstFragment.setStartingYear(startingDate.get(2));
-
             if(callOnParametersUpdated) {
                 onParametersUpdated(false, false, true, "setStartingDate");
                 //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
@@ -588,7 +571,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(endingDate!=endingDate_){
             endingDate = endingDate_;
+            values.setEndingDate(endingDate);
             endDateSet=true;
+            values.setEndDateSet(true);
 
             int endingMonth_=endingDate.get(1)+1;
             String dateString = endingDate.get(0)+"/"+endingMonth_+"/"+endingDate.get(2);
@@ -681,7 +666,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains("request2Frag")){
-            request2Frag=getSharedPreferences(myAppKey,MODE_PRIVATE).getBoolean("request2Frag", false);
+            request2Frag=getSharedPreferences(myAppKey, MODE_PRIVATE).getBoolean("request2Frag", false);
         }else{
             request2Frag=false;
         }
@@ -726,7 +711,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+/*
 
         if(getSharedPreferences(myAppKey,MODE_PRIVATE).contains(STARTINGDAY)){
             startingDate.add(0,getSharedPreferences(myAppKey,MODE_PRIVATE).getInt(STARTINGDAY, -1));
@@ -781,7 +766,7 @@ public class MainActivity extends AppCompatActivity {
             endingDate.add(2,-1);//calendar.get(Calendar.YEAR);
             endDateSet=false;
         }
-
+*/
 
 
     }

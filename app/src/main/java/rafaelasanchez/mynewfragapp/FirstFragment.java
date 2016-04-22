@@ -89,14 +89,14 @@ public class FirstFragment extends Fragment {
 
         values = (SimpleUserValues) getArguments().getSerializable("values");
 
-        theCurrentCompany = (String) getArguments().getSerializable("theCurrentCompany");
-        theCurrentBenchmark = (String) getArguments().getSerializable("theCurrentBenchmark");
-        startingDay = (int) getArguments().getSerializable("startingDay");
-        startingMonth = (int) getArguments().getSerializable("startingMonth");
-        startingYear = (int) getArguments().getSerializable("startingYear");
-        endingDay = (int) getArguments().getSerializable("endingDay");
-        endingMonth = (int) getArguments().getSerializable("endingMonth");
-        endingYear = (int) getArguments().getSerializable("endingYear");
+        theCurrentCompany = values.getTheCurrentCompany();
+        theCurrentBenchmark = values.getTheCurrentBenchmark();
+        startingDay = values.getStartingDate().get(0);
+        startingMonth = values.getStartingDate().get(1);
+        startingYear = values.getStartingDate().get(2);
+        endingDay = values.getEndingDate().get(0);
+        endingMonth = values.getEndingDate().get(1);
+        endingYear = values.getEndingDate().get(2);
 
 
     }
@@ -207,7 +207,8 @@ public class FirstFragment extends Fragment {
             startingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-            ((MainActivity) getActivity()).setStartingDate(startingDay, startingMonth, startingYear,true);
+            ((MainActivity) getActivity()).setStartingDate(
+                    startingDay, startingMonth, startingYear,true);
 
         }
         if (requestCode==REQUEST_END_DATE){
@@ -218,7 +219,8 @@ public class FirstFragment extends Fragment {
             endingYear = (int)
                     data.getSerializableExtra(DateDialogFragment.SELECTED_YEAR);
 
-            ((MainActivity) getActivity()).setEndingDate(endingDay, endingMonth, endingYear,true);
+            ((MainActivity) getActivity()).setEndingDate(
+                    endingDay, endingMonth, endingYear,true);
 
         }
         if (requestCode==REQUEST_COMPANY){
@@ -238,22 +240,10 @@ public class FirstFragment extends Fragment {
             TextView benchmarkTextView = (TextView) getActivity().findViewById(R.id.first_frag_benchmark_text_view);
             benchmarkTextView.setText(selectedBenchmark);
 
+
         }
     }
 
-
-
-    public void setStartingDay(int startingDay) {
-        this.startingDay = startingDay;
-    }
-
-    public void setStartingMonth(int startingMonth) {
-        this.startingMonth = startingMonth;
-    }
-
-    public void setStartingYear(int startingYear) {
-        this.startingYear = startingYear;
-    }
 
     public void setDateInfimum(ArrayList<Integer> dateInfimum) {
         this.dateInfimum = dateInfimum;
