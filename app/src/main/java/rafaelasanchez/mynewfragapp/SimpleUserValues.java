@@ -16,14 +16,14 @@ public class SimpleUserValues implements Serializable {
     private String theCurrentBenchmark="";
     private String theEndDateString="";
     private String theStartDateString="";
-    private ArrayList<Boolean> theBooleans;
-    private ArrayList<Integer> theIntegers;
-    private ArrayList<Integer> endingDate;
-    private ArrayList<Integer> startingDate;
-    private ArrayList<Integer> startingDateInfimum;
-    private ArrayList<Float> arrayList;
-    private ArrayList<Float> strategyResult;
-    private ArrayList<ArrayList<Integer>> theDates;
+    private ArrayList<Boolean> theBooleans=null;
+    private ArrayList<Integer> theIntegers=null;
+    private ArrayList<Integer> endingDate=null;
+    private ArrayList<Integer> startingDate=null;
+    private ArrayList<Integer> startingDateInfimum=null;
+    private ArrayList<Float> arrayList=null;
+    private ArrayList<Float> strategyResult=null;
+    private ArrayList<ArrayList<Integer>> theDates=null;
 
 
     public SimpleUserValues() {
@@ -137,7 +137,7 @@ public class SimpleUserValues implements Serializable {
 
     // ArrayList<Integer>
     public ArrayList<Integer> getEndingDate() {
-        if(endingDate.isEmpty()){
+        if(endingDate==null){
             endingDate=new ArrayList<Integer>();
             endingDate.add(0,-1);
             endingDate.add(1,-1);
@@ -151,7 +151,7 @@ public class SimpleUserValues implements Serializable {
     }
 
     public ArrayList<Integer> getStartingDate() {
-        if(startingDate.isEmpty()) {
+        if(startingDate==null) {
             startingDate=new ArrayList<Integer>();
             startingDate.add(0,-1);
             startingDate.add(1,-1);
@@ -165,7 +165,7 @@ public class SimpleUserValues implements Serializable {
     }
 
     public ArrayList<Integer> getStartingDateInfimum() {
-        if(startingDateInfimum.isEmpty()){
+        if(startingDateInfimum==null){
             startingDateInfimum=new ArrayList<Integer>();
             startingDateInfimum.add(0,-1);
             startingDateInfimum.add(1,-1);

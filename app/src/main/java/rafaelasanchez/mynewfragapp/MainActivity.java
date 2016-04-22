@@ -247,12 +247,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(isInternetAvailable()) {
 
-            String theDay = Integer.toString(startingDate.get(0));
-            String theMonth = Integer.toString(startingDate.get(1));
-            String theYear = Integer.toString(startingDate.get(2));
-            String theEndDay = Integer.toString(endingDate.get(0));
-            String theEndMonth = Integer.toString(endingDate.get(1));
-            String theEndYear = Integer.toString(endingDate.get(2));
+            String theDay = Integer.toString(values.getStartingDate().get(0));
+            String theMonth = Integer.toString(values.getStartingDate().get(1));
+            String theYear = Integer.toString(values.getStartingDate().get(2));
+            String theEndDay = Integer.toString(values.getEndingDate().get(0));
+            String theEndMonth = Integer.toString(values.getEndingDate().get(1));
+            String theEndYear = Integer.toString(values.getEndingDate().get(2));
 
 
             Intent intent = new Intent(this, FileService.class);
@@ -355,9 +355,9 @@ public class MainActivity extends AppCompatActivity {
             infimumDate.set(infYear, infMonth-1, infDay);
 
             Calendar currentMinDate=Calendar.getInstance();
-            currentMinDate.set( startingDate.get(2),
-                    startingDate.get(1),
-                    startingDate.get(0));
+            currentMinDate.set( values.getStartingDate().get(2),
+                    values.getStartingDate().get(1),
+                    values.getStartingDate().get(0));
 
             long diff = currentMinDate.getTimeInMillis()-infimumDate.getTimeInMillis();
 
@@ -370,11 +370,13 @@ public class MainActivity extends AppCompatActivity {
                         infimumDate.get(Calendar.YEAR),
                         false);
 
-                startingDateInfimum.set(0,startingDate.get(0));
-                startingDateInfimum.set(1,startingDate.get(1));
-                startingDateInfimum.set(2,startingDate.get(2));
+                startingDateInfimum.set(0, values.getStartingDate().get(0));
+                startingDateInfimum.set(1, values.getStartingDate().get(1));
+                startingDateInfimum.set(2, values.getStartingDate().get(2));
 
-                firstFragment.setDateInfimum(startingDateInfimum);
+
+
+                firstFragment.setDateInfimum(values.getStartingDateInfimum());
             }
         }
 
@@ -546,10 +548,11 @@ public class MainActivity extends AppCompatActivity {
         if(startingDate!=startingDate_){
             startingDate = startingDate_;
             values.setStartingDate(startingDate);
+            values.setStartDateSet(true);
             startDateSet=true;
 
-            int startingMonth_=startingDate.get(1)+1;
-            String dateString = startingDate.get(0)+"/"+startingMonth_+"/"+startingDate.get(2);
+            int startingMonth_=values.getStartingDate().get(1)+1;
+            String dateString = values.getStartingDate().get(0)+"/"+startingMonth_+"/"+values.getStartingDate().get(2);
             values.setTheStartDateString(dateString);
             TextView startDateTextView = (TextView) findViewById(R.id.first_frag_start_date_text_view);
             startDateTextView.setText(dateString);
@@ -591,10 +594,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTheCurrentCompany(String theCurrentCompany) {
         this.theCurrentCompany = theCurrentCompany;
-
-        startingDateInfimum.add(0,-1);
-        startingDateInfimum.add(1,-1);
-        startingDateInfimum.add(2,-1);
 
         if(theCurrentCompany.equals("")) {
             theDownloadedData="";
@@ -795,20 +794,6 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
 
 
-
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGDAY, startingDate.get(0)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGMONTH, startingDate.get(1)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(STARTINGYEAR, startingDate.get(2)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGDAY, endingDate.get(0)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGMONTH, endingDate.get(1)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(ENDINGYEAR, endingDate.get(2)).commit();
-
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_0, startingDateInfimum.get(0)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_1, startingDateInfimum.get(1)).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putInt(INFIMUM_2, startingDateInfimum.get(2)).commit();
-
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTCOMPANY, theCurrentCompany).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THECURRENTBENCHMARK, theCurrentBenchmark).commit();
 
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
