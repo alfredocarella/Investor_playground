@@ -39,8 +39,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     public SimpleUserValues values;
-    public UserValues userValues;
-
 
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
@@ -54,30 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean requestCompany=false;
     private boolean requestIndex=false;
 
-
-    private String theCurrentBenchmark;
-    private String theCurrentCompany;
-    private String theDownloadedData;
-    private String theDownloadedIndexData;
-
     private ArrayList<Float> arrayList = new ArrayList<Float>();
     private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
     private ArrayList<ArrayList<Integer>> theDates=new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> theDatesBenchmark=new ArrayList<ArrayList<Integer>>();
 
     FirstFragment firstFragment;
-
-    public static final String myAppKey = "Investor Playground";
-    public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
-    public static final String THECURRENTBENCHMARK = "THECURRENTBENCHMARK";
-
-    public static final String THEDOWNLOADEDDATA = "theDownloadedData";
-    public static final String THEDOWNLOADEDINDEXDATA = "theDownloadedIndexData";
-
-    private FrameLayout graphContainer;
-    private FrameLayout graphContainer2;
-
-
 
 
     @Override
@@ -137,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             values.setTheCurrentFragment(1);
         }
-        userValues.setTheCurrentFragment(values.getTheCurrentFragment());
         putRightFragment();
     }
 
@@ -173,11 +152,9 @@ public class MainActivity extends AppCompatActivity {
     private void onPriceGraphClicked() {
         if(values.getTheCurrentFragment()==1) {
             values.setTheCurrentFragment(2);
-            userValues.setTheCurrentFragment(values.getTheCurrentFragment());
             put2ndFrag();
         }else{
             values.setTheCurrentFragment(1);
-            userValues.setTheCurrentFragment(values.getTheCurrentFragment());
             put1stFrag();
         }
     }
@@ -253,9 +230,9 @@ public class MainActivity extends AppCompatActivity {
             String theURL1stPart = "http://ichart.yahoo.com/table.csv?s=";
             String ticker="";
             if (requestIndex) {
-                ticker = theCurrentBenchmark;
+                ticker = values.getTheCurrentBenchmark();
             } else if(requestCompany) {
-                ticker = theCurrentCompany;
+                ticker = values.getTheCurrentCompany();
             }
             if(!ticker.equals("")) {
                 String theURLcomplete = theURL1stPart + ticker
@@ -297,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (requestIndex) {
-                theDownloadedIndexData = sb.toString();
+                values.setTheDownloadedIndexData(sb.toString());
                 requestIndex = false;
                 if(requestCompany) {
                     startFileService("getFileContents");
@@ -305,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                     dataIntoArrays();
                 }
             } else if(requestCompany) {
-                theDownloadedData = sb.toString();
+                values.setTheDownloadedData(sb.toString());
                 requestCompany=false;
                 dataIntoArrays();
             }
@@ -323,18 +300,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void dataIntoArrays(){
-        if (!theDownloadedIndexData.equals("")) {
-            DataReducer dataReducerIndex = new DataReducer(theDownloadedIndexData);
+        if (!values.getTheDownloadedIndexData().equals("")) {
+            DataReducer dataReducerIndex = new DataReducer(values.getTheDownloadedIndexData());
             arrayListIndex = dataReducerIndex.getTheArray();
             theDatesBenchmark = dataReducerIndex.getTheDates();
         }
-        if(!theDownloadedData.equals("")) {
-            DataReducer dataReducer= new DataReducer(theDownloadedData);
+        if(!values.getTheDownloadedData().equals("")) {
+            DataReducer dataReducer= new DataReducer(values.getTheDownloadedData());
             arrayList = dataReducer.getTheArray();
             theDates = dataReducer.getTheDates();
 
-            userValues.setArrayList(arrayList);
-            userValues.setTheDates(theDates);
+            values.setArrayList(arrayList);
+            values.setTheDates(theDates);
 
             int nItems=theDates.get(0).size()-1;
             int infDay =theDates.get(0).get(nItems);
@@ -364,9 +341,8 @@ public class MainActivity extends AppCompatActivity {
                 startingDateInfimum.set(1, values.getStartingDate().get(1));
                 startingDateInfimum.set(2, values.getStartingDate().get(2));
 
+                values.setStartingDateInfimum(startingDateInfimum);
 
-
-                firstFragment.setDateInfimum(values.getStartingDateInfimum());
             }
         }
 
@@ -378,16 +354,11 @@ public class MainActivity extends AppCompatActivity {
     // Plot the price data
 
     private void plotStuff(){
-        if(!theDownloadedData.equals("")) {
-
-//            Log.e("plotStuff", "theDownloadedData.length()= " + String.valueOf(theDownloadedData.length()));
-
-
-
+        if(!values.getTheDownloadedData().equals("")) {
 
             if(values.getTheCurrentFragment()==2) {
 
-                graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
+                FrameLayout graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
                 if(!request2Frag) {
                     values.setTheCurrentGraph(1);
@@ -406,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
 
             }else{
 
-                graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
+                FrameLayout graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
                 if(!request2Frag) {
                     values.setTheCurrentGraph(1);
@@ -436,12 +407,10 @@ public class MainActivity extends AppCompatActivity {
     //strategy
     private void showStrategy(){
 
-        userValues.setArrayList(arrayList);
         values.setArrayList(arrayList);
 
         Strategy strategy = new Strategy(values);
         ArrayList<Float> strategyResult=strategy.getTheResult();
-        userValues.setStrategyResult(strategyResult);
         values.setStrategyResult(strategyResult);
 
         FrameLayout strategyContainer =
@@ -469,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
 
         View outer_container = findViewById(R.id.the_stats);
 
-        if (companySet&&!theDownloadedData.equals("")) {
+        if (companySet&&!values.getTheDownloadedData().equals("")) {
             outer_container.setVisibility(View.VISIBLE);
 
             DataCruncher dataCruncher = new DataCruncher(
@@ -491,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
-            if (benchmarkSet && !theDownloadedIndexData.equals("")) {
+            if (benchmarkSet && !values.getTheDownloadedIndexData().equals("")) {
 
                 theBenchmarkStats.setVisibility(View.VISIBLE);
 
@@ -583,11 +552,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTheCurrentCompany(String theCurrentCompany) {
-        this.theCurrentCompany = theCurrentCompany;
         values.setTheCurrentCompany(theCurrentCompany);
 
-        if(theCurrentCompany.equals("")) {
-            theDownloadedData="";
+        if(values.getTheCurrentCompany().equals("")) {
+            values.setTheDownloadedData("");
             companySet = false;
             requestCompany=false;
             FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
@@ -608,11 +576,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTheCurrentBenchmark(String theCurrentBenchmark) {
-        this.theCurrentBenchmark = theCurrentBenchmark;
-        if(theCurrentBenchmark.equals("")) {
+        values.setTheCurrentBenchmark(theCurrentBenchmark);
+        if(values.getTheCurrentBenchmark().equals("")) {
             benchmarkSet = false;
             requestIndex = false;
-            theDownloadedIndexData="";
+            values.setTheDownloadedIndexData("");
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
             theBenchmarkStats.setVisibility(View.GONE);
         }else{
@@ -631,21 +599,17 @@ public class MainActivity extends AppCompatActivity {
     // Method to restore the last values, called from onCreate
     private void restoreSavedValues(){
         
-        if(getSharedPreferences(myAppKey, MODE_PRIVATE).contains("JSON")) {
+        if(getSharedPreferences(SimpleUserValues.getMyAppKey(), MODE_PRIVATE).contains("JSON")) {
             Gson gson = new Gson();
             Type classType = new TypeToken<SimpleUserValues>() {}.getType();
             values = gson.fromJson(
-                    getSharedPreferences(myAppKey, MODE_PRIVATE)
+                    getSharedPreferences(SimpleUserValues.getMyAppKey(), MODE_PRIVATE)
                             .getString("JSON", "")
                     , classType
             );
         }else{
             values=SimpleUserValues.newInstance();
         }
-
-        userValues = new UserValues();
-        userValues.newInstance(this);
-        userValues.setTheCurrentFragment(values.getTheCurrentFragment());
 
     }
 
@@ -659,10 +623,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Kill the BroadcastReceiver
+    // Kill the BroadcastReceiver to avoid seeing an error message
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         unregisterReceiver(downloadReceiver);
         super.onStop();
     }
@@ -676,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
         Type classType = new TypeToken<SimpleUserValues>() {}.getType();
 
         String JSONString= gson.toJson(values, classType);
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit()
+        getSharedPreferences(SimpleUserValues.getMyAppKey(), MODE_PRIVATE).edit()
                 .putString("JSON", JSONString).commit();
 
         super.onSaveInstanceState(outState);

@@ -98,7 +98,6 @@ public class FirstFragment extends Fragment {
         endingMonth = values.getEndingDate().get(1);
         endingYear = values.getEndingDate().get(2);
 
-
     }
 
     @Override
@@ -132,10 +131,10 @@ public class FirstFragment extends Fragment {
             public void onClick(View v) {
 
                 Calendar endingDate=Calendar.getInstance();
-                endingDate.set(endingYear,endingMonth,endingDay);
+                endingDate.set(endingYear, endingMonth, endingDay);
                 endingDate.add(Calendar.MONTH, -1);
 
-                dateInfimum= ((MainActivity) getActivity()).getStartingDateInfimum();
+                dateInfimum = ((MainActivity) getActivity()).values.getStartingDateInfimum();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 DateDialogFragment dateDialogFragment = DateDialogFragment
@@ -244,10 +243,6 @@ public class FirstFragment extends Fragment {
         }
     }
 
-
-    public void setDateInfimum(ArrayList<Integer> dateInfimum) {
-        this.dateInfimum = dateInfimum;
-    }
 
 
 
