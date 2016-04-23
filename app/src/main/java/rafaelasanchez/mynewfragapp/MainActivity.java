@@ -43,19 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
 
-    private boolean benchmarkSet=false;
-    private boolean companySet=false;
-    private boolean endDateSet=false;
-    private boolean startDateSet=false;
-    private boolean request2Frag=false;
-    private boolean requestCompany=false;
-    private boolean requestIndex=false;
-
-    private ArrayList<Float> arrayList = new ArrayList<Float>();
-    private ArrayList<Float> arrayListIndex = new ArrayList<Float>();
-    private ArrayList<ArrayList<Integer>> theDates=new ArrayList<ArrayList<Integer>>();
-    private ArrayList<ArrayList<Integer>> theDatesBenchmark=new ArrayList<ArrayList<Integer>>();
-
     FirstFragment firstFragment;
 
 
@@ -170,11 +157,11 @@ public class MainActivity extends AppCompatActivity {
                                      String callingMethod){
 
 
-        Log.e("onParametersUpdated", "companySet " + String.valueOf(companySet) +  ",  startDateSet " + String.valueOf(startDateSet) + ";  endDateSet " + String.valueOf(endDateSet) + "  ; callingMethod: " + callingMethod);
+        Log.e("onParametersUpdated", "companySet " + String.valueOf(values.getCompanySet()) +  ",  startDateSet " + String.valueOf(values.getStartDateSet()) + ";  endDateSet " + String.valueOf(values.getEndDateSet()) + "  ; callingMethod: " + callingMethod);
 
-        if(companySet&&(companyChanged||datesChanged)&&!benchmarkChanged){
+        if(values.getCompanySet()&&(companyChanged||datesChanged)&&!benchmarkChanged){
             // if only the company has been selected, add some random dates to speed up the user experience
-            if(!startDateSet&&!endDateSet){
+            if(!values.getStartDateSet()&&!values.getEndDateSet()){
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
 
@@ -189,15 +176,15 @@ public class MainActivity extends AppCompatActivity {
                         calendar.get(Calendar.YEAR),
                         false);
             }
-            if(companySet&&startDateSet&&endDateSet){
-                requestCompany=true;
-                requestIndex=benchmarkSet;
+            if(values.getCompanySet()&&values.getStartDateSet()&&values.getEndDateSet()){
+                values.setRequestCompany(true);
+                values.setRequestIndex(values.getBenchmarkSet());
                 startFileService("onParametersUpdated");
             }
 
-        }else if(benchmarkChanged&&companySet&&startDateSet&&endDateSet){
-            requestCompany=false;
-            requestIndex=true;
+        }else if(benchmarkChanged&&values.getCompanySet()&&values.getStartDateSet()&&values.getEndDateSet()){
+            values.setRequestCompany(false);
+            values.setRequestIndex(true);
             startFileService("onParametersUpdated");
         }
 
@@ -228,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
 
             String theURL1stPart = "http://ichart.yahoo.com/table.csv?s=";
             String ticker="";
-            if (requestIndex) {
+            if (values.getRequestIndex()) {
                 ticker = values.getTheCurrentBenchmark();
-            } else if(requestCompany) {
+            } else if(values.getRequestCompany()) {
                 ticker = values.getTheCurrentCompany();
             }
             if(!ticker.equals("")) {
@@ -272,17 +259,17 @@ public class MainActivity extends AppCompatActivity {
                 sb.append(line).append('\n');
             }
 
-            if (requestIndex) {
+            if (values.getRequestIndex()) {
                 values.setTheDownloadedIndexData(sb.toString());
-                requestIndex = false;
-                if(requestCompany) {
+                values.setRequestIndex(false);
+                if(values.getRequestCompany()) {
                     startFileService("getFileContents");
                 }else{
                     dataIntoArrays();
                 }
-            } else if(requestCompany) {
+            } else if(values.getRequestCompany()) {
                 values.setTheDownloadedData(sb.toString());
-                requestCompany=false;
+                values.setRequestCompany(false);
                 dataIntoArrays();
             }
 
@@ -301,21 +288,19 @@ public class MainActivity extends AppCompatActivity {
     private void dataIntoArrays(){
         if (!values.getTheDownloadedIndexData().equals("")) {
             DataReducer dataReducerIndex = new DataReducer(values.getTheDownloadedIndexData());
-            arrayListIndex = dataReducerIndex.getTheArray();
-            theDatesBenchmark = dataReducerIndex.getTheDates();
+            values.setArrayListIndex(dataReducerIndex.getTheArray());
+            values.setTheDatesBenchmark(dataReducerIndex.getTheDates());
         }
         if(!values.getTheDownloadedData().equals("")) {
             DataReducer dataReducer= new DataReducer(values.getTheDownloadedData());
-            arrayList = dataReducer.getTheArray();
-            theDates = dataReducer.getTheDates();
 
-            values.setArrayList(arrayList);
-            values.setTheDates(theDates);
+            values.setArrayList(dataReducer.getTheArray());
+            values.setTheDates(dataReducer.getTheDates());
 
-            int nItems=theDates.get(0).size()-1;
-            int infDay =theDates.get(0).get(nItems);
-            int infMonth =theDates.get(1).get(nItems);
-            int infYear =theDates.get(2).get(nItems);
+            int nItems=values.getTheDates().get(0).size()-1;
+            int infDay =values.getTheDates().get(0).get(nItems);
+            int infMonth =values.getTheDates().get(1).get(nItems);
+            int infYear =values.getTheDates().get(2).get(nItems);
 
             Calendar infimumDate = Calendar.getInstance();
             infimumDate.set(infYear, infMonth-1, infDay);
@@ -355,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FrameLayout graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
-                if(!request2Frag) {
+                if(!values.getRequest2Frag()) {
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
@@ -365,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        request2Frag=false;
+                        values.setRequest2Frag(false);
                         onPriceGraphClicked();
                     }
                 });
@@ -374,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FrameLayout graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
-                if(!request2Frag) {
+                if(!values.getRequest2Frag()) {
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
@@ -384,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        request2Frag=true;
+                        values.setRequest2Frag(true);
                         onPriceGraphClicked();
                     }
                 });
@@ -402,8 +387,6 @@ public class MainActivity extends AppCompatActivity {
     //strategy
     private void showStrategy(){
 
-        values.setArrayList(arrayList);
-
         Strategy strategy = new Strategy(values);
         ArrayList<Float> strategyResult=strategy.getTheResult();
         values.setStrategyResult(strategyResult);
@@ -420,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         strategyContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request2Frag=true;
+                values.setRequest2Frag(true);
                 onPriceGraphClicked();
             }
         });
@@ -433,14 +416,14 @@ public class MainActivity extends AppCompatActivity {
 
         View outer_container = findViewById(R.id.the_stats);
 
-        if (companySet&&!values.getTheDownloadedData().equals("")) {
+        if (values.getCompanySet()&&!values.getTheDownloadedData().equals("")) {
             outer_container.setVisibility(View.VISIBLE);
 
             DataCruncher dataCruncher = new DataCruncher(
-                    arrayList,
-                    arrayListIndex,
-                    theDates,
-                    theDatesBenchmark);
+                    values.getArrayList(),
+                    values.getArrayListIndex(),
+                    values.getTheDates(),
+                    values.getTheDatesBenchmark());
 
 
             DecimalFormat thePrecision = new DecimalFormat("0.00");
@@ -455,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
-            if (benchmarkSet && !values.getTheDownloadedIndexData().equals("")) {
+            if (values.getBenchmarkSet() && !values.getTheDownloadedIndexData().equals("")) {
 
                 theBenchmarkStats.setVisibility(View.VISIBLE);
 
@@ -503,7 +486,6 @@ public class MainActivity extends AppCompatActivity {
             startingDate = startingDate_;
             values.setStartingDate(startingDate);
             values.setStartDateSet(true);
-            startDateSet=true;
 
             int startingMonth_=values.getStartingDate().get(1)+1;
             String dateString = values.getStartingDate().get(0)+"/"+startingMonth_+"/"+values.getStartingDate().get(2);
@@ -529,7 +511,6 @@ public class MainActivity extends AppCompatActivity {
         if(endingDate!=endingDate_){
             endingDate = endingDate_;
             values.setEndingDate(endingDate);
-            endDateSet=true;
             values.setEndDateSet(true);
 
             int endingMonth_=endingDate.get(1)+1;
@@ -551,8 +532,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(values.getTheCurrentCompany().equals("")) {
             values.setTheDownloadedData("");
-            companySet = false;
-            requestCompany=false;
+            values.setCompanySet(false);
+            values.setRequestCompany(false);
             FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
             thePriceGraph.setVisibility(View.GONE);
 
@@ -563,8 +544,8 @@ public class MainActivity extends AppCompatActivity {
             outer_container.setVisibility(View.GONE);
 
         }else{
-            companySet = true;
-            requestCompany=true;
+            values.setCompanySet(true);
+            values.setRequestCompany(true);
             onParametersUpdated(true, false, false, "setTheCurrentCompany");
             //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
         }
@@ -573,14 +554,14 @@ public class MainActivity extends AppCompatActivity {
     public void setTheCurrentBenchmark(String theCurrentBenchmark) {
         values.setTheCurrentBenchmark(theCurrentBenchmark);
         if(values.getTheCurrentBenchmark().equals("")) {
-            benchmarkSet = false;
-            requestIndex = false;
+            values.setBenchmarkSet(false);
+            values.setRequestIndex(false);
             values.setTheDownloadedIndexData("");
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
             theBenchmarkStats.setVisibility(View.GONE);
         }else{
-            benchmarkSet = true;
-            requestIndex = true;
+            values.setBenchmarkSet(true);
+            values.setRequestIndex(true);
             onParametersUpdated(false,true,false,"setTheCurrentBenchmark");
             //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
         }
