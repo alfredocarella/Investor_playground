@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Integer> startingDate = new ArrayList<Integer>();
     private ArrayList<Integer> endingDate = new ArrayList<Integer>();
-    private ArrayList<Integer> startingDateInfimum=new ArrayList<Integer>();
 
     private boolean benchmarkSet=false;
     private boolean companySet=false;
@@ -337,11 +336,7 @@ public class MainActivity extends AppCompatActivity {
                         infimumDate.get(Calendar.YEAR),
                         false);
 
-                startingDateInfimum.set(0, values.getStartingDate().get(0));
-                startingDateInfimum.set(1, values.getStartingDate().get(1));
-                startingDateInfimum.set(2, values.getStartingDate().get(2));
-
-                values.setStartingDateInfimum(startingDateInfimum);
+                values.setStartingDateInfimum(values.getStartingDate());
 
             }
         }
@@ -529,7 +524,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> endingDate_ = new ArrayList<Integer>();
         endingDate_.add(0,day_);
         endingDate_.add(1,month_);
-        endingDate_.add(2,year_);
+        endingDate_.add(2, year_);
 
         if(endingDate!=endingDate_){
             endingDate = endingDate_;
@@ -591,9 +586,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public ArrayList<Integer> getStartingDateInfimum() {
-        return startingDateInfimum;
-    }
 
 
     // Method to restore the last values, called from onCreate
