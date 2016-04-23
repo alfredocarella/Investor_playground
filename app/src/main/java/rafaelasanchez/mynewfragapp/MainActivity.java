@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
         userValues.setArrayList(arrayList);
         values.setArrayList(arrayList);
 
-        Strategy strategy = new Strategy(userValues);
+        Strategy strategy = new Strategy(values);
         ArrayList<Float> strategyResult=strategy.getTheResult();
         userValues.setStrategyResult(strategyResult);
         values.setStrategyResult(strategyResult);

@@ -10,19 +10,15 @@ import java.util.ArrayList;
 public class Strategy {
 
     private ArrayList<Float> theResult = new ArrayList<>();
-    private Integer period;
-    private Float fee;
-    private ArrayList<Boolean> theBooleans;
-    private ArrayList<Integer> theIntegers;
-    private ArrayList<Float> arrayList;
 
-    public Strategy(UserValues theInput) {
 
-        period=theInput.getPeriod();
-        fee=theInput.getFee();
-        theIntegers=theInput.getTheIntegers();
-        theBooleans=theInput.getTheBooleans();
-        arrayList=theInput.getArrayList();
+    public Strategy(SimpleUserValues values) {
+
+        Integer period=values.getPeriod();
+        Float fee=values.getFee();
+        ArrayList<Boolean> theBooleans=values.getTheBooleans();
+        ArrayList<Integer> theIntegers=values.getTheIntegers();
+        ArrayList<Float> arrayList=values.getArrayList();
 
 
         int n=arrayList.size();
@@ -68,13 +64,13 @@ public class Strategy {
 
     }
 
-    private Float mean(ArrayList<Float> theInput){
+    private Float mean(ArrayList<Float> values){
 
         //Arithmetic mean
-        int n = theInput.size();
+        int n = values.size();
         Float result=0.f;
         for(int i=0;i<=n-1;i++){
-            result=result+theInput.get(i);
+            result=result+values.get(i);
         }
         return result/n;
 
