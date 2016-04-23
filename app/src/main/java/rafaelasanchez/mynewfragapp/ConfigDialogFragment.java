@@ -37,15 +37,15 @@ public class ConfigDialogFragment extends DialogFragment {
         View theView = inflater.inflate(R.layout.config_layout,container);
         getDialog().setTitle("Settings");
 
-        //Retrieve constants and last/default values from UserValues
-        theBooleans=((MainActivity)getActivity()).userValues.getTheBooleans();
-        theIntegers=((MainActivity)getActivity()).userValues.getTheIntegers();
+        //Retrieve constants and last/default values from values
+        theBooleans=((MainActivity)getActivity()).values.getTheBooleans();
+        theIntegers=((MainActivity)getActivity()).values.getTheIntegers();
+        period = ((MainActivity)getActivity()).values.getPeriod();
+        fee = ((MainActivity)getActivity()).values.getFee();
 
 
         // period field
-
         final EditText period_ET  = (EditText) theView.findViewById(R.id.config_period_edit_text);
-        period = ((MainActivity)getActivity()).userValues.getPeriod();
         period_ET.setText(String.valueOf(period));
         period_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,7 +56,7 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToInteger(s) != null) {
                     period = charToInteger(s);
-                    ((MainActivity) getActivity()).userValues.setPeriod(period);
+                    ((MainActivity) getActivity()).values.setPeriod(period);
                 }
             }
 
@@ -69,7 +69,6 @@ public class ConfigDialogFragment extends DialogFragment {
         // fee field
 
         final EditText fee_ET = (EditText) theView.findViewById(R.id.config_fees_edit_text);
-        fee = ((MainActivity)getActivity()).userValues.getFee();
         fee_ET.setText(String.valueOf(fee));
         fee_ET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,7 +79,7 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToFloat(s) != null) {
                     fee = charToFloat(s);
-                    ((MainActivity)getActivity()).userValues.setFee(fee);
+                    ((MainActivity)getActivity()).values.setFee(fee);
                 }
             }
 
@@ -178,8 +177,8 @@ public class ConfigDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (charToInteger(s) != null) {
                     theIntegers.set(thePosition, charToInteger(s));
-                    ((MainActivity)getActivity()).userValues
-                            .setTheIntegers(thePosition, theIntegers.get(thePosition));
+                    ((MainActivity)getActivity()).values
+                            .setTheIntegers(thePosition,theIntegers.get(thePosition));
                 }
             }
 
@@ -195,13 +194,11 @@ public class ConfigDialogFragment extends DialogFragment {
                               CheckBox theCheckBox,
                               final EditText theEditText){
 
-
         theCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 theBooleans.set(thePosition, isChecked);
-                ((MainActivity) getActivity()).userValues
-                        .setTheBooleans(thePosition, isChecked);
+                ((MainActivity) getActivity()).values.setTheBooleans(thePosition,isChecked);
                 theEditText.setEnabled(isChecked);
             }
         });

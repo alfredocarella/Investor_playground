@@ -29,19 +29,19 @@ public class Graph extends View {
         context=context_;
     }
 
-    public void newInstance(UserValues userValues, SimpleUserValues values) {
+    public void newInstance(SimpleUserValues values) {
 
         final ArrayList<Float> theData;
         Integer theCurrentGraph = values.getTheCurrentGraph();
 
         if(theCurrentGraph==2){
-            theData=userValues.getStrategyResult();
+            theData=values.getStrategyResult();
         }else{
-            theData=userValues.getArrayList();
+            theData=values.getArrayList();
         }
 
-        final ArrayList<ArrayList<Integer>> theDates=userValues.getTheDates();
-        final Integer theCurrentFragment=userValues.getTheCurrentFragment();
+        final ArrayList<ArrayList<Integer>> theDates=values.getTheDates();
+        final Integer theCurrentFragment=values.getTheCurrentFragment();
         final FrameLayout theFrameLayout;
         final FrameLayout theFragmentFrame;
 

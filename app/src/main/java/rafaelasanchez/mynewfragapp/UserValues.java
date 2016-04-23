@@ -83,21 +83,21 @@ public class UserValues {
 
     public static ArrayList<Integer> getTheIntDefValues() {
         if(theIntDefValues.isEmpty()){
-            loadConstants();
+
         }
         return theIntDefValues;
     }
 
     public static ArrayList<String> getTheBooleanKeys() {
         if(theBooleanKeys.isEmpty()){
-            loadConstants();
+
         }
         return theBooleanKeys;
     }
 
     public static ArrayList<String> getTheIntegerKeys() {
         if(theIntegerKeys.isEmpty()){
-            loadConstants();
+
         }
         return theIntegerKeys;
     }

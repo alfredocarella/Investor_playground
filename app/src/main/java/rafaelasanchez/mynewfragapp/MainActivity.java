@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SimpleUserValues values;
+    public SimpleUserValues values;
     public UserValues userValues;
 
 
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
-                graph.newInstance(userValues,values);
+                graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
                 graphContainer2.addView(theGraph);
                 graphContainer2.setOnClickListener(new View.OnClickListener() {
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                     values.setTheCurrentGraph(1);
                 }
                 Graph graph = new Graph(this);
-                graph.newInstance(userValues,values);
+                graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
                 graphContainer.addView(theGraph);
                 graphContainer.setOnClickListener(new View.OnClickListener() {
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
 
         values.setTheCurrentGraph(2);
         Graph graph = new Graph(this);
-        graph.newInstance(userValues,values);
+        graph.newInstance(values);
         View theGraph = graph.getTheGraph();
         strategyContainer.addView(theGraph);
 
