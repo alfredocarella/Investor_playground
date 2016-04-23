@@ -161,6 +161,11 @@ public class SimpleUserValues implements Serializable {
     }
 
     public void setTheCurrentBenchmark(String theCurrentBenchmark) {
+        if(theCurrentBenchmark.equals("")){
+            benchmarkSet=false;
+        }else{
+            benchmarkSet=true;
+        }
         this.theCurrentBenchmark = theCurrentBenchmark;
     }
 
@@ -169,6 +174,11 @@ public class SimpleUserValues implements Serializable {
     }
 
     public void setTheCurrentCompany(String theCurrentCompany) {
+        if(theCurrentCompany.equals("")){
+            companySet=false;
+        }else{
+            companySet=true;
+        }
         this.theCurrentCompany = theCurrentCompany;
     }
 
