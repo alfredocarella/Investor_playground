@@ -643,7 +643,6 @@ public class MainActivity extends AppCompatActivity {
             values=SimpleUserValues.newInstance();
         }
 
-
         userValues = new UserValues();
         userValues.newInstance(this);
         userValues.setTheCurrentFragment(values.getTheCurrentFragment());
@@ -673,39 +672,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-
-
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDDATA, theDownloadedData).commit();
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putString(THEDOWNLOADEDINDEXDATA, theDownloadedIndexData).commit();
-
-
-        getSharedPreferences(myAppKey, MODE_PRIVATE).edit().putBoolean("request2Frag", request2Frag).commit();
-
-
-
         Gson gson = new Gson();
         Type classType = new TypeToken<SimpleUserValues>() {}.getType();
-        String JSONString;
 
-        values = SimpleUserValues.newInstance();
-
-        values.setTheCurrentFragment(userValues.getTheCurrentFragment());
-        values.setTheBooleans(userValues.getTheBooleans());
-        values.setTheIntegers(userValues.getTheIntegers());
-        values.setTheDates(userValues.getTheDates());
-        values.setArrayList(userValues.getArrayList());
-        values.setStrategyResult(userValues.getStrategyResult());
-
-
-
-
-
-        JSONString = gson.toJson(values, classType);
-
-        SimpleUserValues simpleUserValues1= gson.fromJson(JSONString,classType);
-        Log.e("simpleUserValues1",".getTheDates() " + simpleUserValues1.getTheDates());
-
-        Log.e("insertedJSON ",JSONString);
+        String JSONString= gson.toJson(values, classType);
         getSharedPreferences(myAppKey, MODE_PRIVATE).edit()
                 .putString("JSON", JSONString).commit();
 

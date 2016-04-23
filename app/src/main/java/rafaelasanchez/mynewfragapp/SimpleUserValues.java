@@ -15,15 +15,17 @@ public class SimpleUserValues implements Serializable {
     private Boolean requestCompany=null;
     private Boolean requestIndex=null;
     private Boolean startDateSet=null;
+    private Integer period=null;
     private Integer theCurrentFragment=null;
     private Integer theCurrentGraph=null;
+    public static final String myAppKey = "Investor Playground";
     private String theCurrentBenchmark="";
     private String theCurrentCompany="";
     private String theDownloadedData="";
     private String theDownloadedIndexData="";
     private String theEndDateString="";
     private String theStartDateString="";
-    public static final String myAppKey = "Investor Playground";
+    private Float fee=null;
     private ArrayList<Boolean> theBooleans=null;
     private ArrayList<Integer> theIntegers=null;
     private ArrayList<Integer> endingDate=null;
@@ -42,7 +44,6 @@ public class SimpleUserValues implements Serializable {
     public static SimpleUserValues newInstance(){
         return new SimpleUserValues();
     }
-
 
 
 
@@ -131,6 +132,17 @@ public class SimpleUserValues implements Serializable {
 
 
     // Integer
+    public Integer getPeriod() {
+        if(period==null){
+            period=14;
+        }
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
+    }
+
     public Integer getTheCurrentFragment() {
         if(theCurrentFragment==null) {
             theCurrentFragment= 1;
@@ -156,6 +168,10 @@ public class SimpleUserValues implements Serializable {
 
 
     // String
+    public static String getMyAppKey() {
+        return myAppKey;
+    }
+
     public String getTheCurrentBenchmark() {
         return theCurrentBenchmark;
     }
@@ -214,19 +230,41 @@ public class SimpleUserValues implements Serializable {
         this.theStartDateString = theStartDateString;
     }
 
-    public static String getMyAppKey() {
-        return myAppKey;
+
+
+    // Float
+    public Float getFee() {
+        if(fee==null){
+            fee=0.1f;
+        }
+        return fee;
+    }
+
+    public void setFee(Float fee) {
+        this.fee = fee;
     }
 
 
 
     // ArrayList<Boolean>
     public ArrayList<Boolean> getTheBooleans() {
+        if(theBooleans==null){
+            theBooleans=new ArrayList<>();
+            theBooleans.add(0,true);
+            theBooleans.add(1,false);
+            theBooleans.add(2,false);
+            theBooleans.add(3,true);
+            theBooleans.add(4,false);
+            theBooleans.add(5,false);
+        }
         return theBooleans;
     }
 
-    public void setTheBooleans(ArrayList<Boolean> theBooleans) {
-        this.theBooleans = theBooleans;
+    public void setTheBooleans(Integer position, Boolean value) {
+        if(theBooleans==null){
+            theBooleans=getTheBooleans();
+        }
+        theBooleans.set(position,value);
     }
 
 
@@ -275,12 +313,25 @@ public class SimpleUserValues implements Serializable {
     }
 
     public ArrayList<Integer> getTheIntegers() {
+        if(theIntegers==null){
+            theIntegers = new ArrayList<>();
+            theIntegers.add(0,30); //BUY RSI
+            theIntegers.add(1,30); //BUY ADX
+            theIntegers.add(2,15); //BUY SL
+            theIntegers.add(3,70); //SELL RSI
+            theIntegers.add(4,20); //SELL ADX
+            theIntegers.add(5,15); //SELL SL
+        }
         return theIntegers;
     }
 
-    public void setTheIntegers(ArrayList<Integer> theIntegers) {
-        this.theIntegers = theIntegers;
+    public void setTheIntegers(Integer position, Integer value) {
+        if(theIntegers==null){
+            theIntegers=getTheIntegers();
+        }
+        theIntegers.add(position,value);
     }
+
 
 
     // ArrayList<Float>
