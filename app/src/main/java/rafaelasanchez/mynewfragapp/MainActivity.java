@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean requestIndex=false;
 
 
-    private String theCurrentCompany;
     private String theCurrentBenchmark;
+    private String theCurrentCompany;
     private String theDownloadedData;
     private String theDownloadedIndexData;
 
@@ -70,19 +70,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String myAppKey = "Investor Playground";
     public static final String THECURRENTCOMPANY = "THECURRENTCOMPANY";
     public static final String THECURRENTBENCHMARK = "THECURRENTBENCHMARK";
-    public static final String STARTINGDAY = "startingDay";
-    public static final String STARTINGMONTH = "startingMonth";
-    public static final String STARTINGYEAR = "startingYear";
+
     public static final String THEDOWNLOADEDDATA = "theDownloadedData";
     public static final String THEDOWNLOADEDINDEXDATA = "theDownloadedIndexData";
-    public static final String ENDINGDAY = "endingDay";
-    public static final String ENDINGMONTH = "endingMonth";
-    public static final String ENDINGYEAR = "endingYear";
-
-    public static final String INFIMUM_0 = "INFIMUM_0";
-    public static final String INFIMUM_1 = "INFIMUM_1";
-    public static final String INFIMUM_2 = "INFIMUM_2";
-
 
     private FrameLayout graphContainer;
     private FrameLayout graphContainer2;
@@ -594,6 +584,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTheCurrentCompany(String theCurrentCompany) {
         this.theCurrentCompany = theCurrentCompany;
+        values.setTheCurrentCompany(theCurrentCompany);
 
         if(theCurrentCompany.equals("")) {
             theDownloadedData="";

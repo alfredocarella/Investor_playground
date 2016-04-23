@@ -8,22 +8,32 @@ import java.util.ArrayList;
  */
 public class SimpleUserValues implements Serializable {
 
-    private Boolean startDateSet=null;
+    private Boolean benchmarkSet=null;
+    private Boolean companySet=null;
     private Boolean endDateSet=null;
+    private Boolean request2Frag=null;
+    private Boolean requestCompany=null;
+    private Boolean requestIndex=null;
+    private Boolean startDateSet=null;
     private Integer theCurrentFragment=null;
     private Integer theCurrentGraph=null;
-    private String theCurrentCompany="";
     private String theCurrentBenchmark="";
+    private String theCurrentCompany="";
+    private String theDownloadedData="";
+    private String theDownloadedIndexData="";
     private String theEndDateString="";
     private String theStartDateString="";
+    public static final String myAppKey = "Investor Playground";
     private ArrayList<Boolean> theBooleans=null;
     private ArrayList<Integer> theIntegers=null;
     private ArrayList<Integer> endingDate=null;
     private ArrayList<Integer> startingDate=null;
     private ArrayList<Integer> startingDateInfimum=null;
     private ArrayList<Float> arrayList=null;
+    private ArrayList<Float> arrayListIndex = null;
     private ArrayList<Float> strategyResult=null;
     private ArrayList<ArrayList<Integer>> theDates=null;
+    private ArrayList<ArrayList<Integer>> theDatesBenchmark=null;
 
 
     public SimpleUserValues() {
@@ -40,6 +50,29 @@ public class SimpleUserValues implements Serializable {
     //All getters & setters
 
     //Boolean
+
+    public Boolean getBenchmarkSet() {
+        if(benchmarkSet==null){
+            benchmarkSet=false;
+        }
+        return benchmarkSet;
+    }
+
+    public void setBenchmarkSet(Boolean benchmarkSet) {
+        this.benchmarkSet = benchmarkSet;
+    }
+
+    public Boolean getCompanySet() {
+        if(companySet==null){
+            companySet=false;
+        }
+        return companySet;
+    }
+
+    public void setCompanySet(Boolean companySet) {
+        this.companySet = companySet;
+    }
+
     public Boolean getEndDateSet() {
         if(endDateSet==null){
             endDateSet=false;
@@ -49,6 +82,39 @@ public class SimpleUserValues implements Serializable {
 
     public void setEndDateSet(Boolean endDateSet) {
         this.endDateSet = endDateSet;
+    }
+
+    public Boolean getRequest2Frag() {
+        if(request2Frag==null){
+            request2Frag=false;
+        }
+        return request2Frag;
+    }
+
+    public void setRequest2Frag(Boolean request2Frag) {
+        this.request2Frag = request2Frag;
+    }
+
+    public Boolean getRequestCompany() {
+        if(requestCompany==null){
+            requestCompany=false;
+        }
+        return requestCompany;
+    }
+
+    public void setRequestCompany(Boolean requestCompany) {
+        this.requestCompany = requestCompany;
+    }
+
+    public Boolean getRequestIndex() {
+        if(requestIndex==null){
+            requestIndex=false;
+        }
+        return requestIndex;
+    }
+
+    public void setRequestIndex(Boolean requestIndex) {
+        this.requestIndex = requestIndex;
     }
 
     public Boolean getStartDateSet() {
@@ -106,6 +172,22 @@ public class SimpleUserValues implements Serializable {
         this.theCurrentCompany = theCurrentCompany;
     }
 
+    public String getTheDownloadedData() {
+        return theDownloadedData;
+    }
+
+    public void setTheDownloadedData(String theDownloadedData) {
+        this.theDownloadedData = theDownloadedData;
+    }
+
+    public String getTheDownloadedIndexData() {
+        return theDownloadedIndexData;
+    }
+
+    public void setTheDownloadedIndexData(String theDownloadedIndexData) {
+        this.theDownloadedIndexData = theDownloadedIndexData;
+    }
+
     public String getTheEndDateString() {
         return theEndDateString;
     }
@@ -120,6 +202,10 @@ public class SimpleUserValues implements Serializable {
 
     public void setTheStartDateString(String theStartDateString) {
         this.theStartDateString = theStartDateString;
+    }
+
+    public static String getMyAppKey() {
+        return myAppKey;
     }
 
 
@@ -196,6 +282,14 @@ public class SimpleUserValues implements Serializable {
         this.arrayList = arrayList;
     }
 
+    public ArrayList<Float> getArrayListIndex() {
+        return arrayListIndex;
+    }
+
+    public void setArrayListIndex(ArrayList<Float> arrayListIndex) {
+        this.arrayListIndex = arrayListIndex;
+    }
+
     public ArrayList<Float> getStrategyResult() {
         return strategyResult;
     }
@@ -215,13 +309,11 @@ public class SimpleUserValues implements Serializable {
         this.theDates = theDates;
     }
 
+    public ArrayList<ArrayList<Integer>> getTheDatesBenchmark() {
+        return theDatesBenchmark;
+    }
 
-
-
-
-
-
-
-
-
+    public void setTheDatesBenchmark(ArrayList<ArrayList<Integer>> theDatesBenchmark) {
+        this.theDatesBenchmark = theDatesBenchmark;
+    }
 }
