@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     public SimpleUserValues values;
 
-    private ArrayList<Integer> startingDate = new ArrayList<Integer>();
-    private ArrayList<Integer> endingDate = new ArrayList<Integer>();
-
     FirstFragment firstFragment;
 
 
@@ -359,9 +356,9 @@ public class MainActivity extends AppCompatActivity {
 
                 FrameLayout graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
-                if(!values.getRequest2Frag()) {
-                    values.setTheCurrentGraph(1);
-                }
+
+                values.setTheCurrentGraph(1);
+
                 Graph graph = new Graph(this);
                 graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
@@ -369,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        values.setRequest2Frag(true);
+                        values.setRequest2Frag(false);
                         onPriceGraphClicked();
                     }
                 });
@@ -482,9 +479,8 @@ public class MainActivity extends AppCompatActivity {
         startingDate_.add(1,month_);
         startingDate_.add(2,year_);
 
-        if(startingDate!=startingDate_){
-            startingDate = startingDate_;
-            values.setStartingDate(startingDate);
+        if(values.getStartingDate()!=startingDate_){
+            values.setStartingDate(startingDate_);
             values.setStartDateSet(true);
 
             int startingMonth_=values.getStartingDate().get(1)+1;
@@ -508,13 +504,12 @@ public class MainActivity extends AppCompatActivity {
         endingDate_.add(1,month_);
         endingDate_.add(2, year_);
 
-        if(endingDate!=endingDate_){
-            endingDate = endingDate_;
-            values.setEndingDate(endingDate);
+        if(values.getEndingDate()!=endingDate_){
+            values.setEndingDate(endingDate_);
             values.setEndDateSet(true);
 
-            int endingMonth_=endingDate.get(1)+1;
-            String dateString = endingDate.get(0)+"/"+endingMonth_+"/"+endingDate.get(2);
+            int endingMonth_=values.getEndingDate().get(1)+1;
+            String dateString = values.getEndingDate().get(0)+"/"+endingMonth_+"/"+values.getEndingDate().get(2);
             values.setTheEndDateString(dateString);
             TextView endDateTextView = (TextView) findViewById(R.id.first_frag_end_date_text_view);
             endDateTextView.setText(dateString);
