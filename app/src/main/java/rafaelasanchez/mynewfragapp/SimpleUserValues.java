@@ -11,7 +11,6 @@ public class SimpleUserValues implements Serializable {
     private Boolean benchmarkSet=null;
     private Boolean companySet=null;
     private Boolean endDateSet=null;
-    private Boolean request2Frag=null;
     private Boolean requestCompany=null;
     private Boolean requestIndex=null;
     private Boolean startDateSet=null;
@@ -83,17 +82,6 @@ public class SimpleUserValues implements Serializable {
 
     public void setEndDateSet(Boolean endDateSet) {
         this.endDateSet = endDateSet;
-    }
-
-    public Boolean getRequest2Frag() {
-        if(request2Frag==null){
-            request2Frag=false;
-        }
-        return request2Frag;
-    }
-
-    public void setRequest2Frag(Boolean request2Frag) {
-        this.request2Frag = request2Frag;
     }
 
     public Boolean getRequestCompany() {

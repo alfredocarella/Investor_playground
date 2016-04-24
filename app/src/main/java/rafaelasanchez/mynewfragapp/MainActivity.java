@@ -337,9 +337,6 @@ public class MainActivity extends AppCompatActivity {
 
                 FrameLayout graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
 
-                if(!values.getRequest2Frag()) {
-                    values.setTheCurrentGraph(1);
-                }
                 Graph graph = new Graph(this);
                 graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
@@ -347,7 +344,6 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        values.setRequest2Frag(false);
                         onPriceGraphClicked();
                     }
                 });
@@ -356,9 +352,7 @@ public class MainActivity extends AppCompatActivity {
 
                 FrameLayout graphContainer = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
 
-
                 values.setTheCurrentGraph(1);
-
                 Graph graph = new Graph(this);
                 graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
@@ -366,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                 graphContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        values.setRequest2Frag(false);
+                        values.setTheCurrentGraph(1);
                         onPriceGraphClicked();
                     }
                 });
@@ -400,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
         strategyContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                values.setRequest2Frag(true);
+                values.setTheCurrentGraph(2);
                 onPriceGraphClicked();
             }
         });
@@ -491,7 +485,6 @@ public class MainActivity extends AppCompatActivity {
 
             if(callOnParametersUpdated) {
                 onParametersUpdated(false, false, true, "setStartingDate");
-                //boolean companyChanged, boolean benchmarkChanged,boolean datesChanged, String callingMethod
             }
         }
 

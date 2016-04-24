@@ -121,10 +121,6 @@ public class Graph extends View {
     }
 
 
-
-
-
-
     public View getTheGraph() {
         return theView;
     }
