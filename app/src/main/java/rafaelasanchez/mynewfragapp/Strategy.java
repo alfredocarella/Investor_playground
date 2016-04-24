@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class Strategy {
 
     private ArrayList<Float> theResult = new ArrayList<>();
-
+    private ArrayList<Float> rsi = new ArrayList<>();
+    private ArrayList<Float> capital = new ArrayList<>();
 
     public Strategy(SimpleUserValues values) {
 
@@ -26,7 +27,7 @@ public class Strategy {
         ArrayList<Float> change = zeros(n);
         ArrayList<Float> gains = zeros(n);
         ArrayList<Float> losses = zeros(n);
-        ArrayList<Float> rsi = zeros(n);
+        rsi = zeros(n);
 
 
         //Generate RSI

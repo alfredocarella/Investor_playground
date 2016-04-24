@@ -191,6 +191,7 @@ public class DataCruncher {
                 theSum = theSum +1;
                 counter=counter+1;
             }else if(theInputA.get(i)*theInputB.get(i)<0){
+                theSum = theSum -1;
                 counter=counter+1;
             }
             i=i+1;

@@ -290,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if(!values.getTheDownloadedData().equals("")) {
             DataReducer dataReducer= new DataReducer(values.getTheDownloadedData());
-
             values.setArrayList(dataReducer.getTheArray());
             values.setTheDates(dataReducer.getTheDates());
 
@@ -331,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
     // Plot the price data
 
     private void plotStuff(){
-        if(!values.getTheDownloadedData().equals("")) {
+        if(values.getArrayList()!=null) {
 
             if(values.getTheCurrentFragment()==2) {
 
@@ -407,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
 
         View outer_container = findViewById(R.id.the_stats);
 
-        if (values.getCompanySet()&&!values.getTheDownloadedData().equals("")) {
+        if (values.getCompanySet()&&values.getArrayList()!=null) {
             outer_container.setVisibility(View.VISIBLE);
 
             DataCruncher dataCruncher = new DataCruncher(
@@ -429,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
-            if (values.getBenchmarkSet() && !values.getTheDownloadedIndexData().equals("")) {
+            if (values.getBenchmarkSet() && values.getArrayListIndex()!=null) {
 
                 theBenchmarkStats.setVisibility(View.VISIBLE);
 
@@ -520,6 +519,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(values.getTheCurrentCompany().equals("")) {
             values.setTheDownloadedData("");
+            values.setArrayList(null);
             values.setCompanySet(false);
             values.setRequestCompany(false);
             FrameLayout thePriceGraph = (FrameLayout) findViewById(R.id.prices_1st_frag_the_outer_container);
@@ -545,6 +545,7 @@ public class MainActivity extends AppCompatActivity {
             values.setBenchmarkSet(false);
             values.setRequestIndex(false);
             values.setTheDownloadedIndexData("");
+            values.setArrayListIndex(null);
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
             theBenchmarkStats.setVisibility(View.GONE);
         }else{

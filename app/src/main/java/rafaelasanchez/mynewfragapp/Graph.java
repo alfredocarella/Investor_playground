@@ -18,14 +18,13 @@ import java.util.NoSuchElementException;
 /**
  * Created by R on 20/04/2016.
  */
-public class Graph extends View {
+public class Graph  {
 
     private View theView;
     private Context context;
 
 
     public Graph(Context context_) {
-        super(context_);
         context=context_;
     }
 
