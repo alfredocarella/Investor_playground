@@ -1,6 +1,7 @@
 package rafaelasanchez.mynewfragapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -135,6 +136,12 @@ public class ConfigDialogFragment extends DialogFragment {
         return theView;
     }
 
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        ((MainActivity)getActivity()).plotStuff();
+        super.onDismiss(dialog);
+    }
 
     public static ConfigDialogFragment newInstance(){
         Bundle bundle = new Bundle();

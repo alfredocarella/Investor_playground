@@ -32,11 +32,15 @@ public class Graph  {
 
         final ArrayList<Float> theData;
         Integer theCurrentGraph = values.getTheCurrentGraph();
+        final String theGraphTitle;
+
 
         if(theCurrentGraph==2){
             theData=values.getStrategyResult();
+            theGraphTitle="Your strategy";
         }else{
             theData=values.getArrayList();
+            theGraphTitle="Price evolution";
         }
 
         final ArrayList<ArrayList<Integer>> theDates=values.getTheDates();
@@ -52,6 +56,7 @@ public class Graph  {
         final TextView xAxisEnd = (TextView) theView.findViewById(R.id.graph_x_axis_end_text_view);
         final TextView yAxisMin = (TextView) theView.findViewById(R.id.graph_y_axis_min_text_view);
         final TextView yAxisMax = (TextView) theView.findViewById(R.id.graph_y_axis_max_text_view);
+        final TextView graphTitle = (TextView) theView.findViewById(R.id.the_graph_title);
         theFrameLayout = (FrameLayout) theView.findViewById(R.id.graph_plot_container_frame_layout);
 
         if(theCurrentFragment==1) {
@@ -101,6 +106,8 @@ public class Graph  {
                 xAxisStart.setText(theDates.get(0).get(theDates.get(0).size() - 1).toString() + "/" + theDates.get(1).get(theDates.get(1).size() - 1).toString() + "/" + theDates.get(2).get(theDates.get(2).size() - 1).toString());
                 yAxisMin.setText(precision.format(minDouble));
                 yAxisMax.setText(precision.format(maxDouble));
+
+                graphTitle.setText(theGraphTitle);
 
                 int dyPlot = theFrameLayout.getHeight();
                 int dxPlot = theFrameLayout.getWidth();

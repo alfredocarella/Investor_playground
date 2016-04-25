@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             ConfigDialogFragment configDialogFragment = ConfigDialogFragment.newInstance();
             configDialogFragment.show(fragmentManager, "");
+
+
+
             return true;
         }else {
             return super.onOptionsItemSelected(item);
@@ -76,15 +79,22 @@ public class MainActivity extends AppCompatActivity {
 
         restoreSavedValues();
 
-        //Decide which fragment to load
-        putRightFragment();
-
-        //Set the downloading stuff
+        //Register the Broadcast receiver
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(FileService.TRANSACTION_DONE);
         registerReceiver(downloadReceiver, intentFilter);
 
+        //Decide which fragment to load
+        putRightFragment();
+
     }
+
+
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -329,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Plot the price data
 
-    private void plotStuff(){
+    public void plotStuff(){
         if(values.getArrayList()!=null) {
 
             if(values.getTheCurrentFragment()==2) {
@@ -516,6 +526,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTheCurrentCompany(String theCurrentCompany) {
         values.setTheCurrentCompany(theCurrentCompany);
+        values.setStartingDateInfimum(null);
 
         if(values.getTheCurrentCompany().equals("")) {
             values.setTheDownloadedData("");
@@ -588,7 +599,12 @@ public class MainActivity extends AppCompatActivity {
     // Kill the BroadcastReceiver to avoid seeing an error message
     @Override
     protected void onStop() {
-        unregisterReceiver(downloadReceiver);
+        //if(downloadReceiver)
+        try{
+            unregisterReceiver(downloadReceiver);
+        }catch(IllegalArgumentException e){
+            Log.e("MainActivity.onStop ", "IllegalArgumentException: Receiver not registered");
+        }
         super.onStop();
     }
 

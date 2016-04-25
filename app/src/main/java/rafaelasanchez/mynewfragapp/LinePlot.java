@@ -31,29 +31,40 @@ public class LinePlot extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int radius=3;
+        Float radius=2.5f;
         // Use Color.parseColor to define HTML colors
         Iterator<Float> it = mPoints.iterator();
-        int i = 0;
-        int mlength=mPoints.size();
-        if(mlength>0) {
+        int mLength=mPoints.size();
+        if(mLength>0) {
             Float mmin= Collections.min(mPoints);
             Float mmax= Collections.max(mPoints);
-
-            Float dxdp = (1.0f * dx) / mlength;
+            Float dxdp = (1.0f * dx) / mLength;
+            Float pPrevious=0.f;
+            paint.setColor(Color.YELLOW);
+            int i = 0;
             while (it.hasNext()) {
-                Float p = it.next();
-//                paint.setColor(Color.parseColor("#CD5C5C") + 0x40 * i);
-                paint.setColor(Color.YELLOW);
-                canvas.drawCircle(  Math.round(dxdp * (mlength - (i + 1))),
-                                    Math.round(dy * (mmax - p) / (mmax - mmin)),
+                if(i==0){
+                    pPrevious = it.next();
+                }else {
+                    Float p = it.next();
+                    Float startX = dxdp * (mLength - i);
+                    Float startY = dy * (mmax - pPrevious) / (mmax - mmin);
+                    Float stopX = dxdp * (mLength - (i + 1));
+                    Float stopY = dy * (mmax - p) / (mmax - mmin);
+                    canvas.drawLine(startX,startY,stopX,stopY,paint);
+                    pPrevious=p;
+                }
+                canvas.drawCircle(dxdp * (mLength - (i + 1)),
+                        dy * (mmax - pPrevious) / (mmax - mmin),
                         radius, paint);
-//                Log.e("x,y= ", String.valueOf(dxdp * (mlength - (i + 1))) + ";  " + String.valueOf(dy * (mmax - p) / (mmax - mmin)));
                 i++;
             }
-//            Log.e("LinePlot.OnDraw.dxdp","dxdp= " + String.valueOf(dxdp) + ";  dx= " +String.valueOf(dx) + ";  dy= " + String.valueOf(dy) + ";  min= " + String.valueOf(mmin) + ";  max= " +String.valueOf(mmax) + ";  i= " +String.valueOf(i));
         }
     }
+
+
+
+
 
 
     public void addPoints(int dx_plot, int dy_plot, ArrayList<Float> puntos){

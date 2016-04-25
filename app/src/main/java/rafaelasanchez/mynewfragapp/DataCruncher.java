@@ -52,7 +52,7 @@ public class DataCruncher {
             Double Dt = j / 365.25; //Here converting the time from days to years
             theAnnualizedReturn = 100 * (-1.0 + Math.exp((1.0 / Dt) * Math.log(cf / c0)));
 
-            if (theIndex.size() > 0) {
+            if (theIndex!=null) {
                 // Beta calculation
                 // Calculate the daily changes first:
                 MultipleResult dayChanges = intraDayChange(theArray, theDates,

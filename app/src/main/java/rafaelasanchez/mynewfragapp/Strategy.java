@@ -11,15 +11,19 @@ public class Strategy {
 
     private ArrayList<Float> theResult = new ArrayList<>();
     private ArrayList<Float> rsi = new ArrayList<>();
-    private ArrayList<Float> capital = new ArrayList<>();
+    private Integer period;
+    private Float fee;
+    private ArrayList<Boolean> theBooleans;
+    private ArrayList<Integer> theIntegers;
+    private ArrayList<Float> arrayList;
 
     public Strategy(SimpleUserValues values) {
 
-        Integer period=values.getPeriod();
-        Float fee=values.getFee();
-        ArrayList<Boolean> theBooleans=values.getTheBooleans();
-        ArrayList<Integer> theIntegers=values.getTheIntegers();
-        ArrayList<Float> arrayList=values.getArrayList();
+        period=values.getPeriod();
+        fee=values.getFee();
+        theBooleans=values.getTheBooleans();
+        theIntegers=values.getTheIntegers();
+        arrayList=values.getArrayList();
 
 
         int n=arrayList.size();
@@ -47,8 +51,79 @@ public class Strategy {
             rsi.set(d,100.f-100.f/(1+todayRS));
         }
 
-        theResult=rsi;
+        runTheStrategy();
+        theResult=runTheStrategy();
+
     }
+
+
+    public ArrayList<Float> runTheStrategy(){
+        int n = arrayList.size();
+        ArrayList<Float> capital = zeros(n);
+        ArrayList<Boolean> buy =falses(n);
+        ArrayList<Boolean> sell =falses(n);
+        ArrayList<Boolean> bought=falses(n);
+
+        for(int i=arrayList.size()-1;i>=0;i--){
+            if(rsi.get(i)<=theIntegers.get(0)){
+                buy.set(i,true);
+            }
+            if (rsi.get(i)>=theIntegers.get(3)){
+                sell.set(i,true);
+            }
+            if(i==arrayList.size()-1){
+                bought.set(i,false);
+                capital.set(i,1.0f);
+            }else{
+                if(buy.get(i)&&!sell.get(i)) {
+                    bought.set(i,true);
+                }
+            }
+        }
+
+        for(int i=arrayList.size()-1;i>=0;i--){
+            if(i==arrayList.size()-1){
+                capital.set(i, 1.0f);
+            }else{
+                //Minimum 2 days in which "bought" is true
+                if(bought.get(i)&&bought.get(i+1)){
+                    Float change;
+                    if((i+1<arrayList.size()-1 && !bought.get(i+2))||i==arrayList.size()-2) {
+                        change = (1-fee/100)*arrayList.get(i) / arrayList.get(i + 1);
+                    }else if(i>0 && !bought.get(i-1)){
+                        change = (1-fee/100)*arrayList.get(i) / arrayList.get(i + 1);
+                    }else{
+                        change = arrayList.get(i) / arrayList.get(i + 1);
+                    }
+
+                    capital.set(i, capital.get(i+1)*change);
+                }else {
+                    capital.set(i, capital.get(i+1));
+                }
+            }
+        }
+
+        return capital;
+    }
+
+
+
+
+
+    private ArrayList<Float> booleanToFloat(ArrayList<Boolean> input){
+
+        int n=input.size();
+        ArrayList<Float> result=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(input.get(i)){
+                result.add(i,1.f);
+            }else{
+                result.add(i,0.f);
+            }
+        }
+        return result;
+    }
+
 
     public ArrayList<Float> getTheResult() {
         return theResult;
@@ -64,6 +139,18 @@ public class Strategy {
         return a;
 
     }
+
+    private ArrayList<Boolean> falses(Integer n){
+        //Return an ArrayList of size n filled with false
+
+        ArrayList<Boolean> a= new ArrayList<>();
+        for (int i = 0; i <= n - 1; i++) {
+            a.add(i, false);
+        }
+        return a;
+
+    }
+
 
     private Float mean(ArrayList<Float> values){
 
