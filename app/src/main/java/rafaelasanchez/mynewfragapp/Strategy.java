@@ -17,6 +17,10 @@ public class Strategy {
     private ArrayList<Integer> theIntegers;
     private ArrayList<Float> arrayList;
 
+    private Float yourReturn;
+    private Float yourAReturn;
+
+
     public Strategy(SimpleUserValues values) {
 
         period=values.getPeriod();
@@ -64,30 +68,44 @@ public class Strategy {
         ArrayList<Boolean> sell =falses(n);
         ArrayList<Boolean> bought=falses(n);
 
-        for(int i=arrayList.size()-1;i>=0;i--){
-            if(rsi.get(i)<=theIntegers.get(0)){
-                buy.set(i,true);
+        // Fill the buy & sell arrays
+        for(int i=arrayList.size()-1;i>=0;i--) {
+            // Apply RSI logic
+            if (theBooleans.get(0) && rsi.get(i) <= theIntegers.get(0)) {
+                buy.set(i, true);
             }
-            if (rsi.get(i)>=theIntegers.get(3)){
-                sell.set(i,true);
+            if (theBooleans.get(3) && rsi.get(i) >= theIntegers.get(3)) {
+                sell.set(i, true);
             }
+
+            // Apply logic for the other indicators
+        }
+
+
+        // Fill the bought array
+        // Boolean bought is true if sell is false
+        // AND either bought true before or buy true now
+        for(int i=arrayList.size()-1;i>=0;i--) {
             if(i==arrayList.size()-1){
-                bought.set(i,false);
-                capital.set(i,1.0f);
+                if (buy.get(i)&&!sell.get(i)){
+                    bought.set(i,true);
+                }
             }else{
-                if(buy.get(i)&&!sell.get(i)) {
+                if(!sell.get(i)&&(buy.get(i)||bought.get(i+1))) {
                     bought.set(i,true);
                 }
             }
         }
 
+        // Fill the capital array
+        // Minimum 2 days in which "bought" is true
         for(int i=arrayList.size()-1;i>=0;i--){
             if(i==arrayList.size()-1){
                 capital.set(i, 1.0f);
             }else{
-                //Minimum 2 days in which "bought" is true
                 if(bought.get(i)&&bought.get(i+1)){
                     Float change;
+                    // Apply fee if buying or selling
                     if((i+1<arrayList.size()-1 && !bought.get(i+2))||i==arrayList.size()-2) {
                         change = (1-fee/100)*arrayList.get(i) / arrayList.get(i + 1);
                     }else if(i>0 && !bought.get(i-1)){
@@ -103,12 +121,15 @@ public class Strategy {
             }
         }
 
+        yourReturn=100*(capital.get(0)-1.f);
+
         return capital;
     }
 
 
-
-
+    public Float getYourReturn() {
+        return yourReturn;
+    }
 
     private ArrayList<Float> booleanToFloat(ArrayList<Boolean> input){
 

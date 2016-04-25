@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Investment Strategy constants"
+            android:text="Strategy planner settings"
             android:textStyle="bold"
             android:padding="@dimen/small_padding"
             android:textSize="@dimen/text_size"
@@ -105,7 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            android:baselineAligned="true"
+            android:visibility="gone">
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +136,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            android:baselineAligned="true"
+            android:visibility="gone">
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -204,7 +206,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            android:baselineAligned="true"
+            android:visibility="gone">
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -234,7 +237,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:baselineAligned="true">
+            android:baselineAligned="true"
+            android:visibility="gone">
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

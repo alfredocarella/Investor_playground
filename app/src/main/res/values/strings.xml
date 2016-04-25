@@ -21,8 +21,8 @@
     <string name="label_sharpe_ratio_text_view">Sharpe ratio:</string>
     <string name="label_beta_text_view">Beta:</string>
     <string name="label_correlation_with_index_text_view">Correlation:</string>
-    <string name="label_annualized_return_text_view">Annualized buy-and-hold return: (%)</string>
-    <string name="label_return_text_view">Buy-and-hold return: (%)</string>
+    <string name="label_annualized_return_text_view">Annualized return: (%)</string>
+    <string name="label_return_text_view">Return: (%)</string>
     <string name="label_stats_title_text_view">Stats</string>
 
     <string name="q_RSI_buy_text_view">The Relative Strength Index (RSI)

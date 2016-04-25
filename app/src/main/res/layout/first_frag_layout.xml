@@ -153,6 +153,50 @@
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="@dimen/large_margin"/>
 
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:text=""
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size"
+                    android:gravity="start"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Buy &amp; Hold"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Your strategy"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:gravity="end"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,6 +216,15 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:id="@+id/the_return"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/your_return"
                     android:textSize="@dimen/text_size"
                     android:layout_marginStart="@dimen/large_margin"
                     android:layout_marginLeft="@dimen/large_margin"
@@ -199,10 +252,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/the_a_return"
                     android:textSize="@dimen/text_size"
+                    android:layout_marginStart="@dimen/large_margin"
+                    android:layout_marginLeft="@dimen/large_margin"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/your_a_return"
+                    android:textSize="@dimen/text_size"
                     android:gravity="end"
                     android:layout_marginStart="@dimen/large_margin"
                     android:layout_marginLeft="@dimen/large_margin"
                     android:textColor="@android:color/white"/>
+
 
             </LinearLayout>
             <LinearLayout
@@ -231,10 +294,20 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/the_correlation"
                         android:textSize="@dimen/text_size"
+                        android:layout_marginStart="@dimen/large_margin"
+                        android:layout_marginLeft="@dimen/large_margin"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/your_correlation"
+                        android:textSize="@dimen/text_size"
                         android:gravity="end"
                         android:layout_marginStart="@dimen/large_margin"
                         android:layout_marginLeft="@dimen/large_margin"
                         android:textColor="@android:color/white"/>
+
 
                 </LinearLayout>
                 <LinearLayout
@@ -258,10 +331,20 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/the_beta"
                         android:textSize="@dimen/text_size"
+                        android:layout_marginStart="@dimen/large_margin"
+                        android:layout_marginLeft="@dimen/large_margin"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/your_beta"
+                        android:textSize="@dimen/text_size"
                         android:gravity="end"
                         android:layout_marginStart="@dimen/large_margin"
                         android:layout_marginLeft="@dimen/large_margin"
                         android:textColor="@android:color/white"/>
+
 
                 </LinearLayout>
                 <LinearLayout

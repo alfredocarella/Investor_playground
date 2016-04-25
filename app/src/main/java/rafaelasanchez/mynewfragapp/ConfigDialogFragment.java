@@ -139,7 +139,9 @@ public class ConfigDialogFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        ((MainActivity)getActivity()).plotStuff();
+        if(getActivity()!=null) {
+            ((MainActivity) getActivity()).plotStuff();
+        }
         super.onDismiss(dialog);
     }
 

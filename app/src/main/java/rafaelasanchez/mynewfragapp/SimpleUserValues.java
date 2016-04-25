@@ -35,7 +35,7 @@ public class SimpleUserValues implements Serializable {
     private ArrayList<Float> strategyResult=null;
     private ArrayList<ArrayList<Integer>> theDates=null;
     private ArrayList<ArrayList<Integer>> theDatesBenchmark=null;
-
+    private Float yourReturn=null;
 
     public SimpleUserValues() {
     }
@@ -230,6 +230,14 @@ public class SimpleUserValues implements Serializable {
 
     public void setFee(Float fee) {
         this.fee = fee;
+    }
+
+    public Float getYourReturn() {
+        return yourReturn;
+    }
+
+    public void setYourReturn(Float yourReturn) {
+        this.yourReturn = yourReturn;
     }
 
 

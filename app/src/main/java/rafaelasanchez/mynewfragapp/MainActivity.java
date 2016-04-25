@@ -345,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
             if(values.getTheCurrentFragment()==2) {
 
                 FrameLayout graphContainer2= (FrameLayout) findViewById(R.id.the_2nd_frag);
-
                 Graph graph = new Graph(this);
                 graph.newInstance(values);
                 View theGraph = graph.getTheGraph();
@@ -355,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         onPriceGraphClicked();
                     }
-                });
+                    });
 
             }else{
 
@@ -388,8 +387,8 @@ public class MainActivity extends AppCompatActivity {
     private void showStrategy(){
 
         Strategy strategy = new Strategy(values);
-        ArrayList<Float> strategyResult=strategy.getTheResult();
-        values.setStrategyResult(strategyResult);
+        values.setStrategyResult(strategy.getTheResult());
+        values.setYourReturn(strategy.getYourReturn());
 
         FrameLayout strategyContainer =
                 (FrameLayout) findViewById(R.id.strategy_1st_frag_the_outer_container);
@@ -435,6 +434,18 @@ public class MainActivity extends AppCompatActivity {
             Double theAnnualizedReturn = dataCruncher.getTheAnnualizedReturn();
             TextView theAReturnTextView = (TextView) findViewById(R.id.the_a_return);
             theAReturnTextView.setText(thePrecision.format(theAnnualizedReturn));
+
+
+            TextView yourReturnTextView = (TextView) findViewById(R.id.your_return);
+            Float yourReturn = values.getYourReturn();
+            yourReturnTextView.setText(thePrecision.format(yourReturn));
+
+            Double yourAnnualizedReturn = dataCruncher.getTheAnnualizedReturn();
+            TextView yourAReturnTextView = (TextView) findViewById(R.id.the_a_return);
+            yourAReturnTextView.setText(thePrecision.format(yourAnnualizedReturn));
+
+
+
 
             LinearLayout theBenchmarkStats = (LinearLayout) findViewById(R.id.the_benchmark_stats);
 
