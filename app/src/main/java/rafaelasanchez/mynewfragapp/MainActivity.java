@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
             returnRateDialogFragment.show(fragmentManager, "");
+            
             return true;
         }
         else if(item.getItemId()==R.id.bar_config) {
@@ -624,13 +625,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        Gson gson = new Gson();
-        Type classType = new TypeToken<SimpleUserValues>() {}.getType();
+        try {
+            Gson gson = new Gson();
+            Type classType = new TypeToken<SimpleUserValues>() {
+            }.getType();
 
-        String JSONString= gson.toJson(values, classType);
-        getSharedPreferences(SimpleUserValues.getMyAppKey(), MODE_PRIVATE).edit()
-                .putString("JSON", JSONString).commit();
-
+            String JSONString = gson.toJson(values, classType);
+            getSharedPreferences(SimpleUserValues.getMyAppKey(), MODE_PRIVATE).edit()
+                    .putString("JSON", JSONString).commit();
+        }catch(RuntimeException e){
+            Log.e("RuntimeException","");
+        }
         super.onSaveInstanceState(outState);
     }
 
