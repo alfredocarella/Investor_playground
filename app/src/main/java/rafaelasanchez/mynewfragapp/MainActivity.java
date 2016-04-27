@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             ReturnRateDialogFragment returnRateDialogFragment = ReturnRateDialogFragment.newInstance();
             returnRateDialogFragment.show(fragmentManager, "");
-            
+
             return true;
         }
         else if(item.getItemId()==R.id.bar_config) {

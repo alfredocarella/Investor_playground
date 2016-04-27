@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -132,6 +134,11 @@ public class ConfigDialogFragment extends DialogFragment {
 
         addPopUps(theView);
 
+/*        Window window = getDialog().getWindow();
+
+        window.setLayout(width, height);
+        window.setGravity(Gravity.CENTER);
+*/
 
         return theView;
     }
