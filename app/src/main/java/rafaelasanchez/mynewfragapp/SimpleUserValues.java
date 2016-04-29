@@ -325,7 +325,7 @@ public class SimpleUserValues implements Serializable {
         if(theIntegers==null){
             theIntegers=getTheIntegers();
         }
-        theIntegers.add(position,value);
+        theIntegers.set(position,value);
     }
 
 
